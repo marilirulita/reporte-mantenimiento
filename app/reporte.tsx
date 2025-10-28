@@ -7,6 +7,7 @@ import {
   StyleSheet,
 } from "react-native";
 import { ClipboardList, Wrench, Camera, PenLine } from "lucide-react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Cliente from "../components/cliente";
 import Equipo from "../components/equipo";
 
@@ -32,13 +33,24 @@ export default function NuevoReporteScreen() {
       <View style={styles.tabContainer}>
         {tabs.map((tab) => {
           const isActive = activeTab === tab.name;
+          const Icon = tab.icon; // 👈 componente del ícono
           return (
             <TouchableOpacity
               key={tab.name}
               onPress={() => setActiveTab(tab.name)}
               style={[styles.tabButton, isActive && styles.tabButtonActive]}
             >
-              <Text style={[styles.tabText, isActive ? styles.tabTextActive : styles.tabTextInactive]}>
+              <Icon
+              size={22}
+              color={isActive ? "#2563EB" : "#6B7280"} // azul o gris
+              strokeWidth={2}
+            />
+              <Text
+                style={[
+                  styles.tabText,
+                  isActive ? styles.tabTextActive : styles.tabTextInactive,
+                ]}
+              >
                 {tab.name}
               </Text>
             </TouchableOpacity>
@@ -47,26 +59,36 @@ export default function NuevoReporteScreen() {
       </View>
 
       {/* Contenido principal */}
-      <ScrollView contentContainerStyle={styles.scrollContent}>
-        {activeTab === "Cliente" && <Cliente />}
-        {activeTab === "Tecnico" && <Equipo />}
+      <KeyboardAwareScrollView
+        style={{ backgroundColor: "#f5f5f5" }}
+        enableOnAndroid={true}
+        extraScrollHeight={60} // sube un poco más el último input
+      >
+        <ScrollView contentContainerStyle={styles.scrollContent}>
+          {activeTab === "Cliente" && <Cliente />}
+          {activeTab === "Tecnico" && <Equipo />}
 
-        {activeTab === "Fotos" && (
-          <View style={styles.section}>
-            <Text style={styles.sectionText}>Aquí podrás cargar las fotos del equipo</Text>
-            <TouchableOpacity style={styles.photoButton}>
-              <Text style={styles.photoButtonText}>Tomar o Subir Foto</Text>
-            </TouchableOpacity>
-          </View>
-        )}
+          {activeTab === "Fotos" && (
+            <View style={styles.section}>
+              <Text style={styles.sectionText}>
+                Aquí podrás cargar las fotos del equipo
+              </Text>
+              <TouchableOpacity style={styles.photoButton}>
+                <Text style={styles.photoButtonText}>Tomar o Subir Foto</Text>
+              </TouchableOpacity>
+            </View>
+          )}
 
-        {activeTab === "Firma" && (
-          <View style={styles.section}>
-            <Text style={styles.sectionText}>Captura la firma del cliente</Text>
-            <View style={styles.signatureBox}></View>
-          </View>
-        )}
-      </ScrollView>
+          {activeTab === "Firma" && (
+            <View style={styles.section}>
+              <Text style={styles.sectionText}>
+                Captura la firma del cliente
+              </Text>
+              <View style={styles.signatureBox}></View>
+            </View>
+          )}
+        </ScrollView>
+      </KeyboardAwareScrollView>
     </View>
   );
 }
@@ -105,7 +127,6 @@ const styles = StyleSheet.create({
   tabContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginHorizontal: 16,
     marginTop: 16,
     backgroundColor: "#e5e7eb", // bg-gray-200
     padding: 4, // p-1
