@@ -11,6 +11,8 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import Cliente from "../components/cliente";
 import Equipo from "../components/equipo";
 import Fotos from "../components/fotos";
+import Signature from "../components/firma";
+//import SignatureScreen from "@/components/testSignature";
 
 export default function NuevoReporteScreen() {
   const [activeTab, setActiveTab] = useState("Cliente");
@@ -26,6 +28,7 @@ export default function NuevoReporteScreen() {
     <View style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
+        <ClipboardList className="w-8 h-8" />
         <Text style={styles.headerTitle}>Reporte de Mantenimiento</Text>
         <Text style={styles.headerSubtitle}>Servicio de Refrigeración</Text>
       </View>
@@ -69,15 +72,7 @@ export default function NuevoReporteScreen() {
           {activeTab === "Cliente" && <Cliente />}
           {activeTab === "Tecnico" && <Equipo />}
           {activeTab === "Fotos" && <Fotos />}
-
-          {activeTab === "Firma" && (
-            <View style={styles.section}>
-              <Text style={styles.sectionText}>
-                Captura la firma del cliente
-              </Text>
-              <View style={styles.signatureBox}></View>
-            </View>
-          )}
+          {activeTab === "Firma" && <Signature />}
         </ScrollView>
       </KeyboardAwareScrollView>
     </View>
@@ -154,37 +149,5 @@ const styles = StyleSheet.create({
   scrollContent: {
     paddingHorizontal: 20,
     paddingTop: 16,
-  },
-
-  // Secciones (Fotos / Firma)
-  section: {
-    marginTop: 40,
-    alignItems: "center",
-  },
-  sectionText: {
-    marginBottom: 12,
-    color: "#4b5563", // text-gray-600
-  },
-
-  // Botón azul
-  photoButton: {
-    backgroundColor: "#2563eb",
-    paddingHorizontal: 20,
-    paddingVertical: 12,
-    borderRadius: 12,
-  },
-  photoButtonText: {
-    fontWeight: "600",
-    color: "#fff",
-  },
-
-  // Caja de firma
-  signatureBox: {
-    width: "100%",
-    height: 160,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: "#d1d5db", // border-gray-300
-    backgroundColor: "#fff",
   },
 });
