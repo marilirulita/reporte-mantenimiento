@@ -10,6 +10,7 @@ import { ClipboardList, Wrench, Camera, PenLine } from "lucide-react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Cliente from "../components/cliente";
 import Equipo from "../components/equipo";
+import Fotos from "../components/fotos";
 
 export default function NuevoReporteScreen() {
   const [activeTab, setActiveTab] = useState("Cliente");
@@ -67,17 +68,7 @@ export default function NuevoReporteScreen() {
         <ScrollView contentContainerStyle={styles.scrollContent}>
           {activeTab === "Cliente" && <Cliente />}
           {activeTab === "Tecnico" && <Equipo />}
-
-          {activeTab === "Fotos" && (
-            <View style={styles.section}>
-              <Text style={styles.sectionText}>
-                Aquí podrás cargar las fotos del equipo
-              </Text>
-              <TouchableOpacity style={styles.photoButton}>
-                <Text style={styles.photoButtonText}>Tomar o Subir Foto</Text>
-              </TouchableOpacity>
-            </View>
-          )}
+          {activeTab === "Fotos" && <Fotos />}
 
           {activeTab === "Firma" && (
             <View style={styles.section}>
