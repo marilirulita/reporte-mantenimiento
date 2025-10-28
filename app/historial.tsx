@@ -1,32 +1,24 @@
-import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
+import React from "react";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
 
-export default function Index() {
+const HistorialScreen = () => {
   const router = useRouter();
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>App de Mantenimiento</Text>
-
+      <Text style={styles.title}>Historial de Descargas</Text>
       <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          onPress={() => router.push("./reporte")}
-          style={[styles.button, styles.primaryButton]}
-        >
-          <Text style={styles.primaryText}>Nuevo reporte</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          onPress={() => router.push("./historial")}
-          style={[styles.button, styles.primaryButton]}
-        >
-          <Text style={styles.primaryText}>Historial</Text>
-        </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => router.push("./")}
+        style={[styles.button, styles.primaryButton]}
+      >
+        <Text style={styles.primaryText}>Atras</Text>
+      </TouchableOpacity>
       </View>
     </View>
   );
-}
-
+};
 const styles = StyleSheet.create({
   // Contenedor principal con gradiente
   container: {
@@ -44,7 +36,7 @@ const styles = StyleSheet.create({
     color: "#2563eb", // text-blue-600
   },
 
-  // Contenedor de botones
+    // Contenedor de botones
   buttonContainer: {
     display: "flex",
     flexDirection: "column",
@@ -66,10 +58,12 @@ const styles = StyleSheet.create({
 
   // Botón azul
   primaryButton: {
-    backgroundColor: "#3b82f6", // bg-blue-500
+    backgroundColor: "#444",
   },
   primaryText: {
     color: "#fff",
     fontWeight: "600",
   },
 });
+
+export default HistorialScreen;
