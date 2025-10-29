@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, ScrollView } from "react-native";
 import CustomInput from "./ui/custom-input";
 import { Botton } from "./ui/button";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { useNextSection } from "../hooks/useNextSection";
 
 const Cliente = () => {
   const [cliente, setCliente] = useState({
@@ -20,6 +21,7 @@ const Cliente = () => {
     tipoEquipo: "",
     ubicacion: "",
   });
+  const { handleNext } = useNextSection("DireccionScreen");
 
   return (
     <KeyboardAwareScrollView
@@ -120,7 +122,9 @@ const Cliente = () => {
             setValue={(text) => setEquipo({ ...equipo, ubicacion: text })}
           />
 
-          <Botton classname={styles.button} onPress={() => {}}>
+          <Botton 
+          classname={styles.button} 
+          onPress={() => handleNext("cliente", {...cliente, ...equipo})}>
             <Text style={styles.text}>Siguiente</Text>
           </Botton>
         </View>

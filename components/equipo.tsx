@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, ScrollView } from "react-native";
 import CustomInput from "./ui/custom-input";
 import { Botton } from "./ui/button";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { useNextSection } from "../hooks/useNextSection";
 
 export default function Equipo() {
   const [infServicio, setInfServicio] = useState({
@@ -26,6 +27,8 @@ export default function Equipo() {
     observaciones: "",
     observacionesAdicionales: "",
   });
+
+  const { handleNext } = useNextSection("DireccionScreen");
 
   return (
     <KeyboardAwareScrollView
@@ -209,7 +212,7 @@ export default function Equipo() {
             <Botton classname={styles.buttonSecundary} onPress={() => {}}>
               <Text style={styles.textSecundary}>Anterior</Text>
             </Botton>
-            <Botton classname={styles.buttonPrimary} onPress={() => {}}>
+            <Botton classname={styles.buttonPrimary} onPress={() => handleNext("tecnico", {...infServicio, ...medicionesTécnicas, ...detallesServicio})}>
               <Text style={styles.textPrimary}>Siguiente</Text>
             </Botton>
           </View>

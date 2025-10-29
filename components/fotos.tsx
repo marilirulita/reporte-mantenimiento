@@ -11,6 +11,7 @@ import {
 import { Camera, Upload, Image as ImageIcon } from "lucide-react-native";
 import * as ImagePicker from "expo-image-picker";
 import { Botton } from "./ui/button";
+import { useNextSection } from "../hooks/useNextSection";
 
 export default function Fotos() {
   const [fotos, setFotos] = useState<string[]>([]);
@@ -69,6 +70,8 @@ export default function Fotos() {
       },
     ]);
   };
+
+  const { handleNext } = useNextSection("DireccionScreen");
 
   return (
     <ScrollView
@@ -136,7 +139,7 @@ export default function Fotos() {
           <Botton classname={styles.buttonSecundary} onPress={() => {}}>
             <Text style={styles.textSecundary}>Anterior</Text>
           </Botton>
-          <Botton classname={styles.buttonPrimary} onPress={() => {}}>
+          <Botton classname={styles.buttonPrimary} onPress={() => handleNext("fotos", fotos)}>
             <Text style={styles.textPrimary}>Siguiente</Text>
           </Botton>
         </View>

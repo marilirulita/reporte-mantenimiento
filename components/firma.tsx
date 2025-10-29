@@ -11,6 +11,8 @@ import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../types/navigation"; // importa tus tipos
 import { Botton } from "./ui/button";
+import BotonFinalizar from "./BotonFinalizar";
+import { useNextSection } from "../hooks/useNextSection";
 
 type FirmaScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -23,7 +25,10 @@ export default function Firma() {
 
   const handleSaveSignature = (uri: string) => {
     setSignature(uri);
+    handleNext("firma", signature)
   };
+
+  const { handleNext } = useNextSection("DireccionScreen");
 
   return (
     <ScrollView
@@ -74,9 +79,10 @@ export default function Firma() {
           </TouchableOpacity>
         </View>
         <View style={styles.buttonContainer}>
-          <Botton classname={styles.buttonSecundary} onPress={() => {}}>
+          <Botton classname={styles.buttonSecundary} onPress={() => handleNext("firma", signature)}>
             <Text style={styles.textSecundary}>Anterior</Text>
           </Botton>
+          <BotonFinalizar />
         </View>
       </View>
     </ScrollView>
