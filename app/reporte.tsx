@@ -63,7 +63,11 @@ export default function NuevoReporteScreen() {
       {activeTab === "Cliente" && <Cliente />}
       {activeTab === "Tecnico" && <Equipo />}
       {activeTab === "Fotos" && <Fotos />}
-      {activeTab === "Firma" && <Signature />}
+      {activeTab === "Firma" && (
+        <View style={{ flex: 1 }}>
+          <Signature />
+        </View>
+      )}
     </LinearGradient>
   );
 }

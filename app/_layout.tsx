@@ -10,8 +10,8 @@ export default function RootLayout() {
         options={{ title: "Historial de Reportes" }}
       />
       <Stack.Screen
-        name="Firma"
-        options={{ title: "Template de Firma" }}
+        name="PanelFirma"
+        options={{ title: "Panel para firma" }}
       />
     </Stack>
   );
