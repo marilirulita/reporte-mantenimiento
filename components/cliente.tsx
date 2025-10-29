@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, ScrollView } from "react-native";
 import CustomInput from "./ui/custom-input";
 import { Botton } from "./ui/button";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 const Cliente = () => {
   const [cliente, setCliente] = useState({
@@ -21,116 +22,110 @@ const Cliente = () => {
   });
 
   return (
-    <>
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Datos del Cliente</Text>
+    <KeyboardAwareScrollView
+      style={{ backgroundColor: "#f5f5f5" }}
+      enableOnAndroid={true}
+      extraScrollHeight={60} // sube un poco más el último input
+    >
+      <ScrollView contentContainerStyle={{padding: 10}}>
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Datos del Cliente</Text>
 
-        {/* Nombre y Teléfono */}
-        <View style={styles.row}>
-          <View style={styles.column}>
-            <Text style={styles.label}>Nombre Completo *</Text>
-            <CustomInput
-              placeholder="Juan Pérez"
-              value={cliente.nombre}
-              setValue={(text) => setCliente({ ...cliente, nombre: text })}
-            />
+          {/* Nombre y Teléfono */}
+          <View style={styles.row}>
+            <View style={styles.column}>
+              <Text style={styles.label}>Nombre Completo *</Text>
+              <CustomInput
+                placeholder="Juan Pérez"
+                value={cliente.nombre}
+                setValue={(text) => setCliente({ ...cliente, nombre: text })}
+              />
+            </View>
+
+            <View style={styles.column}>
+              <Text style={styles.label}>Teléfono *</Text>
+              <CustomInput
+                placeholder="555-1234-5678"
+                value={cliente.telefono}
+                setValue={(text) => setCliente({ ...cliente, telefono: text })}
+                keyboardType="phone-pad"
+              />
+            </View>
           </View>
 
-          <View style={styles.column}>
-            <Text style={styles.label}>Teléfono *</Text>
-            <CustomInput
-              placeholder="555-1234-5678"
-              value={cliente.telefono}
-              setValue={(text) => setCliente({ ...cliente, telefono: text })}
-              keyboardType="phone-pad"
-            />
-          </View>
+          {/* Dirección */}
+          <Text style={styles.label}>Dirección *</Text>
+          <CustomInput
+            placeholder="Calle Principal #123, Ciudad"
+            value={cliente.direccion}
+            setValue={(text) => setCliente({ ...cliente, direccion: text })}
+          />
+
+          <Text style={styles.label}>Email</Text>
+          <CustomInput
+            placeholder="cliente@email.com"
+            value={cliente.correo}
+            setValue={(text) => setCliente({ ...cliente, correo: text })}
+            keyboardType="email-address"
+          />
         </View>
 
-        {/* Dirección */}
-        <Text style={styles.label}>Dirección *</Text>
-        <CustomInput
-          placeholder="Calle Principal #123, Ciudad"
-          value={cliente.direccion}
-          setValue={(text) => setCliente({ ...cliente, direccion: text })}
-        />
+        <View style={[styles.section, { marginBottom: 50 }]}>
+          <Text style={styles.sectionTitle}>Datos del Equipo</Text>
 
-        <Text style={styles.label}>Email</Text>
-        <CustomInput
-          placeholder="cliente@email.com"
-          value={cliente.correo}
-          setValue={(text) => setCliente({ ...cliente, correo: text })}
-          keyboardType="email-address"
-        />
-      </View>
+          <View style={styles.row}>
+            <View style={styles.column}>
+              <Text style={styles.label}>Marca *</Text>
+              <CustomInput
+                placeholder="Samsung, LG, etc."
+                value={equipo.marca}
+                setValue={(text) => setEquipo({ ...equipo, marca: text })}
+              />
+            </View>
 
-      <View style={[styles.section, { marginBottom: 50 }]}>
-        <Text style={styles.sectionTitle}>
-          Datos del Equipo
-        </Text>
-
-        <View style={styles.row}>
-          <View style={styles.column}>
-            <Text style={styles.label}>Marca *</Text>
-            <CustomInput
-              placeholder="Samsung, LG, etc."
-              value={equipo.marca}
-              setValue={(text) => setEquipo({ ...equipo, marca: text })}
-            />
+            <View style={styles.column}>
+              <Text style={styles.label}>Modelo *</Text>
+              <CustomInput
+                placeholder="ABC-123"
+                value={equipo.modelo}
+                setValue={(text) => setEquipo({ ...equipo, modelo: text })}
+              />
+            </View>
           </View>
 
-          <View style={styles.column}>
-            <Text style={styles.label}>Modelo *</Text>
-            <CustomInput
-              placeholder="ABC-123"
-              value={equipo.modelo}
-              setValue={(text) => setEquipo({ ...equipo, modelo: text })}
-            />
+          <View style={styles.row}>
+            <View style={styles.column}>
+              <Text style={styles.label}>Número de Serie</Text>
+              <CustomInput
+                placeholder="SN123456789"
+                value={equipo.numeroSerie}
+                setValue={(text) => setEquipo({ ...equipo, numeroSerie: text })}
+              />
+            </View>
+
+            <View style={styles.column}>
+              <Text style={styles.label}>Tipo de Equipo *</Text>
+              <CustomInput
+                placeholder="Aire Acondicionado, Refrigerador, etc."
+                value={equipo.tipoEquipo}
+                setValue={(text) => setEquipo({ ...equipo, tipoEquipo: text })}
+              />
+            </View>
           </View>
+
+          <Text style={styles.label}>Ubicación del Equipo</Text>
+          <CustomInput
+            placeholder="Cocina, Almacén, etc."
+            value={equipo.ubicacion}
+            setValue={(text) => setEquipo({ ...equipo, ubicacion: text })}
+          />
+
+          <Botton classname={styles.button} onPress={() => {}}>
+            <Text style={styles.text}>Siguiente</Text>
+          </Botton>
         </View>
-
-        <View style={styles.row}>
-          <View style={styles.column}>
-            <Text style={styles.label}>
-              Número de Serie
-            </Text>
-            <CustomInput
-              placeholder="SN123456789"
-              value={equipo.numeroSerie}
-              setValue={(text) => setEquipo({ ...equipo, numeroSerie: text })}
-            />
-          </View>
-
-
-          <View style={styles.column}>
-            <Text style={styles.label}>
-              Tipo de Equipo *
-            </Text>
-            <CustomInput
-              placeholder="Aire Acondicionado, Refrigerador, etc."
-              value={equipo.tipoEquipo}
-              setValue={(text) => setEquipo({ ...equipo, tipoEquipo: text })}
-            />
-          </View>
-        </View>
-
-        <Text style={styles.label}>
-          Ubicación del Equipo
-        </Text>
-        <CustomInput
-          placeholder="Cocina, Almacén, etc."
-          value={equipo.ubicacion}
-          setValue={(text) => setEquipo({ ...equipo, ubicacion: text })}
-        />
-
-        <Botton
-          classname={styles.button}
-          onPress={() => {}}
-        >
-          <Text style={styles.text}>Siguiente</Text>
-        </Botton>
-      </View>
-    </>
+      </ScrollView>
+    </KeyboardAwareScrollView>
   );
 };
 
@@ -161,7 +156,7 @@ const styles = StyleSheet.create({
     marginBottom: 4, // mb-1
     fontSize: 14, // text-sm
   },
-   button: {
+  button: {
     backgroundColor: "#171717", // bg-neutral-900
     paddingVertical: 12, // py-3
     paddingHorizontal: 24, // px-6

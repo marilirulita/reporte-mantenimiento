@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Image,
   Alert,
+  ScrollView,
 } from "react-native";
 import { Camera, Upload, Image as ImageIcon } from "lucide-react-native";
 import * as ImagePicker from "expo-image-picker";
@@ -70,81 +71,85 @@ export default function Fotos() {
   };
 
   return (
-    <View style={[styles.section, { marginBottom: 50 }]}>
-      {/* Título */}
-      <Text style={styles.title}>Fotografías del Equipo</Text>
-      <Text style={styles.subtitle}>
-        Agregue fotos del equipo para incluirlas en el reporte
-      </Text>
-      <Text style={[styles.subtitle, { fontStyle: "italic", marginTop: 4 }]}>
-        (máximo 4 fotos)
-      </Text>
+    <ScrollView
+      contentContainerStyle={{ padding: 10, backgroundColor: "#f5f5f5" }}
+    >
+      <View style={[styles.section, { marginBottom: 50 }]}>
+        {/* Título */}
+        <Text style={styles.title}>Fotografías del Equipo</Text>
+        <Text style={styles.subtitle}>
+          Agregue fotos del equipo para incluirlas en el reporte
+        </Text>
+        <Text style={[styles.subtitle, { fontStyle: "italic", marginTop: 4 }]}>
+          (máximo 4 fotos)
+        </Text>
 
-      {/* Botones */}
-      <View style={styles.buttonRow}>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => handleAgregarFoto("camara")}
-        >
-          <Camera size={18} color="#2563EB" style={styles.icon} />
-          <Text style={styles.buttonText}>Tomar Foto</Text>
-        </TouchableOpacity>
+        {/* Botones */}
+        <View style={styles.buttonRow}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => handleAgregarFoto("camara")}
+          >
+            <Camera size={18} color="#2563EB" style={styles.icon} />
+            <Text style={styles.buttonText}>Tomar Foto</Text>
+          </TouchableOpacity>
 
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => handleAgregarFoto("galeria")}
-        >
-          <Upload size={18} color="#2563EB" style={styles.icon} />
-          <Text style={styles.buttonText}>Subir Imagen</Text>
-        </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => handleAgregarFoto("galeria")}
+          >
+            <Upload size={18} color="#2563EB" style={styles.icon} />
+            <Text style={styles.buttonText}>Subir Imagen</Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* Cuadro de fotos */}
+        <View style={styles.photoBox}>
+          {fotos.length === 0 ? (
+            <View style={styles.emptyState}>
+              <ImageIcon size={48} color="#9CA3AF" />
+              <Text style={styles.emptyText}>No hay fotos agregadas</Text>
+              <Text style={styles.emptySubtext}>
+                Toque los botones de arriba para agregar fotos
+              </Text>
+            </View>
+          ) : (
+            <View style={styles.fotosGrid}>
+              {fotos.map((foto, i) => (
+                <TouchableOpacity
+                  key={i}
+                  onPress={() => handleEliminarFoto(foto)}
+                  style={styles.photoButton}
+                >
+                  <Image source={{ uri: foto }} style={styles.foto} />
+                </TouchableOpacity>
+              ))}
+            </View>
+          )}
+        </View>
+
+        {/* Conteo */}
+        <Text style={styles.counterText}>
+          {fotos.length} de 4 fotos agregadas
+        </Text>
+        <View style={styles.buttonContainer}>
+          <Botton classname={styles.buttonSecundary} onPress={() => {}}>
+            <Text style={styles.textSecundary}>Anterior</Text>
+          </Botton>
+          <Botton classname={styles.buttonPrimary} onPress={() => {}}>
+            <Text style={styles.textPrimary}>Siguiente</Text>
+          </Botton>
+        </View>
       </View>
-
-      {/* Cuadro de fotos */}
-      <View style={styles.photoBox}>
-        {fotos.length === 0 ? (
-          <View style={styles.emptyState}>
-            <ImageIcon size={48} color="#9CA3AF" />
-            <Text style={styles.emptyText}>No hay fotos agregadas</Text>
-            <Text style={styles.emptySubtext}>
-              Toque los botones de arriba para agregar fotos
-            </Text>
-          </View>
-        ) : (
-          <View style={styles.fotosGrid}>
-            {fotos.map((foto, i) => (
-              <TouchableOpacity
-                key={i}
-                onPress={() => handleEliminarFoto(foto)}
-                style={styles.photoButton}
-              >
-                <Image source={{ uri: foto }} style={styles.foto} />
-              </TouchableOpacity>
-            ))}
-          </View>
-        )}
-      </View>
-
-      {/* Conteo */}
-      <Text style={styles.counterText}>
-        {fotos.length} de 4 fotos agregadas
-      </Text>
-      <View style={styles.buttonContainer}>
-        <Botton classname={styles.buttonSecundary} onPress={() => {}}>
-          <Text style={styles.textSecundary}>Anterior</Text>
-        </Botton>
-        <Botton classname={styles.buttonPrimary} onPress={() => {}}>
-          <Text style={styles.textPrimary}>Siguiente</Text>
-        </Botton>
-      </View>
-    </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-    section: {
-    marginBottom: 32, // mb-8
+  section: {
     borderBottomColor: "#9ca3af", // border-b-gray-400
     borderBottomWidth: 1,
+    paddingBottom: 32, // pb-4
   },
   title: {
     color: "#1D4ED8", // azul-700
@@ -158,8 +163,9 @@ const styles = StyleSheet.create({
   },
   buttonRow: {
     flexDirection: "row",
-    gap: 10,
+
     marginVertical: 16,
+    justifyContent: "space-between",
   },
   button: {
     flexDirection: "row",
@@ -167,8 +173,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#D1D5DB", // gris-300
     borderRadius: 8,
-    paddingHorizontal: 12,
-    paddingVertical: 8,
+    padding: 8,
     backgroundColor: "#FFFFFF",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 1 },
@@ -229,22 +234,21 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "500",
   },
-     // Contenedor de botones
+  // Contenedor de botones
   buttonContainer: {
     display: "flex",
     flexDirection: "row",
     width: "100%",
     justifyContent: "space-between",
-    marginTop: 16,
+    marginTop: 20,
     gap: 16, // space-y-4
   },
-   buttonPrimary: {
+  buttonPrimary: {
     backgroundColor: "#171717", // bg-neutral-900
     paddingVertical: 12, // py-3
     paddingHorizontal: 24, // px-6
     borderRadius: 8, // rounded-md
     alignSelf: "flex-end", // self-end
-    marginTop: 20, // my-5
     shadowColor: "#737373", // shadow-neutral-500
     shadowOpacity: 0.3,
     shadowOffset: { width: 0, height: 2 },
@@ -267,7 +271,6 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.3,
     shadowRadius: 2,
-    marginVertical: 20, // my-5
     backgroundColor: "#FFF", // fondo blanco por defecto
   },
   textSecundary: {

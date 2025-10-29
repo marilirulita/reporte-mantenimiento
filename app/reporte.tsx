@@ -1,18 +1,11 @@
 import { useState } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  ScrollView,
-  StyleSheet,
-} from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { ClipboardList, Wrench, Camera, PenLine } from "lucide-react-native";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Cliente from "../components/cliente";
 import Equipo from "../components/equipo";
 import Fotos from "../components/fotos";
 import Signature from "../components/firma";
-//import SignatureScreen from "@/components/testSignature";
+import { LinearGradient } from "expo-linear-gradient";
 
 export default function NuevoReporteScreen() {
   const [activeTab, setActiveTab] = useState("Cliente");
@@ -25,10 +18,14 @@ export default function NuevoReporteScreen() {
   ];
 
   return (
-    <View style={styles.container}>
+    <LinearGradient
+      colors={["#eff6ff", "#f1f5f9"]} // from-blue-50 to-slate-100
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 1 }}
+      style={{ height: "100%", width: "100%", padding: 10 }}
+    >
       {/* Header */}
       <View style={styles.header}>
-        <ClipboardList className="w-8 h-8" />
         <Text style={styles.headerTitle}>Reporte de Mantenimiento</Text>
         <Text style={styles.headerSubtitle}>Servicio de Refrigeración</Text>
       </View>
@@ -45,10 +42,10 @@ export default function NuevoReporteScreen() {
               style={[styles.tabButton, isActive && styles.tabButtonActive]}
             >
               <Icon
-              size={22}
-              color={isActive ? "#2563EB" : "#6B7280"} // azul o gris
-              strokeWidth={2}
-            />
+                size={22}
+                color={isActive ? "#2563EB" : "#6B7280"} // azul o gris
+                strokeWidth={2}
+              />
               <Text
                 style={[
                   styles.tabText,
@@ -63,29 +60,15 @@ export default function NuevoReporteScreen() {
       </View>
 
       {/* Contenido principal */}
-      <KeyboardAwareScrollView
-        style={{ backgroundColor: "#f5f5f5" }}
-        enableOnAndroid={true}
-        extraScrollHeight={60} // sube un poco más el último input
-      >
-        <ScrollView contentContainerStyle={styles.scrollContent}>
-          {activeTab === "Cliente" && <Cliente />}
-          {activeTab === "Tecnico" && <Equipo />}
-          {activeTab === "Fotos" && <Fotos />}
-          {activeTab === "Firma" && <Signature />}
-        </ScrollView>
-      </KeyboardAwareScrollView>
-    </View>
+      {activeTab === "Cliente" && <Cliente />}
+      {activeTab === "Tecnico" && <Equipo />}
+      {activeTab === "Fotos" && <Fotos />}
+      {activeTab === "Firma" && <Signature />}
+    </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
-  // Contenedor principal
-  container: {
-    flex: 1,
-    backgroundColor: "#f3f4f6", // bg-gray-100
-  },
-
   // Header
   header: {
     backgroundColor: "#2563eb", // bg-blue-600
@@ -113,7 +96,7 @@ const styles = StyleSheet.create({
   tabContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginTop: 16,
+    marginVertical: 10,
     backgroundColor: "#e5e7eb", // bg-gray-200
     padding: 4, // p-1
     borderRadius: 9999, // rounded-full
@@ -135,7 +118,7 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   tabText: {
-    fontSize: 14,
+    fontSize: 13,
     fontWeight: "500",
   },
   tabTextActive: {
@@ -143,11 +126,5 @@ const styles = StyleSheet.create({
   },
   tabTextInactive: {
     color: "#4b5563", // text-gray-600
-  },
-
-  // Scroll contenido
-  scrollContent: {
-    paddingHorizontal: 20,
-    paddingTop: 16,
   },
 });

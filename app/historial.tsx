@@ -1,22 +1,28 @@
 import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
+import { LinearGradient } from "expo-linear-gradient";
 
 const HistorialScreen = () => {
   const router = useRouter();
 
   return (
-    <View style={styles.container}>
+    <LinearGradient
+      colors={["#eff6ff", "#f1f5f9"]} // from-blue-50 to-slate-100
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 1 }}
+      style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
+    >
       <Text style={styles.title}>Historial de Descargas</Text>
       <View style={styles.buttonContainer}>
-      <TouchableOpacity
-        onPress={() => router.push("./")}
-        style={[styles.button, styles.primaryButton]}
-      >
-        <Text style={styles.primaryText}>Atras</Text>
-      </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => router.push("./")}
+          style={[styles.button, styles.primaryButton]}
+        >
+          <Text style={styles.primaryText}>Atras</Text>
+        </TouchableOpacity>
       </View>
-    </View>
+    </LinearGradient>
   );
 };
 const styles = StyleSheet.create({
@@ -36,7 +42,7 @@ const styles = StyleSheet.create({
     color: "#2563eb", // text-blue-600
   },
 
-    // Contenedor de botones
+  // Contenedor de botones
   buttonContainer: {
     display: "flex",
     flexDirection: "column",

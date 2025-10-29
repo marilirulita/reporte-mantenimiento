@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, ScrollView } from "react-native";
 import CustomInput from "./ui/custom-input";
 import { Botton } from "./ui/button";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 export default function Equipo() {
   const [infServicio, setInfServicio] = useState({
@@ -27,176 +28,194 @@ export default function Equipo() {
   });
 
   return (
-    <>
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Información del Servicio</Text>
+    <KeyboardAwareScrollView
+      style={{ backgroundColor: "#f5f5f5" }}
+      enableOnAndroid={true}
+      extraScrollHeight={60} // sube un poco más el último input
+    >
+      <ScrollView contentContainerStyle={{ padding: 10 }}>
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Información del Servicio</Text>
 
-        <View style={styles.row}>
-          <View style={styles.column}>
-            <Text style={styles.label}>Fecha de Servicio *</Text>
-            <CustomInput
-              placeholder="25/10/2025"
-              value={infServicio.fechaServicio}
-              setValue={(text) =>
-                setInfServicio({ ...infServicio, fechaServicio: text })
-              }
-            />
+          <View style={styles.row}>
+            <View style={styles.column}>
+              <Text style={styles.label}>Fecha de Servicio *</Text>
+              <CustomInput
+                placeholder="25/10/2025"
+                value={infServicio.fechaServicio}
+                setValue={(text) =>
+                  setInfServicio({ ...infServicio, fechaServicio: text })
+                }
+              />
+            </View>
+
+            <View style={styles.column}>
+              <Text style={styles.label}>Nombre del Técnico *</Text>
+              <CustomInput
+                placeholder="Carlos López"
+                value={infServicio.nombreTecnico}
+                setValue={(text) =>
+                  setInfServicio({ ...infServicio, nombreTecnico: text })
+                }
+              />
+            </View>
           </View>
 
-          <View style={styles.column}>
-            <Text style={styles.label}>Nombre del Técnico *</Text>
-            <CustomInput
-              placeholder="Carlos López"
-              value={infServicio.nombreTecnico}
-              setValue={(text) =>
-                setInfServicio({ ...infServicio, nombreTecnico: text })
-              }
-            />
+          <Text style={styles.label}>Estado del Equipo *</Text>
+          <CustomInput
+            placeholder="Excelente, Bueno, Regular"
+            value={infServicio.estadoEquipo}
+            setValue={(text) =>
+              setInfServicio({ ...infServicio, estadoEquipo: text })
+            }
+          />
+        </View>
+
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Mediciones Técnicas</Text>
+
+          <View style={styles.row}>
+            <View style={styles.column}>
+              <Text style={styles.label}>Tipo de Refrigerante</Text>
+              <CustomInput
+                placeholder="R-22; R-134a; R-404A..."
+                value={medicionesTécnicas.tipoRefrigerante}
+                setValue={(text) =>
+                  setMedicionesTécnicas({
+                    ...medicionesTécnicas,
+                    tipoRefrigerante: text,
+                  })
+                }
+              />
+            </View>
+
+            <View style={styles.column}>
+              <Text style={styles.label}>Presión (PSI)</Text>
+              <CustomInput
+                placeholder="65 PSI"
+                value={medicionesTécnicas.presion}
+                setValue={(text) =>
+                  setMedicionesTécnicas({
+                    ...medicionesTécnicas,
+                    presion: text,
+                  })
+                }
+              />
+            </View>
+          </View>
+
+          <View style={styles.row}>
+            <View style={styles.column}>
+              <Text style={styles.label}>Temperatura Ambiente (°C)</Text>
+              <CustomInput
+                placeholder="25°C"
+                value={medicionesTécnicas.temperaturaAmbiente}
+                setValue={(text) =>
+                  setMedicionesTécnicas({
+                    ...medicionesTécnicas,
+                    temperaturaAmbiente: text,
+                  })
+                }
+              />
+            </View>
+
+            <View style={styles.column}>
+              <Text style={styles.label}>Temperatura del Equipo (°C)</Text>
+              <CustomInput
+                placeholder="4°C"
+                value={medicionesTécnicas.temperaturaEquipo}
+                setValue={(text) =>
+                  setMedicionesTécnicas({
+                    ...medicionesTécnicas,
+                    temperaturaEquipo: text,
+                  })
+                }
+                keyboardType="phone-pad"
+              />
+            </View>
+          </View>
+
+          <View style={styles.row}>
+            <View style={styles.column}>
+              <Text style={styles.label}>Voltaje (V)</Text>
+              <CustomInput
+                placeholder="220V"
+                value={medicionesTécnicas.voltaje}
+                setValue={(text) =>
+                  setMedicionesTécnicas({
+                    ...medicionesTécnicas,
+                    voltaje: text,
+                  })
+                }
+              />
+            </View>
+
+            <View style={styles.column}>
+              <Text style={styles.label}>Amperaje (A)</Text>
+              <CustomInput
+                placeholder="5.2A"
+                value={medicionesTécnicas.amperaje}
+                setValue={(text) =>
+                  setMedicionesTécnicas({
+                    ...medicionesTécnicas,
+                    amperaje: text,
+                  })
+                }
+              />
+            </View>
           </View>
         </View>
 
-        <Text style={styles.label}>Estado del Equipo *</Text>
-        <CustomInput
-          placeholder="Excelente, Bueno, Regular"
-          value={infServicio.estadoEquipo}
-          setValue={(text) =>
-            setInfServicio({ ...infServicio, estadoEquipo: text })
-          }
-        />
-      </View>
+        <View style={[styles.section, { marginBottom: 50 }]}>
+          <Text style={styles.sectionTitle}>Detalles del Servicio</Text>
 
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Mediciones Técnicas</Text>
+          <Text style={styles.label}>Trabajo Realizado *</Text>
+          <CustomInput
+            placeholder="Descripción detallada del trabajo realizado..."
+            value={detallesServicio.trabajoRealizado}
+            setValue={(text) =>
+              setDetallesServicio({
+                ...detallesServicio,
+                trabajoRealizado: text,
+              })
+            }
+            multiline={true}
+          />
 
-        <View style={styles.row}>
-          <View style={styles.column}>
-            <Text style={styles.label}>Tipo de Refrigerante</Text>
-            <CustomInput
-              placeholder="R-22; R-134a; R-404A..."
-              value={medicionesTécnicas.tipoRefrigerante}
-              setValue={(text) =>
-                setMedicionesTécnicas({
-                  ...medicionesTécnicas,
-                  tipoRefrigerante: text,
-                })
-              }
-            />
-          </View>
+          <Text style={styles.label}>Observaciones</Text>
+          <CustomInput
+            placeholder="Observaciones adicionales..."
+            value={detallesServicio.observaciones}
+            setValue={(text) =>
+              setDetallesServicio({ ...detallesServicio, observaciones: text })
+            }
+            multiline={true}
+          />
 
-          <View style={styles.column}>
-            <Text style={styles.label}>Presión (PSI)</Text>
-            <CustomInput
-              placeholder="65 PSI"
-              value={medicionesTécnicas.presion}
-              setValue={(text) =>
-                setMedicionesTécnicas({ ...medicionesTécnicas, presion: text })
-              }
-            />
-          </View>
-        </View>
+          <Text style={styles.label}>Observaciones adicionales...</Text>
+          <CustomInput
+            placeholder="Recomendaciones para el cliente..."
+            value={detallesServicio.observacionesAdicionales}
+            setValue={(text) =>
+              setDetallesServicio({
+                ...detallesServicio,
+                observacionesAdicionales: text,
+              })
+            }
+            multiline={true}
+          />
 
-        <View style={styles.row}>
-          <View style={styles.column}>
-            <Text style={styles.label}>Temperatura Ambiente (°C)</Text>
-            <CustomInput
-              placeholder="25°C"
-              value={medicionesTécnicas.temperaturaAmbiente}
-              setValue={(text) =>
-                setMedicionesTécnicas({
-                  ...medicionesTécnicas,
-                  temperaturaAmbiente: text,
-                })
-              }
-            />
-          </View>
-
-          <View style={styles.column}>
-            <Text style={styles.label}>Temperatura del Equipo (°C)</Text>
-            <CustomInput
-              placeholder="4°C"
-              value={medicionesTécnicas.temperaturaEquipo}
-              setValue={(text) =>
-                setMedicionesTécnicas({
-                  ...medicionesTécnicas,
-                  temperaturaEquipo: text,
-                })
-              }
-              keyboardType="phone-pad"
-            />
+          <View style={styles.buttonContainer}>
+            <Botton classname={styles.buttonSecundary} onPress={() => {}}>
+              <Text style={styles.textSecundary}>Anterior</Text>
+            </Botton>
+            <Botton classname={styles.buttonPrimary} onPress={() => {}}>
+              <Text style={styles.textPrimary}>Siguiente</Text>
+            </Botton>
           </View>
         </View>
-
-        <View style={styles.row}>
-          <View style={styles.column}>
-            <Text style={styles.label}>Voltaje (V)</Text>
-            <CustomInput
-              placeholder="220V"
-              value={medicionesTécnicas.voltaje}
-              setValue={(text) =>
-                setMedicionesTécnicas({ ...medicionesTécnicas, voltaje: text })
-              }
-            />
-          </View>
-
-          <View style={styles.column}>
-            <Text style={styles.label}>Amperaje (A)</Text>
-            <CustomInput
-              placeholder="5.2A"
-              value={medicionesTécnicas.amperaje}
-              setValue={(text) =>
-                setMedicionesTécnicas({ ...medicionesTécnicas, amperaje: text })
-              }
-            />
-          </View>
-        </View>
-      </View>
-
-      <View style={[styles.section, { marginBottom: 50 }]}>
-        <Text style={styles.sectionTitle}>Detalles del Servicio</Text>
-
-        <Text style={styles.label}>Trabajo Realizado *</Text>
-        <CustomInput
-          placeholder="Descripción detallada del trabajo realizado..."
-          value={detallesServicio.trabajoRealizado}
-          setValue={(text) =>
-            setDetallesServicio({ ...detallesServicio, trabajoRealizado: text })
-          }
-          multiline={true}
-        />
-
-        <Text style={styles.label}>Observaciones</Text>
-        <CustomInput
-          placeholder="Observaciones adicionales..."
-          value={detallesServicio.observaciones}
-          setValue={(text) =>
-            setDetallesServicio({ ...detallesServicio, observaciones: text })
-          }
-          multiline={true}
-        />
-
-        <Text style={styles.label}>Observaciones adicionales...</Text>
-        <CustomInput
-          placeholder="Recomendaciones para el cliente..."
-          value={detallesServicio.observacionesAdicionales}
-          setValue={(text) =>
-            setDetallesServicio({
-              ...detallesServicio,
-              observacionesAdicionales: text,
-            })
-          }
-          multiline={true}
-        />
-
-        <View style={styles.buttonContainer}>
-          <Botton classname={styles.buttonSecundary} onPress={() => {}}>
-            <Text style={styles.textSecundary}>Anterior</Text>
-          </Botton>
-          <Botton classname={styles.buttonPrimary} onPress={() => {}}>
-            <Text style={styles.textPrimary}>Siguiente</Text>
-          </Botton>
-        </View>
-      </View>
-    </>
+      </ScrollView>
+    </KeyboardAwareScrollView>
   );
 }
 
@@ -205,6 +224,7 @@ const styles = StyleSheet.create({
     marginBottom: 32, // mb-8
     borderBottomColor: "#9ca3af", // border-b-gray-400
     borderBottomWidth: 1,
+    paddingBottom: 32, // pb-4
   },
   sectionTitle: {
     color: "#1d4ed8", // text-blue-700
@@ -232,8 +252,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     width: "100%",
     justifyContent: "space-between",
-    marginTop: 16,
     gap: 16, // space-y-4
+    marginTop: 20,
   },
   buttonPrimary: {
     backgroundColor: "#171717", // bg-neutral-900
@@ -241,7 +261,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24, // px-6
     borderRadius: 8, // rounded-md
     alignSelf: "flex-end", // self-end
-    marginTop: 20, // my-5
     shadowColor: "#737373", // shadow-neutral-500
     shadowOpacity: 0.3,
     shadowOffset: { width: 0, height: 2 },
@@ -264,7 +283,6 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.3,
     shadowRadius: 2,
-    marginVertical: 20, // my-5
     backgroundColor: "#FFF", // fondo blanco por defecto
   },
   textSecundary: {

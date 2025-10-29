@@ -1,13 +1,18 @@
 import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 import { useRouter } from "expo-router";
+import { LinearGradient } from "expo-linear-gradient";
 
 export default function Index() {
   const router = useRouter();
 
   return (
-    <View style={styles.container}>
+    <LinearGradient
+      colors={["#eff6ff", "#f1f5f9"]} // from-blue-50 to-slate-100
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 1 }}
+      style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
+    >
       <Text style={styles.title}>App de Mantenimiento</Text>
-
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           onPress={() => router.push("./reporte")}
@@ -23,19 +28,11 @@ export default function Index() {
           <Text style={styles.primaryText}>Historial</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
-  // Contenedor principal con gradiente
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    minHeight: "100%",
-  },
-
   // Título
   title: {
     fontSize: 24, // text-2xl

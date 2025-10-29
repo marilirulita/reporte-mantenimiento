@@ -1,9 +1,9 @@
 import React, { useRef, useState } from "react";
 import { View, StyleSheet, Image, ScrollView, Alert, Text } from "react-native";
 import SignatureCanvas from "react-native-signature-canvas";
-import { Botton } from "./ui/button";
+import { Botton } from "../components/ui/button";
 
-const SignaturePad = () => {
+const Firma = () => {
   const signatureRef = useRef<any>(null);
   const [signature, setSignature] = useState<string | null>(null);
 
@@ -178,4 +178,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SignaturePad;
+export default Firma;
