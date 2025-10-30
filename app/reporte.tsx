@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { ClipboardList, Wrench, Camera, PenLine } from "lucide-react-native";
 import Cliente from "../components/cliente";
@@ -6,15 +5,16 @@ import Equipo from "../components/equipo";
 import Fotos from "../components/fotos";
 import Signature from "../components/firma";
 import { LinearGradient } from "expo-linear-gradient";
+import { useReporte } from "@/context/ReporteContext";
 
 export default function NuevoReporteScreen() {
-  const [activeTab, setActiveTab] = useState("Cliente");
+  const { reporte, setReporte } = useReporte();
 
   const tabs = [
-    { name: "Cliente", icon: ClipboardList },
-    { name: "Tecnico", icon: Wrench },
-    { name: "Fotos", icon: Camera },
-    { name: "Firma", icon: PenLine },
+    { name: "cliente", icon: ClipboardList },
+    { name: "tecnico", icon: Wrench },
+    { name: "fotos", icon: Camera },
+    { name: "firma", icon: PenLine },
   ];
 
   return (
@@ -33,12 +33,12 @@ export default function NuevoReporteScreen() {
       {/* Tabs */}
       <View style={styles.tabContainer}>
         {tabs.map((tab) => {
-          const isActive = activeTab === tab.name;
+          const isActive = reporte.activeTab === tab.name;
           const Icon = tab.icon; // 👈 componente del ícono
           return (
             <TouchableOpacity
               key={tab.name}
-              onPress={() => setActiveTab(tab.name)}
+              onPress={() => setReporte({...reporte, activeTab: tab.name})}
               style={[styles.tabButton, isActive && styles.tabButtonActive]}
             >
               <Icon
@@ -60,10 +60,10 @@ export default function NuevoReporteScreen() {
       </View>
 
       {/* Contenido principal */}
-      {activeTab === "Cliente" && <Cliente />}
-      {activeTab === "Tecnico" && <Equipo />}
-      {activeTab === "Fotos" && <Fotos />}
-      {activeTab === "Firma" && (
+      {reporte.activeTab === "cliente" && <Cliente />}
+      {reporte.activeTab === "tecnico" && <Equipo />}
+      {reporte.activeTab === "fotos" && <Fotos />}
+      {reporte.activeTab === "firma" && (
         <View style={{ flex: 1 }}>
           <Signature />
         </View>

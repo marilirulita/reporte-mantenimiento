@@ -12,6 +12,7 @@ import { Camera, Upload, Image as ImageIcon } from "lucide-react-native";
 import * as ImagePicker from "expo-image-picker";
 import { Botton } from "./ui/button";
 import { useNextSection } from "../hooks/useNextSection";
+import { useReporte } from "../context/ReporteContext"
 
 export default function Fotos() {
   const [fotos, setFotos] = useState<string[]>([]);
@@ -71,7 +72,8 @@ export default function Fotos() {
     ]);
   };
 
-  const { handleNext } = useNextSection("DireccionScreen");
+  const { handleNext } = useNextSection("firma");
+  const { reporte, setReporte } = useReporte();
 
   return (
     <ScrollView
@@ -136,7 +138,7 @@ export default function Fotos() {
           {fotos.length} de 4 fotos agregadas
         </Text>
         <View style={styles.buttonContainer}>
-          <Botton classname={styles.buttonSecundary} onPress={() => {}}>
+          <Botton classname={styles.buttonSecundary} onPress={() => setReporte({...reporte, activeTab: "tecnico"})}>
             <Text style={styles.textSecundary}>Anterior</Text>
           </Botton>
           <Botton classname={styles.buttonPrimary} onPress={() => handleNext("fotos", fotos)}>
@@ -212,6 +214,7 @@ const styles = StyleSheet.create({
   emptySubtext: {
     color: "#9CA3AF",
     fontSize: 12,
+    textAlign: "center",
   },
   fotosGrid: {
     flexDirection: "row",
@@ -234,7 +237,7 @@ const styles = StyleSheet.create({
   counterText: {
     marginTop: 8,
     color: "#6B7280",
-    fontSize: 14,
+    fontSize: 13,
     fontWeight: "500",
   },
   // Contenedor de botones

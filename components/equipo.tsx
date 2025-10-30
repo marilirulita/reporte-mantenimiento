@@ -4,6 +4,7 @@ import CustomInput from "./ui/custom-input";
 import { Botton } from "./ui/button";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { useNextSection } from "../hooks/useNextSection";
+import { useReporte } from "../context/ReporteContext"
 
 export default function Equipo() {
   const [infServicio, setInfServicio] = useState({
@@ -27,8 +28,9 @@ export default function Equipo() {
     observacionesAdicionales: "",
   });
 
-  const { handleNext } = useNextSection("DireccionScreen");
-
+  const { handleNext } = useNextSection("fotos");
+  const { reporte, setReporte } = useReporte();
+ 
   return (
     <KeyboardAwareScrollView
       style={{ backgroundColor: "#f5f5f5" }}
@@ -102,6 +104,7 @@ export default function Equipo() {
                     presion: text,
                   })
                 }
+                keyboardType="phone-pad"
               />
             </View>
           </View>
@@ -118,6 +121,7 @@ export default function Equipo() {
                     temperaturaAmbiente: text,
                   })
                 }
+                keyboardType="phone-pad"
               />
             </View>
 
@@ -149,6 +153,7 @@ export default function Equipo() {
                     voltaje: text,
                   })
                 }
+                keyboardType="phone-pad"
               />
             </View>
 
@@ -208,7 +213,7 @@ export default function Equipo() {
           />
 
           <View style={styles.buttonContainer}>
-            <Botton classname={styles.buttonSecundary} onPress={() => {}}>
+            <Botton classname={styles.buttonSecundary} onPress={() => setReporte({...reporte, activeTab: "cliente"})}>
               <Text style={styles.textSecundary}>Anterior</Text>
             </Botton>
             <Botton classname={styles.buttonPrimary} onPress={() => handleNext("tecnico", {...infServicio, ...medicionesTécnicas, ...detallesServicio})}>

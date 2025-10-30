@@ -2,7 +2,6 @@ import { useState } from "react";
 import {
   View,
   Text,
-  TouchableOpacity,
   Image,
   StyleSheet,
   ScrollView,
@@ -13,6 +12,7 @@ import { RootStackParamList } from "../types/navigation"; // importa tus tipos
 import { Botton } from "./ui/button";
 import BotonFinalizar from "./BotonFinalizar";
 import { useNextSection } from "../hooks/useNextSection";
+import { useReporte } from "../context/ReporteContext"
 
 type FirmaScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -25,10 +25,11 @@ export default function Firma() {
 
   const handleSaveSignature = (uri: string) => {
     setSignature(uri);
-    handleNext("firma", signature)
+    handleNext("firma", uri)
   };
 
-  const { handleNext } = useNextSection("DireccionScreen");
+  const { handleNext } = useNextSection("firma");
+  const { reporte, setReporte } = useReporte();
 
   return (
     <ScrollView
@@ -67,8 +68,8 @@ export default function Firma() {
               ? "✓ Firma capturada"
               : "No se ha capturado ninguna firma"}
           </Text>
-          <TouchableOpacity
-            style={styles.button}
+          <Botton
+            classname={styles.button}
             onPress={() =>
               navigation.navigate("PanelFirma", { onSave: handleSaveSignature })
             }
@@ -76,10 +77,10 @@ export default function Firma() {
             <Text style={styles.buttonText}>
               {signature ? "Volver a firmar" : "Abrir panel de firma"}
             </Text>
-          </TouchableOpacity>
+          </Botton>
         </View>
         <View style={styles.buttonContainer}>
-          <Botton classname={styles.buttonSecundary} onPress={() => handleNext("firma", signature)}>
+          <Botton classname={styles.buttonSecundary} onPress={() => setReporte({...reporte, activeTab: "fotos"})}>
             <Text style={styles.textSecundary}>Anterior</Text>
           </Botton>
           <BotonFinalizar />
@@ -139,13 +140,28 @@ const styles = StyleSheet.create({
     gap: 16, // space-y-4
     marginVertical: 20, // my-5
   },
+  buttonPrimary: {
+    backgroundColor: "#171717", // bg-neutral-900
+    paddingVertical: 12, // py-3
+    paddingHorizontal: 24, // px-6
+    borderRadius: 8, // rounded-md
+    shadowColor: "#737373", // shadow-neutral-500
+    shadowOpacity: 0.3,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 4,
+    elevation: 3, // para Android
+  },
+  textPrimary: {
+    color: "#fff", // text-white
+    fontWeight: "600", // font-semibold
+    fontSize: 14, // text-sm
+  },
   buttonSecundary: {
     borderWidth: 1,
     borderColor: "#D1D5DB", // border-gray-300
     paddingVertical: 12, // py-3
     paddingHorizontal: 24, // px-6
     borderRadius: 8, // rounded-md
-    alignSelf: "flex-end", // self-end
     shadowColor: "#737373", // shadow-neutral-500
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.3,

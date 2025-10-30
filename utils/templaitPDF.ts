@@ -113,7 +113,7 @@ export const templaitPDF = (reporte: {
       color: #374151;
     }
 
-    .field-mediciones label {
+    .field-tecnico label {
       flex: 0 0 220px;
       font-weight: 600;
       color: #374151;
@@ -157,7 +157,8 @@ export const templaitPDF = (reporte: {
 
     .foto img {
       width: 100%;
-      height: auto;
+      height: 150px;
+      object-fit: cover;
       border-radius: 8px;
       border: 1px solid #ccc;
     }
@@ -222,28 +223,28 @@ export const templaitPDF = (reporte: {
     <!-- Sección: Servicio -->
     <div class="section">
       <div class="section-title">DATOS DEL SERVICIO</div>
-      <div class="field"><label>Fecha:</label><span>${reporte.tecnico.fechaServicio
+      <div class="field field-tecnico"><label>Fecha:</label><span>${reporte.tecnico.fechaServicio
     }</span></div>
-      <div class="field"><label>Técnico:</label><span>
+      <div class="field field-tecnico"><label>Técnico:</label><span>
       ${reporte.tecnico.nombreTecnico}</span></div>
-      <div class="field"><label>Estado del equipo:</label><span>${reporte.tecnico.estadoEquipo
+      <div class="field field-tecnico"><label>Estado del equipo:</label><span>${reporte.tecnico.estadoEquipo
     }</span></div>
     </div>
 
     <!-- Sección: Mediciones -->
     <div class="section">
       <div class="section-title">MEDICIONES TÉCNICAS</div>
-      <div class="field field-mediciones"><label>Tipo de Refrigerante:</label><span>${reporte.tecnico.tipoRefrigerante
+      <div class="field field-tecnico"><label>Tipo de Refrigerante:</label><span>${reporte.tecnico.tipoRefrigerante
     }</span></div>
-      <div class="field field-mediciones"><label>Presión (psi):</label><span>${reporte.tecnico.presion
+      <div class="field field-tecnico"><label>Presión (psi):</label><span>${reporte.tecnico.presion
     }</span></div>
-      <div class="field field-mediciones"><label>Temp. Ambiente (°C):</label><span>${reporte.tecnico.temperaturaAmbiente
+      <div class="field field-tecnico"><label>Temp. Ambiente (°C):</label><span>${reporte.tecnico.temperaturaAmbiente
     }</span></div>
-      <div class="field field-mediciones"><label>Temp. Equipo (°C):</label><span>${reporte.tecnico.temperaturaEquipo
+      <div class="field field-tecnico"><label>Temp. Equipo (°C):</label><span>${reporte.tecnico.temperaturaEquipo
     }</span></div>
-      <div class="field field-mediciones"><label>Voltaje (V):</label><span>${reporte.tecnico.voltaje
+      <div class="field field-tecnico"><label>Voltaje (V):</label><span>${reporte.tecnico.voltaje
     }</span></div>
-      <div class="field field-mediciones"><label>Amperaje (A):</label><span>${reporte.tecnico.amperaje
+      <div class="field field-tecnico"><label>Amperaje (A):</label><span>${reporte.tecnico.amperaje
     }</span></div>
     </div>
 
@@ -282,7 +283,7 @@ export const templaitPDF = (reporte: {
             </div>`).join("")}
         </div>
       </div>
-
+    </div>
     <!-- Sección: Firma -->
     <div class="section">
       <div class="section-title">FIRMA DEL CLIENTE</div>
@@ -297,7 +298,7 @@ export const templaitPDF = (reporte: {
 
     <!-- Pie de página -->
     <div class="footer">
-    <p>Generado el ${dateToday}<strong> Hora:</strong> ${timeNow}</p>
+      <p>Generado el ${dateToday}<strong> Hora:</strong> ${timeNow}</p>
     </div>
   </div>
 </body>

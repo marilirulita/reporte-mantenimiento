@@ -21,7 +21,7 @@ const Cliente = () => {
     tipoEquipo: "",
     ubicacion: "",
   });
-  const { handleNext } = useNextSection("DireccionScreen");
+  const { handleNext } = useNextSection("tecnico");
 
   return (
     <KeyboardAwareScrollView
