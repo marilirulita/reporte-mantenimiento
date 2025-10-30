@@ -5,7 +5,7 @@ interface ReporteData {
   cliente: any;
   tecnico: any;
   fotos: string[];
-  firma: string | null;
+  firma: null;
 }
 
 interface ReporteContextType {

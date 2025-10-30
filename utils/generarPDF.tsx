@@ -1,34 +1,21 @@
 import * as Print from "expo-print";
 import * as Sharing from "expo-sharing";
+import { templaitPDF } from "./templaitPDF";
+import getBase64Image from "./getBase64Image";
 
-export const generarPDF = async (reporte: { cliente: { nombre: any; direccion: any; }; tecnico: { nombre: any; }; fotos: any[]; firma: any; }) => {
-  const html = `
-  <html>
-    <body style="font-family: sans-serif; padding: 20px;">
-      <h1 style="color: #2563EB;">Reporte de Mantenimiento</h1>
-      <h2>Cliente</h2>
-      <p><b>Nombre:</b> ${reporte.cliente.nombre}</p>
-      <p><b>Dirección:</b> ${reporte.cliente.direccion}</p>
-      
-      <h2>Técnico</h2>
-      <p><b>Nombre:</b> ${reporte.tecnico.nombre}</p>
 
-      <h2>Fotos</h2>
-      ${reporte.fotos
-        .map(
-          (foto) =>
-            `<img src="${foto}" style="width:150px; height:150px; object-fit:cover; margin:5px;" />`
-        )
-        .join("")}
+export const generarPDF = async (reporte: any) => {
+  // Convierte todas las fotos del reporte a Base64
+  const fotosBase64 = await Promise.all(
+    reporte.fotos.map(async (uri:string) => await getBase64Image(uri))
+  );
+   // Crea una nueva versión del objeto reporte con las fotos convertidas
+  const reporteConFotos = {
+    ...reporte,
+    fotos: fotosBase64,
+  };
 
-      <h2>Firma del Cliente</h2>
-      ${
-        reporte.firma
-          ? `<img src="${reporte.firma}" style="width:200px; height:100px;" />`
-          : "<p>No se registró firma</p>"
-      }
-    </body>
-  </html>`;
+  const html = templaitPDF(reporteConFotos);
 
   const { uri } = await Print.printToFileAsync({ html });
   console.log("PDF generado en:", uri);

@@ -68,7 +68,7 @@ export default function PanelFirma() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f1f5f9",
+    backgroundColor: "#fff",
     padding: 15,
     borderRadius: 8,
     marginHorizontal: 12,

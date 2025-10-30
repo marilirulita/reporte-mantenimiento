@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reporte de Mantenimiento</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f8fafc;
+      color: #111827;
+      margin: 0;
+      padding: 0;
+    }
+
+    .page {
+      width: 800px;
+      margin: 40px auto;
+      background: white;
+      box-shadow: 0 0 10px rgba(0,0,0,0.15);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    /* Encabezado */
+    .header {
+      background-color: #2563eb;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .header h1 {
+      margin: 0;
+      font-size: 22px;
+    }
+
+    .header p {
+      margin: 5px 0 0;
+      font-size: 14px;
+      color: #dbeafe;
+    }
+
+    /* Secciones */
+    .section {
+      margin: 20px;
+      border-radius: 6px;
+      overflow: hidden;
+      background: #ffffff;
+    }
+
+    .section-title {
+      background-color: #e2e8f0;
+      padding: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      color: #111827;
+    }
+
+    .field {
+      display: flex;
+      padding: 6px 10px;
+      font-size: 14px;
+      border-bottom: 1px solid #f1f5f9;
+    }
+
+    .field:last-child {
+      border-bottom: none;
+    }
+
+    .field label {
+      flex: 0 0 180px;
+      font-weight: 600;
+      color: #374151;
+    }
+
+    .field span {
+      flex: 1;
+      color: #111827;
+    }
+
+    /* Texto largo */
+    .long-text {
+      padding: 10px;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    /* Fotos */
+    .photos {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding: 10px;
+      justify-content: start;
+    }
+
+    .photos img {
+      width: 180px;
+      height: 120px;
+      object-fit: cover;
+      border: 1px solid #e5e7eb;
+      border-radius: 4px;
+    }
+
+    /* Firma */
+    .signature {
+      padding: 20px;
+      text-align: center;
+    }
+
+    .signature img {
+      width: 200px;
+      height: auto;
+      border-bottom: 1px solid #000;
+      margin-bottom: 5px;
+    }
+
+    .footer {
+      text-align: center;
+      font-size: 12px;
+      color: #6b7280;
+      padding: 10px;
+      border-top: 1px solid #e5e7eb;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <!-- Encabezado -->
+    <div class="header">
+      <h1>REPORTE DE MANTENIMIENTO</h1>
+      <p>Servicio de Refrigeración</p>
+    </div>
+
+    <!-- Sección: Cliente -->
+    <div class="section">
+      <div class="section-title">DATOS DEL CLIENTE</div>
+      <div class="field"><label>Nombre:</label><span>Juan Pérez</span></div>
+      <div class="field"><label>Dirección:</label><span>Av. Central #123</span></div>
+      <div class="field"><label>Teléfono:</label><span>664-555-1234</span></div>
+      <div class="field"><label>Email:</label><span>juanperez@email.com</span></div>
+    </div>
+
+    <!-- Sección: Equipo -->
+    <div class="section">
+      <div class="section-title">DATOS DEL EQUIPO</div>
+      <div class="field"><label>Marca:</label><span>LG</span></div>
+      <div class="field"><label>Modelo:</label><span>R410</span></div>
+      <div class="field"><label>Serie:</label><span>ABCD12345</span></div>
+      <div class="field"><label>Tipo:</label><span>Aire Acondicionado Split</span></div>
+      <div class="field"><label>Ubicación:</label><span>Oficina principal</span></div>
+    </div>
+
+    <!-- Sección: Servicio -->
+    <div class="section">
+      <div class="section-title">DATOS DEL SERVICIO</div>
+      <div class="field"><label>Fecha:</label><span>28/10/2025</span></div>
+      <div class="field"><label>Técnico:</label><span>Carlos López</span></div>
+      <div class="field"><label>Estado del equipo:</label><span>Operativo con mantenimiento preventivo</span></div>
+    </div>
+
+    <!-- Sección: Mediciones -->
+    <div class="section">
+      <div class="section-title">MEDICIONES TÉCNICAS</div>
+      <div class="field"><label>Tipo de Refrigerante:</label><span>R-410A</span></div>
+      <div class="field"><label>Presión:</label><span>70 psi</span></div>
+      <div class="field"><label>Temp. Ambiente:</label><span>28°C</span></div>
+      <div class="field"><label>Temp. Equipo:</label><span>18°C</span></div>
+      <div class="field"><label>Voltaje:</label><span>220V</span></div>
+      <div class="field"><label>Amperaje:</label><span>3.2A</span></div>
+    </div>
+
+    <!-- Sección: Trabajo Realizado -->
+    <div class="section">
+      <div class="section-title">TRABAJO REALIZADO</div>
+      <div class="long-text">
+        Se realizó la limpieza general del condensador y evaporador. Se revisó la carga de gas refrigerante y se encontró en niveles óptimos. Se reemplazó el filtro de aire.
+      </div>
+    </div>
+
+    <!-- Sección: Observaciones -->
+    <div class="section">
+      <div class="section-title">OBSERVACIONES</div>
+      <div class="long-text">
+        Se recomienda mantener el área libre de polvo y realizar mantenimiento cada seis meses.
+      </div>
+    </div>
+
+    <!-- Sección: Recomendaciones -->
+    <div class="section">
+      <div class="section-title">RECOMENDACIONES</div>
+      <div class="long-text">
+        Cambiar el filtro de aire periódicamente y evitar el uso continuo por más de 8 horas diarias.
+      </div>
+    </div>
+
+    <!-- Sección: Fotos -->
+    <div class="section">
+      <div class="section-title">FOTOGRAFÍAS DEL EQUIPO</div>
+      <div class="photos">
+        <img src="https://via.placeholder.com/180x120" alt="Foto 1" />
+        <img src="https://via.placeholder.com/180x120" alt="Foto 2" />
+        <img src="https://via.placeholder.com/180x120" alt="Foto 3" />
+      </div>
+    </div>
+
+    <!-- Sección: Firma -->
+    <div class="section">
+      <div class="section-title">FIRMA DEL CLIENTE</div>
+      <div class="signature">
+        <img src="https://via.placeholder.com/200x60?text=Firma" alt="Firma del cliente" />
+        <p>Juan Pérez</p>
+      </div>
+    </div>
+
+    <!-- Pie de página -->
+    <div class="footer">
+      Página 1 de 1 — Generado el 28/10/2025
+    </div>
+  </div>
+</body>
+</html>

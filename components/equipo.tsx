@@ -17,7 +17,6 @@ export default function Equipo() {
     presion: "",
     temperaturaAmbiente: "",
     temperaturaEquipo: "",
-    ubicacion: "",
     voltaje: "",
     amperaje: "",
   });
