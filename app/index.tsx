@@ -1,72 +1,140 @@
-import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
+import React from "react";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
+import { ClipboardList, History, Snowflake } from "lucide-react-native";
 import { LinearGradient } from "expo-linear-gradient";
 
-export default function Index() {
+export default function PantallaInicio({ navigation }: any) {
   const router = useRouter();
-
   return (
     <LinearGradient
       colors={["#eff6ff", "#f1f5f9"]} // from-blue-50 to-slate-100
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
-      style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
+      style={styles.container}
     >
+      {/* Ícono principal */}
+      <View style={styles.iconContainer}>
+        <Snowflake color="white" size={50} />
+      </View>
+
+      {/* Título */}
       <Text style={styles.title}>App de Mantenimiento</Text>
-      <View style={styles.buttonContainer}>
+      <Text style={styles.subtitle}>Sistema de Reportes de Mantenimiento</Text>
+
+      {/* Botones */}
+      <View style={styles.cardsContainer}>
         <TouchableOpacity
+          style={[styles.card, styles.cardActive]}
           onPress={() => router.push("./reporte")}
-          style={[styles.button, styles.primaryButton]}
         >
-          <Text style={styles.primaryText}>Nuevo reporte</Text>
+          <View style={[styles.iconBox, styles.iconBoxBlue]}>
+            <ClipboardList color="#2563eb" size={28} />
+          </View>
+          <View style={{flex: 1}}>
+            <Text style={styles.cardTitle}>Nuevo Reporte</Text>
+            <Text style={styles.cardSubtitle}>
+              Crear un nuevo reporte de mantenimiento
+            </Text>
+          </View>
         </TouchableOpacity>
 
         <TouchableOpacity
+          style={styles.card}
           onPress={() => router.push("./historial")}
-          style={[styles.button, styles.primaryButton]}
         >
-          <Text style={styles.primaryText}>Historial</Text>
+          <View style={[styles.iconBox, styles.iconBoxGray]}>
+            <History color="#334155" size={28} />
+          </View>
+          <View style={{flex: 1}}>
+            <Text style={styles.cardTitle}>Historial</Text>
+            <Text style={styles.cardSubtitle}>
+              Ver reportes anteriores guardados
+            </Text>
+          </View>
         </TouchableOpacity>
       </View>
+
+      {/* Versión */}
+      <Text style={styles.versionText}>
+        Versión 1.0 - Optimizado para dispositivos móviles
+      </Text>
     </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
-  // Título
-  title: {
-    fontSize: 24, // text-2xl
-    fontWeight: "bold",
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingHorizontal: 24,
+  },
+  iconContainer: {
+    backgroundColor: "#2563eb",
+    padding: 20,
+    borderRadius: 50,
     marginBottom: 16,
-    color: "#2563eb", // text-blue-600
+    elevation: 5,
   },
-
-  // Contenedor de botones
-  buttonContainer: {
-    display: "flex",
-    flexDirection: "column",
-    width: "100%",
-    marginTop: 16,
-    paddingHorizontal: 32, // px-8
-    gap: 16, // space-y-4
-  },
-
-  // Botón base
-  button: {
-    width: "100%",
-    borderRadius: 12, // rounded-xl
-    paddingVertical: 12, // py-3
-    paddingHorizontal: 20, // px-5
-    alignItems: "flex-start",
-    alignSelf: "flex-start", // w-fit
-  },
-
-  // Botón azul
-  primaryButton: {
-    backgroundColor: "#3b82f6", // bg-blue-500
-  },
-  primaryText: {
-    color: "#fff",
+  title: {
+    fontSize: 22,
     fontWeight: "600",
+    color: "#2563eb",
+    textAlign: "center",
+  },
+  subtitle: {
+    fontSize: 14,
+    color: "#64748b",
+    textAlign: "center",
+    marginBottom: 32,
+  },
+  cardsContainer: {
+    width: "100%",
+    gap: 16,
+  },
+  card: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "white",
+    padding: 16,
+    borderRadius: 14,
+    elevation: 2,
+    borderWidth: 1,
+    borderColor: "#e2e8f0",
+  },
+  cardActive: {
+    backgroundColor: "#f0f7ff",
+    borderColor: "#bfdbfe",
+  },
+  iconBox: {
+    width: 48,
+    height: 48,
+    borderRadius: 10,
+    justifyContent: "center",
+    alignItems: "center",
+    marginRight: 16,
+  },
+  iconBoxBlue: {
+    backgroundColor: "#dbeafe",
+  },
+  iconBoxGray: {
+    backgroundColor: "#f1f5f9",
+  },
+  cardTitle: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: "#1e293b",
+    
+  },
+  cardSubtitle: {
+    fontSize: 13,
+    color: "#64748b",
+  },
+  versionText: {
+    fontSize: 12,
+    color: "#94a3b8",
+    marginTop: 40,
+    textAlign: "center",
   },
 });
