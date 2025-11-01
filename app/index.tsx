@@ -4,7 +4,7 @@ import { useRouter } from "expo-router";
 import { ClipboardList, History, Snowflake } from "lucide-react-native";
 import { LinearGradient } from "expo-linear-gradient";
 
-export default function PantallaInicio({ navigation }: any) {
+export default function PantallaInicio() {
   const router = useRouter();
   return (
     <LinearGradient
