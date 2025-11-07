@@ -1,0 +1,108 @@
+import { Cliente, Equipo, Reporte } from '../models/Reporte';
+import db from './database';
+
+//////////////////////////
+// CLIENTES
+//////////////////////////
+export const addCliente = async (cliente: Cliente) => {
+  const result = await db.runAsync(
+    `INSERT INTO clientes (nombre, direccion, telefono, email) VALUES (?, ?, ?, ?)`,
+    [cliente.nombre, cliente.direccion, cliente.telefono ?? null, cliente.email ?? null]
+  );
+  return result.lastInsertRowId; // ✅ esto devuelve el ID generado
+};
+
+export const getClientes = (): Cliente[] => {
+  const result = db.getAllSync<Cliente>(`SELECT * FROM clientes ORDER BY nombre DESC`);
+  return result;
+};
+
+export const buscarClientesPorNombre = (texto: string) => {
+  const query = `SELECT * FROM clientes WHERE nombre LIKE ?`;
+  const resultados = db.getAllAsync(query, [`%${texto}%`]);
+  return resultados;
+};
+
+export const deleteCliente = (id: number) => {
+  db.runSync(`DELETE FROM clientes WHERE id = ?`, [id]);
+};
+
+//////////////////////////
+// EQUIPOS
+//////////////////////////
+
+export const addEquipo = async (equipo: Equipo, idCliente: number) => {
+  const result = await db.runAsync(
+    `INSERT INTO equipos (idCliente, marca, modelo, numeroSerie, tipoEquipo, ubicacionEquipo)
+     VALUES (?, ?, ?, ?, ?, ?)`,
+    [
+      idCliente,
+      equipo.marca,
+      equipo.modelo,
+      equipo.numeroSerie ?? null,
+      equipo.tipoEquipo,
+      equipo.ubicacionEquipo ?? null,
+    ]
+  );
+  return result.lastInsertRowId;
+};
+
+export const getEquipos = (): Equipo[] => {
+  const result = db.getAllSync<Equipo>(`SELECT * FROM equipos`);
+  return result;
+};
+
+// 🔹 Obtiene todos los equipos asociados a un cliente
+export const getEquiposByClienteId = (clienteId: number) => {
+  const query = "SELECT * FROM equipos WHERE idCliente = ?;";
+  const resultado = db.getAllAsync<Equipo>(query, [clienteId]);
+  return resultado;
+};
+
+export const deleteEquipo = (id: number) => {
+  db.runSync(`DELETE FROM equipos WHERE id = ?`, [id]);
+};
+
+//////////////////////////
+// REPORTES
+//////////////////////////
+
+export const addReporte = (reporte: Reporte) => {
+  const fotosJSON = JSON.stringify(reporte.fotos ?? []);
+  db.runSync(
+    `INSERT INTO reportes (idCliente, idEquipo, fecha, tecnico, estadoEquipo, tipoRefrigerante, presion, temperaturaAmbiente, temperaturaEquipo, voltaje, amperaje, trabajoRealizado, observaciones, recomendaciones, fotos, firma, pdfUri)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    [
+      reporte.idCliente,
+      reporte.idEquipo,
+      fotosJSON ?? null,
+      reporte.fecha ?? new Date().toISOString(),
+      reporte.tecnico,
+      reporte.estadoEquipo,
+      reporte.tipoRefrigerante ?? null,
+      reporte.presion ?? null, 
+      reporte.temperaturaAmbiente ?? null, 
+      reporte.temperaturaEquipo ?? null, 
+      reporte.voltaje ?? null, 
+      reporte.amperaje ?? null, 
+      reporte.trabajoRealizado, 
+      reporte.observaciones ?? null, 
+      reporte.recomendaciones ?? null,  
+      reporte.firma ?? null, 
+      reporte.pdfUri ?? null
+    ]
+         
+  );
+};
+
+export const getReportes = (): Reporte[] => {
+  const result = db.getAllSync<Reporte>(`SELECT * FROM reportes ORDER BY id DESC;`);
+  return result.map((r) => ({
+    ...r,
+    //fotos: r.fotos ? JSON.parse(r.fotos) : [],
+  }));
+};
+
+export const deleteReporte = (id: number) => {
+  db.runSync(`DELETE FROM reportes WHERE id = ?`, [id]);
+};

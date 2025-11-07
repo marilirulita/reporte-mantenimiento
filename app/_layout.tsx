@@ -1,7 +1,13 @@
 import { Stack } from "expo-router";
 import { ReporteProvider } from "@/context/ReporteContext"; 
+import React, { useEffect } from "react";
+import { createTables } from "../db/database";
 
 export default function RootLayout() {
+  useEffect(() => {
+    createTables();
+  }, []);
+  
   return (
     <ReporteProvider>
     <Stack>

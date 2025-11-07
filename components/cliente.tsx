@@ -1,27 +1,145 @@
-import React, { useState } from "react";
-import { View, Text, StyleSheet, ScrollView } from "react-native";
+import React, { useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  Alert,
+  TouchableOpacity,
+} from "react-native";
 import CustomInput from "./ui/custom-input";
 import { Botton } from "./ui/button";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { useNextSection } from "../hooks/useNextSection";
+import {
+  addCliente,
+  addEquipo,
+  getClientes,
+  getEquipos,
+  buscarClientesPorNombre,
+  getEquiposByClienteId,
+} from "@/db/databaseActions";
+import { Cliente, Equipo } from "@/models/Reporte";
 
-const Cliente = () => {
-  const [cliente, setCliente] = useState({
+const ClienteScreen = () => {
+  const [busqueda, setBusqueda] = useState("");
+  const [resultados, setResultados] = useState<Cliente[]>([]);
+  const [equipos, setEquipos] = useState<Equipo[]>([]);
+  const [cliente, setCliente] = useState<Cliente>({
+    id: 0,
     nombre: "",
     direccion: "",
     telefono: "",
-    correo: "",
-    empresa: "",
+    email: "",
   });
 
-  const [equipo, setEquipo] = useState({
+  const [equipo, setEquipo] = useState<Equipo>({
+    id: 0,
+    idCliente: 0,
     marca: "",
     modelo: "",
     numeroSerie: "",
     tipoEquipo: "",
-    ubicacion: "",
+    ubicacionEquipo: "",
   });
+
+  useEffect(() => {
+    const fetchClientes = async () => {
+      if (busqueda.trim().length > 1) {
+        const data = await buscarClientesPorNombre(busqueda);
+        setResultados(data as Cliente[]);
+      } else {
+        setResultados([]);
+      }
+    };
+    fetchClientes();
+  }, [busqueda]);
+
+  const getClie = async () => {
+    const getcliente = await getClientes();
+    const getEquipo = await getEquipos();
+    console.log(getcliente, getEquipo);
+  };
   const { handleNext } = useNextSection("tecnico");
+  const saveClienteEquipo = async () => {
+    if (
+      !cliente.nombre.trim() ||
+      !cliente.direccion.trim() ||
+      !cliente.telefono?.trim()
+    ) {
+      Alert.alert(
+        "Campos requeridos",
+        "Por favor, completa nombre, telefono y dirección."
+      );
+      return;
+    }
+
+    if (
+      !equipo.marca.trim() ||
+      !equipo.modelo.trim() ||
+      !equipo.tipoEquipo.trim()
+    ) {
+      Alert.alert(
+        "Campos requeridos",
+        "Por favor, completa datos del equipo: marca, modelo, tipo de equipo"
+      );
+      return;
+    }
+
+    let clienteId = cliente.id;
+
+    // Si no tiene ID, es un cliente nuevo → lo insertamos
+    if (clienteId === 0) {
+      try {
+        // 🧩 1. Guardar cliente y obtener su ID
+        clienteId = await addCliente(cliente);
+        console.log("Nuevo cliente creado con ID:", clienteId);
+        setCliente({...cliente, id: clienteId});
+        saveEquipo(equipo, clienteId);
+      } catch (error) {
+        console.error("Error al crear cliente:", error);
+        Alert.alert("Error", "No se pudo guardar el cliente.");
+        return;
+      }
+    } else {
+      console.log("Cliente existente, usando ID:", clienteId);
+      if (clienteId !== undefined) {
+        saveEquipo(equipo, clienteId);
+      }
+    }
+
+    // 🧩 3. Guardar en el contexto global
+    handleNext("cliente", {
+      cliente: { ...cliente, id: cliente.id },
+      equipo: { ...equipo, id: equipo.id },
+    });
+  };
+
+  const saveEquipo = async (equipo: Equipo, clienteId: number) => {
+    let equipoId = equipo.id;
+
+    if (equipoId === 0) {
+      try {
+      // 🧩 2. Guardar equipo y obtener su ID
+      equipoId = await addEquipo(equipo, clienteId);
+      console.log("Nuevo equipo creado con ID:", equipoId);
+      setEquipo({...equipo, id: equipoId});
+    } catch (error) {
+      console.error("Error al guardar Equipo:", error);
+    }
+    } else {
+      console.log("Equipo existente, usando ID:", equipoId);
+    }
+    
+  };
+
+  const cargarEquipos = async (clienteId: number | undefined) => {
+    // 🔹 Cargar equipos del cliente
+    if (clienteId !== undefined) {
+      const equiposCliente = await getEquiposByClienteId(clienteId!);
+      setEquipos(equiposCliente);
+    }
+  };
 
   return (
     <KeyboardAwareScrollView
@@ -29,31 +147,63 @@ const Cliente = () => {
       enableOnAndroid={true}
       extraScrollHeight={60} // sube un poco más el último input
     >
-      <ScrollView contentContainerStyle={{padding: 10}}>
+      <ScrollView contentContainerStyle={{ padding: 10 }}>
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Datos del Cliente</Text>
 
+          <Text style={styles.label}>
+            Busca por nombre de cliente o guarda uno nuevo
+          </Text>
           {/* Nombre y Teléfono */}
-          <View style={styles.row}>
-            <View style={styles.column}>
-              <Text style={styles.label}>Nombre Completo *</Text>
-              <CustomInput
-                placeholder="Juan Pérez"
-                value={cliente.nombre}
-                setValue={(text) => setCliente({ ...cliente, nombre: text })}
-              />
-            </View>
-
-            <View style={styles.column}>
-              <Text style={styles.label}>Teléfono *</Text>
-              <CustomInput
-                placeholder="555-1234-5678"
-                value={cliente.telefono}
-                setValue={(text) => setCliente({ ...cliente, telefono: text })}
-                keyboardType="phone-pad"
-              />
-            </View>
+          <View style={{ marginBottom: 12 }}>
+            <Text style={styles.label}>Nombre Completo *</Text>
+            <CustomInput
+              placeholder="Juan Pérez"
+              value={cliente.nombre}
+              setValue={(text) => {
+                setCliente({ ...cliente, nombre: text });
+                setBusqueda(text);
+              }}
+            />
+            {resultados.length > 0 && (
+              <View
+                style={{
+                  backgroundColor: "#fff",
+                  borderRadius: 8,
+                  marginTop: 4,
+                }}
+              >
+                {resultados.map((item) => (
+                  <TouchableOpacity
+                    key={item.id}
+                    onPress={() => {
+                      setCliente(item);
+                      cargarEquipos(item.id);
+                      setBusqueda("");
+                      setResultados([]);
+                    }}
+                    style={{
+                      padding: 10,
+                      borderBottomWidth: 1,
+                      borderColor: "#eee",
+                    }}
+                  >
+                    <Text style={{ fontWeight: "500" }}>{item.nombre}</Text>
+                    <Text style={{ fontSize: 12, color: "#666" }}>
+                      {item.direccion}
+                    </Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
+            )}
           </View>
+          <Text style={styles.label}>Teléfono *</Text>
+          <CustomInput
+            placeholder="555-123-4567"
+            value={cliente.telefono ?? ""}
+            setValue={(text) => setCliente({ ...cliente, telefono: text })}
+            keyboardType="phone-pad"
+          />
 
           {/* Dirección */}
           <Text style={styles.label}>Dirección *</Text>
@@ -66,14 +216,47 @@ const Cliente = () => {
           <Text style={styles.label}>Email</Text>
           <CustomInput
             placeholder="cliente@email.com"
-            value={cliente.correo}
-            setValue={(text) => setCliente({ ...cliente, correo: text })}
+            value={cliente.email ?? ""}
+            setValue={(text) => setCliente({ ...cliente, email: text })}
             keyboardType="email-address"
           />
         </View>
 
         <View style={[styles.section, { marginBottom: 50 }]}>
           <Text style={styles.sectionTitle}>Datos del Equipo</Text>
+
+          <Text style={styles.label}>
+            Selecciona un equipo o guarda uno nuevo
+          </Text>
+          {equipos.length > 0 && (
+            <View
+              style={{
+                backgroundColor: "#fff",
+                borderRadius: 8,
+                marginTop: 4,
+              }}
+            >
+              {equipos.map((item) => (
+                <TouchableOpacity
+                  key={item.id}
+                  onPress={() => {
+                    setEquipo(item);
+                    setEquipos([]);
+                  }}
+                  style={{
+                    padding: 10,
+                    borderBottomWidth: 1,
+                    borderColor: "#eee",
+                  }}
+                >
+                  <Text style={{ fontWeight: "500" }}>{item.numeroSerie}</Text>
+                  <Text style={{ fontSize: 12, color: "#666" }}>
+                    {item.tipoEquipo} - {item.marca} - {item.modelo}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          )}
 
           <View style={styles.row}>
             <View style={styles.column}>
@@ -100,7 +283,7 @@ const Cliente = () => {
               <Text style={styles.label}>Número de Serie</Text>
               <CustomInput
                 placeholder="SN123456789"
-                value={equipo.numeroSerie}
+                value={equipo.numeroSerie ?? ""}
                 setValue={(text) => setEquipo({ ...equipo, numeroSerie: text })}
               />
             </View>
@@ -118,13 +301,11 @@ const Cliente = () => {
           <Text style={styles.label}>Ubicación del Equipo</Text>
           <CustomInput
             placeholder="Cocina, Almacén, etc."
-            value={equipo.ubicacion}
-            setValue={(text) => setEquipo({ ...equipo, ubicacion: text })}
+            value={equipo.ubicacionEquipo ?? ""}
+            setValue={(text) => setEquipo({ ...equipo, ubicacionEquipo: text })}
           />
 
-          <Botton 
-          classname={styles.button} 
-          onPress={() => handleNext("cliente", {...cliente, ...equipo})}>
+          <Botton classname={styles.button} onPress={() => saveClienteEquipo()}>
             <Text style={styles.text}>Siguiente</Text>
           </Botton>
         </View>
@@ -180,4 +361,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Cliente;
+export default ClienteScreen;
