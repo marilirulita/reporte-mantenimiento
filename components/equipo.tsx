@@ -1,14 +1,20 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, ScrollView } from "react-native";
+import { View, Text, StyleSheet, ScrollView, Alert } from "react-native";
 import CustomInput from "./ui/custom-input";
 import { Botton } from "./ui/button";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { useNextSection } from "../hooks/useNextSection";
-import { useReporte } from "../context/ReporteContext"
+import { useReporte } from "../context/ReporteContext";
+import { Picker } from "@react-native-picker/picker";
 
 export default function Equipo() {
+  const dateToday = new Date().toLocaleDateString("es-MX", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  });
   const [infServicio, setInfServicio] = useState({
-    fechaServicio: "",
+    fechaServicio: dateToday,
     nombreTecnico: "",
     estadoEquipo: "",
   });
@@ -30,7 +36,27 @@ export default function Equipo() {
 
   const { handleNext } = useNextSection("fotos");
   const { reporte, setReporte } = useReporte();
- 
+  const saveTecnico = () => {
+    if (
+      !infServicio.fechaServicio.trim() ||
+      !infServicio.nombreTecnico.trim() ||
+      !infServicio.estadoEquipo.trim() ||
+      !detallesServicio.trabajoRealizado.trim()
+    ) {
+      Alert.alert(
+        "Campos requeridos",
+        "Por favor, completa fecha, nombre del tecnico y observaciones."
+      );
+      return;
+    }
+    // 🧩 3. Guardar en el contexto global
+    handleNext("tecnico", {
+      ...infServicio,
+      ...medicionesTécnicas,
+      ...detallesServicio,
+    });
+  };
+
   return (
     <KeyboardAwareScrollView
       style={{ backgroundColor: "#f5f5f5" }}
@@ -66,13 +92,22 @@ export default function Equipo() {
           </View>
 
           <Text style={styles.label}>Estado del Equipo *</Text>
-          <CustomInput
-            placeholder="Excelente, Bueno, Regular"
-            value={infServicio.estadoEquipo}
-            setValue={(text) =>
-              setInfServicio({ ...infServicio, estadoEquipo: text })
-            }
-          />
+          <View style={styles.containerPicker}>
+            <Picker
+              selectedValue={infServicio.estadoEquipo}
+              onValueChange={(text) =>
+                setInfServicio({ ...infServicio, estadoEquipo: text })
+              }
+              style={styles.picker}
+            >
+              <Picker.Item label="Seleccione una opción" value="" />
+              <Picker.Item label="Excelente" value="Excelente" />
+              <Picker.Item label="Bueno" value="Bueno" />
+              <Picker.Item label="Regular" value="Regular" />
+              <Picker.Item label="Malo" value="Malo" />
+              <Picker.Item label="Crítico" value="Crítico" />
+            </Picker>
+          </View>
         </View>
 
         <View style={styles.section}>
@@ -213,10 +248,16 @@ export default function Equipo() {
           />
 
           <View style={styles.buttonContainer}>
-            <Botton classname={styles.buttonSecundary} onPress={() => setReporte({...reporte, activeTab: "cliente"})}>
+            <Botton
+              classname={styles.buttonSecundary}
+              onPress={() => setReporte({ ...reporte, activeTab: "cliente" })}
+            >
               <Text style={styles.textSecundary}>Anterior</Text>
             </Botton>
-            <Botton classname={styles.buttonPrimary} onPress={() => handleNext("tecnico", {...infServicio, ...medicionesTécnicas, ...detallesServicio})}>
+            <Botton
+              classname={styles.buttonPrimary}
+              onPress={() => saveTecnico()}
+            >
               <Text style={styles.textPrimary}>Siguiente</Text>
             </Botton>
           </View>
@@ -227,6 +268,19 @@ export default function Equipo() {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    marginVertical: 10,
+  },
+  containerPicker: {
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 12,
+  },
+  picker: {
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 12,
+  },
   section: {
     marginBottom: 32, // mb-8
     borderBottomColor: "#9ca3af", // border-b-gray-400

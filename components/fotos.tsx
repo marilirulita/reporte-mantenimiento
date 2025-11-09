@@ -12,7 +12,7 @@ import { Camera, Upload, Image as ImageIcon } from "lucide-react-native";
 import * as ImagePicker from "expo-image-picker";
 import { Botton } from "./ui/button";
 import { useNextSection } from "../hooks/useNextSection";
-import { useReporte } from "../context/ReporteContext"
+import { useReporte } from "../context/ReporteContext";
 
 export default function Fotos() {
   const [fotos, setFotos] = useState<string[]>([]);
@@ -75,6 +75,13 @@ export default function Fotos() {
   const { handleNext } = useNextSection("firma");
   const { reporte, setReporte } = useReporte();
 
+  const saveFotos = () => {
+    if (fotos.length < 2) {
+      Alert.alert("Requisito Fotos","Nesesita agregar al menos 2 fotos");
+      return;
+    }
+    handleNext("fotos", fotos)
+  };
   return (
     <ScrollView
       contentContainerStyle={{ padding: 10, backgroundColor: "#f5f5f5" }}
@@ -138,10 +145,16 @@ export default function Fotos() {
           {fotos.length} de 4 fotos agregadas
         </Text>
         <View style={styles.buttonContainer}>
-          <Botton classname={styles.buttonSecundary} onPress={() => setReporte({...reporte, activeTab: "tecnico"})}>
+          <Botton
+            classname={styles.buttonSecundary}
+            onPress={() => setReporte({ ...reporte, activeTab: "tecnico" })}
+          >
             <Text style={styles.textSecundary}>Anterior</Text>
           </Botton>
-          <Botton classname={styles.buttonPrimary} onPress={() => handleNext("fotos", fotos)}>
+          <Botton
+            classname={styles.buttonPrimary}
+            onPress={() => saveFotos()}
+          >
             <Text style={styles.textPrimary}>Siguiente</Text>
           </Botton>
         </View>

@@ -1,20 +1,64 @@
 import { useReporte } from "../context/ReporteContext";
 import { generarPDF } from "../utils/generarPDF";
-import { Text, StyleSheet } from "react-native";
+import { Text, StyleSheet, Alert } from "react-native";
 import { Botton } from "./ui/button";
+import { addReporte } from "@/db/databaseActions";
+import { Reporte } from "@/models/Reporte";
+import { useState } from "react";
 
 const BotonFinalizar = () => {
   const { reporte } = useReporte();
+  const [reporteCompleto, setReporteCompleto] = useState<Reporte>();
 
   const handleFinalizar = async () => {
-    await generarPDF(reporte);
+    if (reporte.firma === null) {
+      Alert.alert("Requisito Firma", "Nesesita agregar una firma");
+      return;
+    }
+
+    if (!reporte.cliente?.cliente?.id || !reporte.cliente?.equipo?.id ) {;
+      Alert.alert("Requisito Reporte", "Faltan datos del cliente y equipo");
+      return;
+    }
+
+    if (!reporte.tecnico?.fechaServicio) {;
+      Alert.alert("Requisito Reporte", "Faltan datos del area tecnica");
+      return;
+    }
+
+    if (reporte.fotos.length <= 0) {;
+      Alert.alert("Requisito Reporte", "Faltan fotos");
+      return;
+    }
+
+    const PDFuri = await generarPDF(reporte);
+
+    setReporteCompleto({
+      idCliente: reporte.cliente.cliente.id,
+      idEquipo: reporte.cliente.equipo.id,
+      fecha: reporte.tecnico.fechaServicio,
+      tecnico: reporte.tecnico.nombreTecnico,
+      estadoEquipo: reporte.tecnico.estadoEquipo,
+      tipoRefrigerante: reporte.tecnico.tipoRefrigerante,
+      presion: reporte.tecnico.presion,
+      temperaturaAmbiente: reporte.tecnico.temperaturaAmbiente,
+      temperaturaEquipo: reporte.tecnico.temperaturaEquipo,
+      voltaje: reporte.tecnico.voltaje,
+      amperaje: reporte.tecnico.amperaje,
+      trabajoRealizado: reporte.tecnico.trabajoRealizado,
+      observaciones: reporte.tecnico.observaciones,
+      recomendaciones: reporte.tecnico.observacionesAdicionales,
+      fotos: reporte.fotos,
+      firma: reporte.firma,
+      pdfUri: PDFuri,
+    });
+    await addReporte(reporteCompleto!);
+    
+    alert("Reporte guardado con éxito ✅");
   };
 
   return (
-    <Botton
-      onPress={handleFinalizar}
-      classname={styles.buttonPrimary}
-    >
+    <Botton onPress={handleFinalizar} classname={styles.buttonPrimary}>
       <Text style={styles.textPrimary}>Finalizar</Text>
     </Botton>
   );

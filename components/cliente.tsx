@@ -14,8 +14,6 @@ import { useNextSection } from "../hooks/useNextSection";
 import {
   addCliente,
   addEquipo,
-  getClientes,
-  getEquipos,
   buscarClientesPorNombre,
   getEquiposByClienteId,
 } from "@/db/databaseActions";
@@ -55,83 +53,70 @@ const ClienteScreen = () => {
     fetchClientes();
   }, [busqueda]);
 
-  const getClie = async () => {
-    const getcliente = await getClientes();
-    const getEquipo = await getEquipos();
-    console.log(getcliente, getEquipo);
-  };
   const { handleNext } = useNextSection("tecnico");
+
   const saveClienteEquipo = async () => {
-    if (
-      !cliente.nombre.trim() ||
-      !cliente.direccion.trim() ||
-      !cliente.telefono?.trim()
-    ) {
-      Alert.alert(
-        "Campos requeridos",
-        "Por favor, completa nombre, telefono y dirección."
-      );
-      return;
-    }
+  if (!cliente.nombre.trim() || !cliente.direccion.trim() || !cliente.telefono?.trim()) {
+    Alert.alert("Campos requeridos", "Por favor, completa nombre, telefono y dirección.");
+    return;
+  }
 
-    if (
-      !equipo.marca.trim() ||
-      !equipo.modelo.trim() ||
-      !equipo.tipoEquipo.trim()
-    ) {
-      Alert.alert(
-        "Campos requeridos",
-        "Por favor, completa datos del equipo: marca, modelo, tipo de equipo"
-      );
-      return;
-    }
+  if (!equipo.marca.trim() || !equipo.modelo.trim() || !equipo.tipoEquipo.trim()) {
+    Alert.alert("Campos requeridos", "Por favor, completa datos del equipo: marca, modelo, tipo de equipo");
+    return;
+  }
 
-    let clienteId = cliente.id;
+  let clienteId = cliente.id;
 
-    // Si no tiene ID, es un cliente nuevo → lo insertamos
-    if (clienteId === 0) {
-      try {
-        // 🧩 1. Guardar cliente y obtener su ID
-        clienteId = await addCliente(cliente);
-        console.log("Nuevo cliente creado con ID:", clienteId);
-        setCliente({...cliente, id: clienteId});
-        saveEquipo(equipo, clienteId);
-      } catch (error) {
-        console.error("Error al crear cliente:", error);
-        Alert.alert("Error", "No se pudo guardar el cliente.");
-        return;
-      }
+  try {
+    // 🧩 1. Crear cliente si es nuevo
+    if (!clienteId || clienteId === 0) {
+      clienteId = await addCliente(cliente); // addCliente debe retornar el ID
+      console.log("Nuevo cliente creado con ID:", clienteId);
+      setCliente((prev) => ({ ...prev, id: clienteId }));
     } else {
       console.log("Cliente existente, usando ID:", clienteId);
-      if (clienteId !== undefined) {
-        saveEquipo(equipo, clienteId);
-      }
     }
 
-    // 🧩 3. Guardar en el contexto global
+    // 🧩 2. Crear equipo asociado al cliente
+    const equipoId = await saveEquipo(equipo, clienteId);
+
+    // 🧩 3. Guardar en contexto global
     handleNext("cliente", {
-      cliente: { ...cliente, id: cliente.id },
-      equipo: { ...equipo, id: equipo.id },
+      cliente: { ...cliente, id: clienteId },
+      equipo: { ...equipo, id: equipoId, idCliente: clienteId },
     });
-  };
 
-  const saveEquipo = async (equipo: Equipo, clienteId: number) => {
-    let equipoId = equipo.id;
+    console.log("Reporte guardado:", clienteId, equipoId);
+  } catch (error) {
+    console.error("Error al guardar cliente/equipo:", error);
+    Alert.alert("Error", "No se pudo guardar la información.");
+  }
+};
 
-    if (equipoId === 0) {
-      try {
-      // 🧩 2. Guardar equipo y obtener su ID
+  const saveEquipo = async (equipo: Equipo, clienteId: number): Promise<number> => {
+  let equipoId = equipo.id;
+
+  try {
+    if (!equipoId || equipoId === 0) {
+      // 🧩 Insertar nuevo equipo en la base de datos
       equipoId = await addEquipo(equipo, clienteId);
       console.log("Nuevo equipo creado con ID:", equipoId);
-      setEquipo({...equipo, id: equipoId});
-    } catch (error) {
-      console.error("Error al guardar Equipo:", error);
-    }
+
+      // Actualizar el estado local (sin depender de él)
+      setEquipo((prev) => ({ ...prev, id: equipoId }));
     } else {
       console.log("Equipo existente, usando ID:", equipoId);
     }
-    
-  };
+
+    // ✅ Retornar el ID para que la función llamante pueda usarlo
+    return equipoId!;
+  } catch (error) {
+    console.error("Error al guardar equipo:", error);
+    Alert.alert("Error", "No se pudo guardar el equipo.");
+    throw error;
+  }
+};
 
   const cargarEquipos = async (clienteId: number | undefined) => {
     // 🔹 Cargar equipos del cliente
@@ -168,7 +153,7 @@ const ClienteScreen = () => {
             {resultados.length > 0 && (
               <View
                 style={{
-                  backgroundColor: "#fff",
+                  backgroundColor: "#d3dffdff",
                   borderRadius: 8,
                   marginTop: 4,
                 }}
@@ -188,7 +173,7 @@ const ClienteScreen = () => {
                       borderColor: "#eee",
                     }}
                   >
-                    <Text style={{ fontWeight: "500" }}>{item.nombre}</Text>
+                    <Text style={{ fontWeight: "500", color: "#333", }}>{item.nombre}</Text>
                     <Text style={{ fontSize: 12, color: "#666" }}>
                       {item.direccion}
                     </Text>
@@ -231,7 +216,7 @@ const ClienteScreen = () => {
           {equipos.length > 0 && (
             <View
               style={{
-                backgroundColor: "#fff",
+                backgroundColor: "#d3dffdff",
                 borderRadius: 8,
                 marginTop: 4,
               }}

@@ -1,18 +1,12 @@
 import { useState } from "react";
-import {
-  View,
-  Text,
-  Image,
-  StyleSheet,
-  ScrollView,
-} from "react-native";
+import { View, Text, Image, StyleSheet, ScrollView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../types/navigation"; // importa tus tipos
 import { Botton } from "./ui/button";
 import BotonFinalizar from "./BotonFinalizar";
 import { useNextSection } from "../hooks/useNextSection";
-import { useReporte } from "../context/ReporteContext"
+import { useReporte } from "../context/ReporteContext";
 
 type FirmaScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -25,7 +19,7 @@ export default function Firma() {
 
   const handleSaveSignature = (uri: string) => {
     setSignature(uri);
-    handleNext("firma", uri)
+    handleNext("firma", uri);
   };
 
   const { handleNext } = useNextSection("firma");
@@ -80,7 +74,10 @@ export default function Firma() {
           </Botton>
         </View>
         <View style={styles.buttonContainer}>
-          <Botton classname={styles.buttonSecundary} onPress={() => setReporte({...reporte, activeTab: "fotos"})}>
+          <Botton
+            classname={styles.buttonSecundary}
+            onPress={() => setReporte({ ...reporte, activeTab: "fotos" })}
+          >
             <Text style={styles.textSecundary}>Anterior</Text>
           </Botton>
           <BotonFinalizar />
@@ -118,7 +115,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#cbd5e1",
     marginBottom: 20,
-    alignSelf: "center"
+    alignSelf: "center",
   },
   button: {
     backgroundColor: "#2563eb",

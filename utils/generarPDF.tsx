@@ -25,4 +25,6 @@ export const generarPDF = async (reporte: any) => {
   } else {
     alert("PDF guardado en: " + uri);
   }
+
+  return uri;
 };
