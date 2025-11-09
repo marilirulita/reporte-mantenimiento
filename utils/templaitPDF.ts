@@ -1,14 +1,18 @@
 export const templaitPDF = (reporte: {
   cliente: {
-    nombre: any;
-    direccion: any;
-    telefono: any;
-    correo: any;
-    marca: any;
-    modelo: any;
-    numeroSerie: any;
-    tipoEquipo: any;
-    ubicacion: any;
+    cliente: {
+      nombre: string;
+      direccion: any;
+      telefono: any;
+      correo: string;
+    };
+    equipo: {
+      marca: any;
+      modelo: any;
+      numeroSerie: any;
+      tipoEquipo: any;
+      ubicacion: any;
+    };
   };
   tecnico: {
     fechaServicio: any;
@@ -37,6 +41,8 @@ export const templaitPDF = (reporte: {
     minute: "2-digit",
   });
 
+  const safe = (value: any) => value ?? ""; // usa nullish coalescing
+
   return `<!DOCTYPE html>
 <html lang="es">
 <head>
@@ -53,8 +59,8 @@ export const templaitPDF = (reporte: {
     }
 
     .page {
-      width: 800px;
-      margin: 40px auto;
+      width: 100%;
+      margin: auto;
       background: white;
       box-shadow: 0 0 10px rgba(0,0,0,0.15);
       border-radius: 8px;
@@ -88,6 +94,19 @@ export const templaitPDF = (reporte: {
       background: #ffffff;
     }
 
+    .row {
+        display: grid;
+        gap: 10px 20px; /* espacio entre campos */
+      }
+
+      .row-2 {
+        grid-template-columns: repeat(2, 1fr); /* dos columnas iguales */
+      }
+
+      .row-3 {
+        grid-template-columns: repeat(3, 1fr); /* dos columnas iguales */
+      }
+
     .section-title {
       background-color: #e2e8f0;
       padding: 10px;
@@ -108,7 +127,7 @@ export const templaitPDF = (reporte: {
     }
 
     .field label {
-      flex: 0 0 180px;
+      margin-right: 10px;
       font-weight: 600;
       color: #374151;
     }
@@ -194,58 +213,91 @@ export const templaitPDF = (reporte: {
 
     <!-- Sección: Cliente -->
     <div class="section">
+    
       <div class="section-title">DATOS DEL CLIENTE</div>
-      <div class="field"><label>Nombre:</label><span>${reporte.cliente.nombre
-    }</span></div>
-      <div class="field"><label>Dirección:</label><span>${reporte.cliente.direccion
-    }</span></div>
-      <div class="field"><label>Teléfono:</label><span>${reporte.cliente.telefono
-    }</span></div>
-      <div class="field"><label>Email:</label><span>${reporte.cliente.correo
-    }</span></div>
+      <div class="row row-2">
+        <div class="field"><label>Nombre:</label><span>${safe(
+          reporte.cliente.cliente.nombre
+        )}</span></div>
+        <div class="field"><label>Email:</label><span>${safe(
+          reporte.cliente.cliente.correo
+        )}</span></div>
+      </div>
+      <div class="row row-2">
+        <div class="field"><label>Dirección:</label><span>${safe(
+          reporte.cliente.cliente.direccion
+        )}</span></div>
+        <div class="field"><label>Teléfono:</label><span>${safe(
+          reporte.cliente?.cliente?.telefono
+        )}
+      </span></div>
+      </div>
     </div> 
 
     <!-- Sección: Equipo -->
     <div class="section">
       <div class="section-title">DATOS DEL EQUIPO</div>
-      <div class="field"><label>Marca:</label><span>${reporte.cliente.marca
-    }</span></div>
-      <div class="field"><label>Modelo:</label><span>${reporte.cliente.modelo
-    }</span></div>
-      <div class="field"><label>Serie:</label><span>${reporte.cliente.numeroSerie
-    }</span></div>
-      <div class="field"><label>Tipo:</label><span>${reporte.cliente.tipoEquipo
-    }</span></div>
-      <div class="field"><label>Ubicación:</label><span>${reporte.cliente.ubicacion
-    }</span></div>
+      <div class="row row-3">
+      <div class="field"><label>Marca:</label><span>${safe(
+        reporte.cliente.equipo.marca
+      )}</span></div>
+      <div class="field"><label>Modelo:</label><span>${safe(
+        reporte.cliente.equipo.modelo
+      )}</span></div>
+      <div class="field"><label>Serie:</label><span>${safe(
+        reporte.cliente.equipo.numeroSerie
+      )}</span></div>
+      </div>
+      <div class="row row-3">
+      <div class="field"><label>Tipo:</label><span>${safe(
+        reporte.cliente.equipo.tipoEquipo
+      )}</span></div>
+      <div class="field"><label>Ubicación:</label><span>${safe(
+        reporte.cliente.equipo.ubicacion
+      )}</span></div>
+      <div class="field"><label></label><span></span></div>
+      </div>
     </div>
 
     <!-- Sección: Servicio -->
     <div class="section">
       <div class="section-title">DATOS DEL SERVICIO</div>
-      <div class="field field-tecnico"><label>Fecha:</label><span>${reporte.tecnico.fechaServicio
-    }</span></div>
-      <div class="field field-tecnico"><label>Técnico:</label><span>
-      ${reporte.tecnico.nombreTecnico}</span></div>
-      <div class="field field-tecnico"><label>Estado del equipo:</label><span>${reporte.tecnico.estadoEquipo
-    }</span></div>
+      <div class="row row-3">
+        <div class="field"><label>Fecha:</label><span>${safe(
+          reporte.tecnico.fechaServicio
+        )}</span></div>
+        <div class="field"><label>Técnico:</label><span>${safe(reporte.tecnico.nombreTecnico)}</span></div>
+        <div class="field"><label>Estado del equipo:</label><span>${safe(
+          reporte.tecnico.estadoEquipo
+        )}</span></div>
+      </div>
     </div>
 
     <!-- Sección: Mediciones -->
     <div class="section">
       <div class="section-title">MEDICIONES TÉCNICAS</div>
-      <div class="field field-tecnico"><label>Tipo de Refrigerante:</label><span>${reporte.tecnico.tipoRefrigerante
-    }</span></div>
-      <div class="field field-tecnico"><label>Presión (psi):</label><span>${reporte.tecnico.presion
-    }</span></div>
-      <div class="field field-tecnico"><label>Temp. Ambiente (°C):</label><span>${reporte.tecnico.temperaturaAmbiente
-    }</span></div>
-      <div class="field field-tecnico"><label>Temp. Equipo (°C):</label><span>${reporte.tecnico.temperaturaEquipo
-    }</span></div>
-      <div class="field field-tecnico"><label>Voltaje (V):</label><span>${reporte.tecnico.voltaje
-    }</span></div>
-      <div class="field field-tecnico"><label>Amperaje (A):</label><span>${reporte.tecnico.amperaje
-    }</span></div>
+      <div class="row row-3">
+      <div class="field"><label>Tipo de Refrigerante:</label><span>${safe(
+        reporte.tecnico.tipoRefrigerante
+      )}</span></div>
+      <div class="field"><label>Presión:</label><span>${safe(
+        reporte.tecnico.presion
+      )+" psi"}</span></div>
+      <div class="field"><label>Temp. Ambiente:</label><span>${safe(
+        reporte.tecnico.temperaturaAmbiente
+      )+"°C"}</span></div>
+      </div>
+      <div class="row row-3">
+      <div class="field"><label>Temp. Equipo:</label><span>${safe(
+        reporte.tecnico.temperaturaEquipo
+      )+"°C"}</span></div>
+      <div class="field"><label>Voltaje:</label><span>${safe(
+        reporte.tecnico.voltaje
+      )+"V"}</span></div>
+      <div class="field"><label>Amperaje:</label><span>${safe(
+        reporte.tecnico.amperaje
+      )+"A"}</span></div>
+      </div>
     </div>
 
     <!-- Sección: Trabajo Realizado -->
@@ -277,10 +329,14 @@ export const templaitPDF = (reporte: {
       <div class="section-title">FOTOGRAFÍAS DEL EQUIPO</div>
       <div class="photos">
         <div class="fotos">
-          ${reporte.fotos.map((foto, i) => 
-            `<div class="foto">
+          ${reporte.fotos
+            .map(
+              (foto, i) =>
+                `<div class="foto">
               <img src="${foto}" alt="Foto ${i + 1}" />
-            </div>`).join("")}
+            </div>`
+            )
+            .join("")}
         </div>
       </div>
     </div>
@@ -288,11 +344,12 @@ export const templaitPDF = (reporte: {
     <div class="section">
       <div class="section-title">FIRMA DEL CLIENTE</div>
       <div class="signature">
-      ${reporte.firma
-      ? `<img src="${reporte.firma}" style="width:200px; height:100px;" />
-          <p>${reporte.cliente.nombre}</p>`
-      : "<p>No se registró firma</p>"
-    }
+      ${
+        reporte.firma
+          ? `<img src="${reporte.firma}" style="width:200px; height:100px;" />
+          <p>${reporte.cliente.cliente.nombre}</p>`
+          : "<p>No se registró firma</p>"
+      }
       </div>
     </div>
 
