@@ -31,7 +31,7 @@ const BotonFinalizar = () => {
       return;
     }
 
-    const PDFuri = await generarPDF(reporte);
+    const PDFuri = await generarPDF(reporte, false);
 
     setReporteCompleto({
       idCliente: reporte.cliente.cliente.id,

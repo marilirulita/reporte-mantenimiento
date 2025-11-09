@@ -72,7 +72,6 @@ const ClienteScreen = () => {
     // 🧩 1. Crear cliente si es nuevo
     if (!clienteId || clienteId === 0) {
       clienteId = await addCliente(cliente); // addCliente debe retornar el ID
-      console.log("Nuevo cliente creado con ID:", clienteId);
       setCliente((prev) => ({ ...prev, id: clienteId }));
     } else {
       console.log("Cliente existente, usando ID:", clienteId);
@@ -87,7 +86,6 @@ const ClienteScreen = () => {
       equipo: { ...equipo, id: equipoId, idCliente: clienteId },
     });
 
-    console.log("Reporte guardado:", clienteId, equipoId);
   } catch (error) {
     console.error("Error al guardar cliente/equipo:", error);
     Alert.alert("Error", "No se pudo guardar la información.");
@@ -101,7 +99,6 @@ const ClienteScreen = () => {
     if (!equipoId || equipoId === 0) {
       // 🧩 Insertar nuevo equipo en la base de datos
       equipoId = await addEquipo(equipo, clienteId);
-      console.log("Nuevo equipo creado con ID:", equipoId);
 
       // Actualizar el estado local (sin depender de él)
       setEquipo((prev) => ({ ...prev, id: equipoId }));

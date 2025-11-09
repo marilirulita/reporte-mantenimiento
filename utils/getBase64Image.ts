@@ -6,7 +6,6 @@ const getBase64Image = async (uri: string) => {
     const base64 = await FileSystem.readAsStringAsync(uri, {
       encoding: "base64",
     });
-    console.log(base64);
     return `data:image/jpeg;base64,${base64}`;
   } catch (error) {
     console.error("Error al convertir imagen:", error);

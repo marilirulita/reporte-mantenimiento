@@ -1,60 +1,65 @@
-import React, { useState } from "react";
 import {
-  View,
+  deleteReporte,
+  getReportesConCliente
+} from "@/db/databaseActions";
+import { Reporte } from "@/models/Reporte";
+import { LinearGradient } from "expo-linear-gradient";
+import { useRouter } from "expo-router";
+import {
+  Calendar,
+  ClipboardList,
+  Download,
+  FileText,
+  Search,
+  Trash2,
+  User,
+} from "lucide-react-native";
+import React, { useEffect, useState } from "react";
+import {
+  FlatList,
+  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
-  FlatList,
-  StyleSheet,
+  View,
 } from "react-native";
-import {
-  ClipboardList,
-  Search,
-  FileText,
-  Download,
-  Trash2,
-  Calendar,
-  User,
-} from "lucide-react-native";
-import { useRouter } from "expo-router";
-import { LinearGradient } from "expo-linear-gradient";
-
-interface Reporte {
-  id: string;
-  cliente: string;
-  tecnico: string;
-  fecha: string;
-  equipo: string;
-}
+import { generarPDF } from "../utils/generarPDF";
 
 export default function HistorialScreen() {
   const router = useRouter();
   const [busqueda, setBusqueda] = useState("");
-  const [reportes, setReportes] = useState<Reporte[]>([
-    {
-      id: "1",
-      cliente: "maría juana",
-      tecnico: "maría díaz",
-      fecha: "31 de octubre de 2025",
-      equipo: "lg abc123",
-    },
-    {
-      id: "2",
-      cliente: "mar bautista",
-      tecnico: "Mario López",
-      fecha: "31 de octubre de 2025",
-      equipo: "lg abc123",
-    },
-  ]);
+  const [reportes, setReportes] = useState<Reporte[]>([]);
 
-  const eliminarReporte = (id: string) => {
-    setReportes((prev) => prev.filter((r) => r.id !== id));
+  // tengo que buscar como traer el nombre del cliente y del equipo del reporte
+
+  useEffect(() => {
+    cargarReportes();
+  }, []);
+
+  async function cargarReportes() {
+    //const data = await getAllReportes();
+    const data = await getReportesConCliente();
+    setReportes(data);
+  }
+
+  const descargarPDF = async (id: number) => {
+    const reporte = reportes.find((r) => r.id === id);
+    if (!reporte) return alert("Reporte no encontrado");
+    await generarPDF(reporte, true);
+    alert("PDF generado con éxito ✅");
   };
 
-  const renderReporte = ({ item }: { item: Reporte }) => (
+  const handleEliminar = async (id: number) => {
+    await deleteReporte(id);
+    cargarReportes();
+    setReportes((prev) => prev.filter((r) => r.id !== id));
+    alert("Reporte Eliminado");
+  };
+
+  const renderReporte = ({ item }: { item: Reporte | any }) => (
     <View style={styles.reporteCard}>
       <View style={styles.reporteInfo}>
-        <Text style={styles.reporteCliente}>{item.cliente}</Text>
+        <Text style={styles.reporteCliente}>{item.nombre}</Text>
 
         <View style={styles.reporteDetalle}>
           <Calendar size={16} color="#475569" />
@@ -68,18 +73,21 @@ export default function HistorialScreen() {
 
         <View style={styles.reporteDetalle}>
           <FileText size={16} color="#475569" />
-          <Text style={styles.reporteTexto}>{item.equipo}</Text>
+          <Text style={styles.reporteTexto}>{item.tipoEquipo}- {item.marca} - {item.modelo}</Text>
         </View>
       </View>
 
       <View style={styles.reporteBotones}>
-        <TouchableOpacity style={styles.btnDescargar}>
+        <TouchableOpacity
+          style={styles.btnDescargar}
+          onPress={() => descargarPDF(item.id!)}
+        >
           <Download size={18} color="#1e293b" />
         </TouchableOpacity>
 
         <TouchableOpacity
           style={styles.btnEliminar}
-          onPress={() => eliminarReporte(item.id)}
+          onPress={() => handleEliminar(item.id!)}
         >
           <Trash2 size={18} color="#ef4444" />
         </TouchableOpacity>
@@ -109,7 +117,7 @@ export default function HistorialScreen() {
 
       {/* Barra de búsqueda */}
       <View style={styles.searchContainer}>
-        <Search size={24} color="#94a3b8" style={{ marginRight: 6, }} />
+        <Search size={24} color="#94a3b8" style={{ marginRight: 6 }} />
         <TextInput
           placeholder="Buscar por cliente, técnico, marca..."
           value={busqueda}
@@ -138,12 +146,11 @@ export default function HistorialScreen() {
             <Text style={styles.primaryButtonText}>Crear Primer Reporte</Text>
           </TouchableOpacity>
         </View>
-        
       ) : (
         <FlatList
           data={reportes}
           renderItem={renderReporte}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item) => item.id!.toString()}
           contentContainerStyle={{ paddingBottom: 40 }}
         />
       )}
@@ -214,7 +221,8 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "#1e293b",
     marginBottom: 6,
-  },emptySubtitle: {
+  },
+  emptySubtitle: {
     fontSize: 13,
     color: "#64748b",
     textAlign: "center",

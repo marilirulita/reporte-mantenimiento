@@ -71,6 +71,7 @@ export const deleteEquipo = (id: number) => {
 
 export const addReporte = async (reporte: Reporte) => {
   const fotosJSON = JSON.stringify(reporte.fotos ?? []);
+  console.log(fotosJSON);
   const result = await db.runAsync(
     `INSERT INTO reportes (
       idCliente,
@@ -118,8 +119,18 @@ export const getReportes = (): Reporte[] => {
   const result = db.getAllSync<Reporte>(`SELECT * FROM reportes ORDER BY id DESC;`);
   return result.map((r) => ({
     ...r,
-   // fotos: r.fotos ? JSON.parse(r.fotos) : [],
-  }));
+    fotos: (() => {
+      // Convertimos string → array si es necesario
+      if (typeof r.fotos === "string") {
+        try {
+          return JSON.parse(r.fotos);
+        } catch {
+          return [];
+        }
+      }
+      return Array.isArray(r.fotos) ? r.fotos : [];
+    })()
+}))
 };
 
 export const deleteReporte = (id: number) => {
