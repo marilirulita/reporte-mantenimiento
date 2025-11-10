@@ -4,6 +4,7 @@ import { createContext, useContext, useState } from "react";
 interface ReporteData {
   activeTab: string;
   cliente: any;
+  equipo: any;
   tecnico: any;
   fotos: string[];
   firma: null;
@@ -20,10 +21,13 @@ export const ReporteProvider = ({ children }: { children: React.ReactNode }) => 
   const [reporte, setReporte] = useState<ReporteData>({
     activeTab: "cliente",
     cliente: {},
+    equipo: {},
     tecnico: {},
     fotos: [],
     firma: null,
   });
+
+  console.log(reporte);
   return (
     <ReporteContext.Provider value={{ reporte, setReporte }}>
       {children}

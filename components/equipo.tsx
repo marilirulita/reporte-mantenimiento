@@ -6,6 +6,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import { useNextSection } from "../hooks/useNextSection";
 import { useReporte } from "../context/ReporteContext";
 import { Picker } from "@react-native-picker/picker";
+import uuid from 'react-native-uuid';
 
 export default function Equipo() {
   const dateToday = new Date().toLocaleDateString("es-MX", {
@@ -13,46 +14,105 @@ export default function Equipo() {
     month: "2-digit",
     year: "numeric",
   });
+  const folio = `R-${uuid.v4().slice(0,6).toUpperCase()}`; // R-9A2FBC
+  const [numCompresores, setNumCompresores] = useState(1);
+
   const [infServicio, setInfServicio] = useState({
-    fechaServicio: dateToday,
-    nombreTecnico: "",
-    estadoEquipo: "",
+    reporte_numero: folio,
+    fecha_ejecucion: dateToday,
+    tecnico_nombre: "",
+    //orden_trabajo: "",
   });
 
-  const [medicionesTécnicas, setMedicionesTécnicas] = useState({
-    tipoRefrigerante: "",
-    presion: "",
-    temperaturaAmbiente: "",
-    temperaturaEquipo: "",
+  const [compresores, setCompresores] = useState({
+    compresor1_amps: "",
+    compresor1_referencia: "",
+    compresor1_baja: "",
+    compresor1_alta: "",
+    compresor1_aceite: "",
+
+    compresor2_amps: "",
+    compresor2_referencia: "",
+    compresor2_baja: "",
+    compresor2_alta: "",
+    compresor2_aceite: "",
+
+    compresor3_amps: "",
+    compresor3_referencia: "",
+    compresor3_baja: "",
+    compresor3_alta: "",
+    compresor3_aceite: "",
+  });
+
+  const [motores, setMotores] = useState({
+    motor1_amps: "",
+    motor2_amps: "",
+    motor3_amps: "",
+    motor4_amps: "",
+    motor5_amps: "",
+    motor6_amps: "",
+    linea_motor1_referencia: "",
+    linea_motor2_referencia: "",
+  });
+
+  const [evaporador, setEvaporador] = useState({
+    evaporador_amps: "",
+    evaporador_referencia: "",
+    evaporador_banda: "",
+    evaporador_medida: "",
+    evaporador_filtro_retorno: "",
+  });
+
+  const [medicionesGenerales, setMedicionesGenerales] = useState({
+    temp_int: "",
+    temp_ext: "",
     voltaje: "",
-    amperaje: "",
+    ruidos_extranos: "",
   });
 
   const [detallesServicio, setDetallesServicio] = useState({
-    trabajoRealizado: "",
-    observaciones: "",
-    observacionesAdicionales: "",
+    actividades_realizadas: "",
+    recomendaciones: "",
+    cobro_servicio: "",
   });
 
   const { handleNext } = useNextSection("fotos");
   const { reporte, setReporte } = useReporte();
   const saveTecnico = () => {
     if (
-      !infServicio.fechaServicio.trim() ||
-      !infServicio.nombreTecnico.trim() ||
-      !infServicio.estadoEquipo.trim() ||
-      !detallesServicio.trabajoRealizado.trim()
+      !compresores.compresor1_aceite.trim() ||
+      !compresores.compresor1_alta.trim() ||
+      !compresores.compresor1_amps.trim() ||
+      !compresores.compresor1_baja.trim() ||
+      !compresores.compresor1_referencia.trim() ||
+      !motores.motor1_amps.trim() ||
+      !evaporador.evaporador_amps.trim() ||
+      !evaporador.evaporador_banda.trim() ||
+      !evaporador.evaporador_filtro_retorno.trim() ||
+      !evaporador.evaporador_medida.trim() ||
+      !evaporador.evaporador_referencia.trim() ||
+      !medicionesGenerales.ruidos_extranos.trim() ||
+      !medicionesGenerales.temp_ext.trim() ||
+      !medicionesGenerales.temp_int.trim() ||
+      !medicionesGenerales.voltaje.trim() ||
+      !infServicio.tecnico_nombre.trim() ||
+      !detallesServicio.cobro_servicio.trim() ||
+      !detallesServicio.recomendaciones.trim() ||
+      !detallesServicio.actividades_realizadas.trim()
     ) {
       Alert.alert(
         "Campos requeridos",
-        "Por favor, completa fecha, nombre del tecnico y observaciones."
+        "Por favor, completa fecha, nombre del tecnico, observaciones..."
       );
       return;
     }
     // 🧩 3. Guardar en el contexto global
     handleNext("tecnico", {
       ...infServicio,
-      ...medicionesTécnicas,
+      ...compresores,
+      ...motores,
+      ...evaporador,
+      ...medicionesGenerales,
       ...detallesServicio,
     });
   };
@@ -72,9 +132,9 @@ export default function Equipo() {
               <Text style={styles.label}>Fecha de Servicio *</Text>
               <CustomInput
                 placeholder="25/10/2025"
-                value={infServicio.fechaServicio}
+                value={infServicio.fecha_ejecucion}
                 setValue={(text) =>
-                  setInfServicio({ ...infServicio, fechaServicio: text })
+                  setInfServicio({ ...infServicio, fecha_ejecucion: text })
                 }
               />
             </View>
@@ -83,124 +143,378 @@ export default function Equipo() {
               <Text style={styles.label}>Nombre del Técnico *</Text>
               <CustomInput
                 placeholder="Carlos López"
-                value={infServicio.nombreTecnico}
+                value={infServicio.tecnico_nombre}
                 setValue={(text) =>
-                  setInfServicio({ ...infServicio, nombreTecnico: text })
+                  setInfServicio({ ...infServicio, tecnico_nombre: text })
                 }
               />
             </View>
-          </View>
-
-          <Text style={styles.label}>Estado del Equipo *</Text>
-          <View style={styles.containerPicker}>
-            <Picker
-              selectedValue={infServicio.estadoEquipo}
-              onValueChange={(text) =>
-                setInfServicio({ ...infServicio, estadoEquipo: text })
-              }
-              style={styles.picker}
-            >
-              <Picker.Item label="Seleccione una opción" value="" />
-              <Picker.Item label="Excelente" value="Excelente" />
-              <Picker.Item label="Bueno" value="Bueno" />
-              <Picker.Item label="Regular" value="Regular" />
-              <Picker.Item label="Malo" value="Malo" />
-              <Picker.Item label="Crítico" value="Crítico" />
-            </Picker>
           </View>
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Mediciones Técnicas</Text>
+          <Text style={styles.sectionTitle}>Compresores</Text>
 
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center", // Alinea verticalmente al centro
+              justifyContent: "space-between",
+              width: "100%",
+              paddingVertical: 6,
+            }}
+          >
+            <Text style={[styles.label, { marginRight: 10 }]}>
+              No. de compresores *
+            </Text>
+            <View style={styles.picker}>
+              <Picker
+                selectedValue={numCompresores}
+                onValueChange={(value) => setNumCompresores(value)}
+              >
+                <Picker.Item label="1" value={1} />
+                <Picker.Item label="2" value={2} />
+                <Picker.Item label="3" value={3} />
+              </Picker>
+            </View>
+          </View>
+
+          {Array.from({ length: numCompresores }, (_, i) => (
+            <View key={i}>
+          <Text style={styles.label}>Compresor {i + 1}</Text>
           <View style={styles.row}>
             <View style={styles.column}>
-              <Text style={styles.label}>Tipo de Refrigerante</Text>
+              <Text style={styles.label}>Amps</Text>
               <CustomInput
-                placeholder="R-22; R-134a; R-404A..."
-                value={medicionesTécnicas.tipoRefrigerante}
+                placeholder="Amps"
+                value={compresores[`compresor${i + 1}_amps` as keyof typeof compresores]}
                 setValue={(text) =>
-                  setMedicionesTécnicas({
-                    ...medicionesTécnicas,
-                    tipoRefrigerante: text,
+                  setCompresores({
+                    ...compresores,
+                    [`compresor${i + 1}_amps`]: text,
                   })
                 }
               />
             </View>
 
             <View style={styles.column}>
-              <Text style={styles.label}>Presión (PSI)</Text>
+              <Text style={styles.label}>Baja</Text>
               <CustomInput
-                placeholder="65 PSI"
-                value={medicionesTécnicas.presion}
+                placeholder="Psi"
+                value={compresores[`compresor${i + 1}_baja` as keyof typeof compresores]}
                 setValue={(text) =>
-                  setMedicionesTécnicas({
-                    ...medicionesTécnicas,
-                    presion: text,
+                  setCompresores({
+                    ...compresores,
+                    [`compresor${i + 1}_baja`]: text,
                   })
                 }
-                keyboardType="phone-pad"
+              />
+            </View>
+
+            <View style={styles.column}>
+              <Text style={styles.label}>Alta</Text>
+              <CustomInput
+                placeholder="Psi"
+                value={compresores[`compresor${i + 1}_alta` as keyof typeof compresores]}
+                setValue={(text) =>
+                  setCompresores({
+                    ...compresores,
+                    [`compresor${i + 1}_alta`]: text,
+                  })
+                }
               />
             </View>
           </View>
 
           <View style={styles.row}>
             <View style={styles.column}>
-              <Text style={styles.label}>Temperatura Ambiente (°C)</Text>
+              <Text style={styles.label}>Referencia</Text>
               <CustomInput
-                placeholder="25°C"
-                value={medicionesTécnicas.temperaturaAmbiente}
+                placeholder="Psi"
+                value={compresores[`compresor${i + 1}_referencia` as keyof typeof compresores]}
                 setValue={(text) =>
-                  setMedicionesTécnicas({
-                    ...medicionesTécnicas,
-                    temperaturaAmbiente: text,
+                  setCompresores({
+                    ...compresores,
+                    [`compresor${i + 1}_referencia`]: text,
                   })
                 }
-                keyboardType="phone-pad"
               />
             </View>
 
             <View style={styles.column}>
-              <Text style={styles.label}>Temperatura del Equipo (°C)</Text>
+              <Text style={styles.label}>Aceite</Text>
               <CustomInput
-                placeholder="4°C"
-                value={medicionesTécnicas.temperaturaEquipo}
+                placeholder="..."
+                value={compresores[`compresor${i + 1}_aceite` as keyof typeof compresores]}
                 setValue={(text) =>
-                  setMedicionesTécnicas({
-                    ...medicionesTécnicas,
-                    temperaturaEquipo: text,
+                  setCompresores({
+                    ...compresores,
+                    [`compresor${i + 1}_aceite`]: text,
                   })
                 }
-                keyboardType="phone-pad"
+              />
+            </View>
+            
+          </View>
+          </View>
+          ))}
+        </View>
+      
+
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Motores de Condensador</Text>
+          <View style={styles.row}>
+            <View style={styles.column}>
+              <Text style={styles.label}>Motor 1</Text>
+              <CustomInput
+                placeholder="Amps"
+                value={motores.motor1_amps}
+                setValue={(text) =>
+                  setMotores({
+                    ...motores,
+                    motor1_amps: text,
+                  })
+                }
+              />
+            </View>
+
+            <View style={styles.column}>
+              <Text style={styles.label}>Motor 2</Text>
+              <CustomInput
+                placeholder="Amps"
+                value={motores.motor2_amps}
+                setValue={(text) =>
+                  setMotores({
+                    ...motores,
+                    motor2_amps: text,
+                  })
+                }
+              />
+            </View>
+
+            <View style={styles.column}>
+              <Text style={styles.label}>Motor 3</Text>
+              <CustomInput
+                placeholder="Amps"
+                value={motores.motor3_amps}
+                setValue={(text) =>
+                  setMotores({
+                    ...motores,
+                    motor3_amps: text,
+                  })
+                }
+              />
+            </View>
+          </View>
+          <View style={styles.row}>
+            <View style={styles.column}>
+              <Text style={styles.label}>Motor 4</Text>
+              <CustomInput
+                placeholder="Amps"
+                value={motores.motor4_amps}
+                setValue={(text) =>
+                  setMotores({
+                    ...motores,
+                    motor4_amps: text,
+                  })
+                }
+              />
+            </View>
+
+            <View style={styles.column}>
+              <Text style={styles.label}>Motor 5</Text>
+              <CustomInput
+                placeholder="Amps"
+                value={motores.motor5_amps}
+                setValue={(text) =>
+                  setMotores({
+                    ...motores,
+                    motor5_amps: text,
+                  })
+                }
+              />
+            </View>
+
+            <View style={styles.column}>
+              <Text style={styles.label}>Motor 6</Text>
+              <CustomInput
+                placeholder="Amps"
+                value={motores.motor6_amps}
+                setValue={(text) =>
+                  setMotores({
+                    ...motores,
+                    motor6_amps: text,
+                  })
+                }
               />
             </View>
           </View>
 
           <View style={styles.row}>
             <View style={styles.column}>
-              <Text style={styles.label}>Voltaje (V)</Text>
+              <Text style={styles.label}>Referencia 1</Text>
               <CustomInput
-                placeholder="220V"
-                value={medicionesTécnicas.voltaje}
+                placeholder="Amps"
+                value={motores.linea_motor1_referencia}
                 setValue={(text) =>
-                  setMedicionesTécnicas({
-                    ...medicionesTécnicas,
+                  setMotores({
+                    ...motores,
+                    linea_motor1_referencia: text,
+                  })
+                }
+              />
+            </View>
+
+            <View style={styles.column}>
+              <Text style={styles.label}>Referencia 2</Text>
+              <CustomInput
+                placeholder="Amps"
+                value={motores.linea_motor2_referencia}
+                setValue={(text) =>
+                  setMotores({
+                    ...motores,
+                    linea_motor2_referencia: text,
+                  })
+                }
+              />
+            </View>
+          </View>
+        </View>
+
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Evaporador</Text>
+
+          <View style={styles.row}>
+            <View style={styles.column}>
+              <Text style={styles.label}>Amps</Text>
+              <CustomInput
+                placeholder="Amps"
+                value={evaporador.evaporador_amps}
+                setValue={(text) =>
+                  setEvaporador({
+                    ...evaporador,
+                    evaporador_amps: text,
+                  })
+                }
+              />
+            </View>
+
+            <View style={styles.column}>
+              <Text style={styles.label}>Banda</Text>
+              <CustomInput
+                placeholder="..."
+                value={evaporador.evaporador_banda}
+                setValue={(text) =>
+                  setEvaporador({
+                    ...evaporador,
+                    evaporador_banda: text,
+                  })
+                }
+              />
+            </View>
+
+            <View style={styles.column}>
+              <Text style={styles.label}>Medida</Text>
+              <CustomInput
+                placeholder="..."
+                value={evaporador.evaporador_medida}
+                setValue={(text) =>
+                  setEvaporador({
+                    ...evaporador,
+                    evaporador_medida: text,
+                  })
+                }
+              />
+            </View>
+          </View>
+
+          <View style={styles.row}>
+            <View style={styles.column}>
+              <Text style={styles.label}>Referencia</Text>
+              <CustomInput
+                placeholder="..."
+                value={evaporador.evaporador_referencia}
+                setValue={(text) =>
+                  setEvaporador({
+                    ...evaporador,
+                    evaporador_referencia: text,
+                  })
+                }
+              />
+            </View>
+
+            <View style={styles.column}>
+              <Text style={styles.label}>Filtro Retorno</Text>
+              <CustomInput
+                placeholder="..."
+                value={evaporador.evaporador_filtro_retorno}
+                setValue={(text) =>
+                  setEvaporador({
+                    ...evaporador,
+                    evaporador_filtro_retorno: text,
+                  })
+                }
+              />
+            </View>
+          </View>
+        </View>
+
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Mediciones Generales</Text>
+
+          <View style={styles.row}>
+            <View style={styles.column}>
+              <Text style={styles.label}>Voltaje</Text>
+              <CustomInput
+                placeholder="..."
+                value={medicionesGenerales.voltaje}
+                setValue={(text) =>
+                  setMedicionesGenerales({
+                    ...medicionesGenerales,
                     voltaje: text,
                   })
                 }
-                keyboardType="phone-pad"
               />
             </View>
 
             <View style={styles.column}>
-              <Text style={styles.label}>Amperaje (A)</Text>
+              <Text style={styles.label}>Temp. Int</Text>
               <CustomInput
-                placeholder="5.2A"
-                value={medicionesTécnicas.amperaje}
+                placeholder="..."
+                value={medicionesGenerales.temp_int}
                 setValue={(text) =>
-                  setMedicionesTécnicas({
-                    ...medicionesTécnicas,
-                    amperaje: text,
+                  setMedicionesGenerales({
+                    ...medicionesGenerales,
+                    temp_int: text,
+                  })
+                }
+              />
+            </View>
+            <View style={styles.column}>
+              <Text style={styles.label}>Temp. Ext</Text>
+              <CustomInput
+                placeholder="..."
+                value={medicionesGenerales.temp_ext}
+                setValue={(text) =>
+                  setMedicionesGenerales({
+                    ...medicionesGenerales,
+                    temp_ext: text,
+                  })
+                }
+              />
+            </View>
+          </View>
+
+          <View style={styles.row}>
+            <View style={styles.column}>
+              <Text style={styles.label}>Ruidos Extraños</Text>
+              <CustomInput
+                placeholder="..."
+                value={medicionesGenerales.ruidos_extranos}
+                setValue={(text) =>
+                  setMedicionesGenerales({
+                    ...medicionesGenerales,
+                    ruidos_extranos: text,
                   })
                 }
               />
@@ -211,40 +525,42 @@ export default function Equipo() {
         <View style={[styles.section, { marginBottom: 50 }]}>
           <Text style={styles.sectionTitle}>Detalles del Servicio</Text>
 
-          <Text style={styles.label}>Trabajo Realizado *</Text>
+          <Text style={styles.label}>Actividades Realizadas *</Text>
           <CustomInput
             placeholder="Descripción detallada del trabajo realizado..."
-            value={detallesServicio.trabajoRealizado}
+            value={detallesServicio.actividades_realizadas}
             setValue={(text) =>
               setDetallesServicio({
                 ...detallesServicio,
-                trabajoRealizado: text,
+                actividades_realizadas: text,
               })
             }
             multiline={true}
           />
 
-          <Text style={styles.label}>Observaciones</Text>
+          <Text style={styles.label}>Recomendaciones *</Text>
           <CustomInput
             placeholder="Observaciones adicionales..."
-            value={detallesServicio.observaciones}
+            value={detallesServicio.recomendaciones}
             setValue={(text) =>
-              setDetallesServicio({ ...detallesServicio, observaciones: text })
+              setDetallesServicio({
+                ...detallesServicio,
+                recomendaciones: text,
+              })
             }
             multiline={true}
           />
 
-          <Text style={styles.label}>Observaciones adicionales...</Text>
+          <Text style={styles.label}>Precio del Servicio *</Text>
           <CustomInput
-            placeholder="Recomendaciones para el cliente..."
-            value={detallesServicio.observacionesAdicionales}
+            placeholder="Cobro por servicio..."
+            value={detallesServicio.cobro_servicio}
             setValue={(text) =>
               setDetallesServicio({
                 ...detallesServicio,
-                observacionesAdicionales: text,
+                cobro_servicio: text,
               })
             }
-            multiline={true}
           />
 
           <View style={styles.buttonContainer}>
@@ -271,15 +587,11 @@ const styles = StyleSheet.create({
   container: {
     marginVertical: 10,
   },
-  containerPicker: {
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 12,
-  },
   picker: {
     borderWidth: 1,
-    borderColor: "#ccc",
+    borderColor: "#aaa",
     borderRadius: 12,
+   flex: 0.9,
   },
   section: {
     marginBottom: 32, // mb-8

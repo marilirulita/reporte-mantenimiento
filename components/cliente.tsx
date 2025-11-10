@@ -1,23 +1,24 @@
-import React, { useState, useEffect } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  Alert,
-  TouchableOpacity,
-} from "react-native";
-import CustomInput from "./ui/custom-input";
-import { Botton } from "./ui/button";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import { useNextSection } from "../hooks/useNextSection";
 import {
   addCliente,
   addEquipo,
   buscarClientesPorNombre,
   getEquiposByClienteId,
+  getAllReportes,
 } from "@/db/databaseActions";
-import { Cliente, Equipo } from "@/models/Reporte";
+import { Cliente, Equipo } from "@/models/interfaces";
+import React, { useEffect, useState } from "react";
+import {
+  Alert,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { useNextSection } from "../hooks/useNextSection";
+import { Botton } from "./ui/button";
+import CustomInput from "./ui/custom-input";
 
 const ClienteScreen = () => {
   const [busqueda, setBusqueda] = useState("");
@@ -28,17 +29,18 @@ const ClienteScreen = () => {
     nombre: "",
     direccion: "",
     telefono: "",
-    email: "",
+    referencia: "",
   });
 
   const [equipo, setEquipo] = useState<Equipo>({
     id: 0,
-    idCliente: 0,
+    cliente_id: 0,
     marca: "",
     modelo: "",
-    numeroSerie: "",
-    tipoEquipo: "",
-    ubicacionEquipo: "",
+    serie: "",
+    descripcion: "",
+    ton_volt: "",
+    area: "",
   });
 
   useEffect(() => {
@@ -56,70 +58,84 @@ const ClienteScreen = () => {
   const { handleNext } = useNextSection("tecnico");
 
   const saveClienteEquipo = async () => {
-  if (!cliente.nombre.trim() || !cliente.direccion.trim() || !cliente.telefono?.trim()) {
-    Alert.alert("Campos requeridos", "Por favor, completa nombre, telefono y dirección.");
-    return;
-  }
-
-  if (!equipo.marca.trim() || !equipo.modelo.trim() || !equipo.tipoEquipo.trim()) {
-    Alert.alert("Campos requeridos", "Por favor, completa datos del equipo: marca, modelo, tipo de equipo");
-    return;
-  }
-
-  let clienteId = cliente.id;
-
-  try {
-    // 🧩 1. Crear cliente si es nuevo
-    if (!clienteId || clienteId === 0) {
-      clienteId = await addCliente(cliente); // addCliente debe retornar el ID
-      setCliente((prev) => ({ ...prev, id: clienteId }));
-    } else {
-      console.log("Cliente existente, usando ID:", clienteId);
+    if (
+      !cliente.nombre.trim() ||
+      !cliente.direccion.trim() ||
+      !cliente.telefono?.trim()
+    ) {
+      Alert.alert(
+        "Campos requeridos",
+        "Por favor, completa nombre, telefono y dirección del cliente."
+      );
+      return;
     }
 
-    // 🧩 2. Crear equipo asociado al cliente
-    const equipoId = await saveEquipo(equipo, clienteId);
-
-    // 🧩 3. Guardar en contexto global
-    handleNext("cliente", {
-      cliente: { ...cliente, id: clienteId },
-      equipo: { ...equipo, id: equipoId, idCliente: clienteId },
-    });
-
-  } catch (error) {
-    console.error("Error al guardar cliente/equipo:", error);
-    Alert.alert("Error", "No se pudo guardar la información.");
-  }
-};
-
-  const saveEquipo = async (equipo: Equipo, clienteId: number): Promise<number> => {
-  let equipoId = equipo.id;
-
-  try {
-    if (!equipoId || equipoId === 0) {
-      // 🧩 Insertar nuevo equipo en la base de datos
-      equipoId = await addEquipo(equipo, clienteId);
-
-      // Actualizar el estado local (sin depender de él)
-      setEquipo((prev) => ({ ...prev, id: equipoId }));
-    } else {
-      console.log("Equipo existente, usando ID:", equipoId);
+    if (!equipo.marca.trim() || !equipo.modelo.trim() || !equipo.serie.trim()) {
+      Alert.alert(
+        "Campos requeridos",
+        "Por favor, completa datos del equipo: marca, modelo, serie del equipo."
+      );
+      return;
     }
 
-    // ✅ Retornar el ID para que la función llamante pueda usarlo
-    return equipoId!;
-  } catch (error) {
-    console.error("Error al guardar equipo:", error);
-    Alert.alert("Error", "No se pudo guardar el equipo.");
-    throw error;
-  }
-};
+    let clienteId = cliente.id;
+
+    try {
+      // 🧩 1. Crear cliente si es nuevo
+      if (!clienteId || clienteId === 0) {
+        clienteId = await addCliente(cliente); // addCliente debe retornar el ID
+        setCliente((prev) => ({ ...prev, id: clienteId }));
+      } else {
+        console.log("Cliente existente, usando ID:", clienteId);
+      }
+
+      // 🧩 2. Crear equipo asociado al cliente
+      const equipoId = await saveEquipo(equipo, clienteId);
+
+      // 🧩 3. Guardar en contexto global
+      handleNext("cliente", { ...cliente, id: clienteId }
+      );
+      handleNext("equipo", { ...equipo, id: equipoId, cliente_id: clienteId });
+
+    } catch (error) {
+      console.error("Error al guardar cliente/equipo:", error);
+      Alert.alert("Error", "No se pudo guardar la información.");
+    }
+  };
+
+  const saveEquipo = async (
+    equipo: Equipo,
+    clienteId: number
+  ): Promise<number> => {
+    let equipoId = equipo.id;
+    console.log("equipo y cliente ID al guardar equipo:", equipo, clienteId)
+    try {
+      if (!equipoId || equipoId === 0) {
+        // 🧩 Insertar nuevo equipo en la base de datos
+        equipoId = await addEquipo(equipo, clienteId);
+
+        // Actualizar el estado local (sin depender de él)
+        setEquipo((prev) => ({ ...prev, id: equipoId }));
+      } else {
+        console.log("Equipo existente, usando ID:", equipoId);
+      }
+
+      // ✅ Retornar el ID para que la función llamante pueda usarlo
+      return equipoId!;
+    } catch (error) {
+      console.error("Error al guardar equipo:", error);
+      Alert.alert("Error", "No se pudo guardar el equipo.");
+      throw error;
+    }
+  };
 
   const cargarEquipos = async (clienteId: number | undefined) => {
+    console.log("cliente id:", clienteId)
     // 🔹 Cargar equipos del cliente
     if (clienteId !== undefined) {
       const equiposCliente = await getEquiposByClienteId(clienteId!);
       setEquipos(equiposCliente);
+      console.log(equipos);
     }
   };
 
@@ -170,7 +186,9 @@ const ClienteScreen = () => {
                       borderColor: "#eee",
                     }}
                   >
-                    <Text style={{ fontWeight: "500", color: "#333", }}>{item.nombre}</Text>
+                    <Text style={{ fontWeight: "500", color: "#333" }}>
+                      {item.nombre}
+                    </Text>
                     <Text style={{ fontSize: 12, color: "#666" }}>
                       {item.direccion}
                     </Text>
@@ -195,12 +213,11 @@ const ClienteScreen = () => {
             setValue={(text) => setCliente({ ...cliente, direccion: text })}
           />
 
-          <Text style={styles.label}>Email</Text>
+          <Text style={styles.label}>Referencia</Text>
           <CustomInput
-            placeholder="cliente@email.com"
-            value={cliente.email ?? ""}
-            setValue={(text) => setCliente({ ...cliente, email: text })}
-            keyboardType="email-address"
+            placeholder="Indicaciones para llegar"
+            value={cliente.referencia ?? ""}
+            setValue={(text) => setCliente({ ...cliente, referencia: text })}
           />
         </View>
 
@@ -231,9 +248,9 @@ const ClienteScreen = () => {
                     borderColor: "#eee",
                   }}
                 >
-                  <Text style={{ fontWeight: "500" }}>{item.numeroSerie}</Text>
+                  <Text style={{ fontWeight: "500" }}>{item.serie}</Text>
                   <Text style={{ fontSize: 12, color: "#666" }}>
-                    {item.tipoEquipo} - {item.marca} - {item.modelo}
+                    {item.area} - {item.marca} - {item.modelo}
                   </Text>
                 </TouchableOpacity>
               ))}
@@ -265,29 +282,44 @@ const ClienteScreen = () => {
               <Text style={styles.label}>Número de Serie</Text>
               <CustomInput
                 placeholder="SN123456789"
-                value={equipo.numeroSerie ?? ""}
-                setValue={(text) => setEquipo({ ...equipo, numeroSerie: text })}
+                value={equipo.serie ?? ""}
+                setValue={(text) => setEquipo({ ...equipo, serie: text })}
               />
             </View>
 
             <View style={styles.column}>
-              <Text style={styles.label}>Tipo de Equipo *</Text>
+              <Text style={styles.label}>Tonelada / Voltaje *</Text>
               <CustomInput
-                placeholder="Aire Acondicionado, Refrigerador, etc."
-                value={equipo.tipoEquipo}
-                setValue={(text) => setEquipo({ ...equipo, tipoEquipo: text })}
+                placeholder="Tonelada / Voltaje"
+                value={equipo.ton_volt}
+                setValue={(text) => setEquipo({ ...equipo, ton_volt: text })}
               />
             </View>
           </View>
 
-          <Text style={styles.label}>Ubicación del Equipo</Text>
+          <Text style={styles.label}>Area</Text>
           <CustomInput
             placeholder="Cocina, Almacén, etc."
-            value={equipo.ubicacionEquipo ?? ""}
-            setValue={(text) => setEquipo({ ...equipo, ubicacionEquipo: text })}
+            value={equipo.area ?? ""}
+            setValue={(text) => setEquipo({ ...equipo, area: text })}
+          />
+
+          <Text style={styles.label}>Descripcion</Text>
+          <CustomInput
+            placeholder="Descricion del equipo"
+            value={equipo.descripcion ?? ""}
+            setValue={(text) => setEquipo({ ...equipo, descripcion: text })}
           />
 
           <Botton classname={styles.button} onPress={() => saveClienteEquipo()}>
+            <Text style={styles.text}>Siguiente</Text>
+          </Botton>
+          <Botton classname={styles.button} onPress={() => {
+            const equipos = getAllReportes();
+            console.log(equipos);
+            //console.log("pending...");
+            //deleteEquipo(1)
+          } }>
             <Text style={styles.text}>Siguiente</Text>
           </Botton>
         </View>

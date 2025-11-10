@@ -2,7 +2,7 @@ import {
   deleteReporte,
   getReportesConCliente
 } from "@/db/databaseActions";
-import { Reporte } from "@/models/Reporte";
+import { Reporte } from "@/models/interfaces";
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
 import {
@@ -63,17 +63,17 @@ export default function HistorialScreen() {
 
         <View style={styles.reporteDetalle}>
           <Calendar size={16} color="#475569" />
-          <Text style={styles.reporteTexto}>{item.fecha}</Text>
+          <Text style={styles.reporteTexto}>{item.fecha_ejecucion}</Text>
         </View>
 
         <View style={styles.reporteDetalle}>
           <User size={16} color="#475569" />
-          <Text style={styles.reporteTexto}>Técnico: {item.tecnico}</Text>
+          <Text style={styles.reporteTexto}>Técnico: {item.tecnico_nombre}</Text>
         </View>
 
         <View style={styles.reporteDetalle}>
           <FileText size={16} color="#475569" />
-          <Text style={styles.reporteTexto}>{item.tipoEquipo}- {item.marca} - {item.modelo}</Text>
+          <Text style={styles.reporteTexto}>{item.marca} - {item.modelo}</Text>
         </View>
       </View>
 

@@ -32,9 +32,9 @@ export const generarPDF = async (reporte: any, download: boolean) => {
     fotos: fotosBase64,
   };
 
-  const html = download ? templaitPDFDowload(reporteConFotos) : templaitPDF(reporteConFotos);
+  const html = await (download ? templaitPDFDowload(reporteConFotos) : templaitPDF(reporteConFotos));
 
-  const { uri } = await Print.printToFileAsync({ html });
+  const { uri } = await Print.printToFileAsync({ html: typeof html === 'string' ? html : "" });
   console.log("PDF generado en:", uri);
 
   if (await Sharing.isAvailableAsync()) {

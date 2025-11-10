@@ -1,10 +1,10 @@
+import { addReporte } from "@/db/databaseActions";
+import { Reporte } from "@/models/interfaces";
+import { useState } from "react";
+import { Alert, StyleSheet, Text } from "react-native";
 import { useReporte } from "../context/ReporteContext";
 import { generarPDF } from "../utils/generarPDF";
-import { Text, StyleSheet, Alert } from "react-native";
 import { Botton } from "./ui/button";
-import { addReporte } from "@/db/databaseActions";
-import { Reporte } from "@/models/Reporte";
-import { useState } from "react";
 
 const BotonFinalizar = () => {
   const { reporte } = useReporte();
@@ -16,41 +16,70 @@ const BotonFinalizar = () => {
       return;
     }
 
-    if (!reporte.cliente?.cliente?.id || !reporte.cliente?.equipo?.id ) {;
+    if (!reporte.cliente?.id || !reporte.equipo?.id ) {;
       Alert.alert("Requisito Reporte", "Faltan datos del cliente y equipo");
       return;
     }
 
-    if (!reporte.tecnico?.fechaServicio) {;
+    /*if (!reporte.tecnico?.fecha_ejecucion) {;
       Alert.alert("Requisito Reporte", "Faltan datos del area tecnica");
       return;
-    }
+    }*/
 
     if (reporte.fotos.length <= 0) {;
       Alert.alert("Requisito Reporte", "Faltan fotos");
       return;
     }
 
+    console.log(reporte, reporte.tecnico.reporte_numero, "*-*--*-*-*-*-*-")
+
     const PDFuri = await generarPDF(reporte, false);
 
     setReporteCompleto({
-      idCliente: reporte.cliente.cliente.id,
-      idEquipo: reporte.cliente.equipo.id,
-      fecha: reporte.tecnico.fechaServicio,
-      tecnico: reporte.tecnico.nombreTecnico,
-      estadoEquipo: reporte.tecnico.estadoEquipo,
-      tipoRefrigerante: reporte.tecnico.tipoRefrigerante,
-      presion: reporte.tecnico.presion,
-      temperaturaAmbiente: reporte.tecnico.temperaturaAmbiente,
-      temperaturaEquipo: reporte.tecnico.temperaturaEquipo,
+      cliente_id: reporte.cliente.id,
+      equipo_id: reporte.equipo.id,
+      reporte_numero: reporte.tecnico.reporte_numero,
+      tecnico_nombre: reporte.tecnico.tecnico_nombre,
+      fecha_ejecucion: reporte.tecnico.fecha_ejecucion,
+      orden_trabajo: reporte.tecnico.orden_trabajo ?? null,
+      compresor1_amps: reporte.tecnico.compresor1_amps,
+      compresor1_referencia: reporte.tecnico.compresor1_referencia,
+      compresor1_baja: reporte.tecnico.compresor1_baja,
+      compresor1_alta: reporte.tecnico.compresor1_alta,
+      compresor1_aceite: reporte.tecnico.compresor1_aceite,
+      compresor2_amps: reporte.tecnico.compresor2_amps ?? null,
+      compresor2_referencia: reporte.tecnico.compresor2_referencia ?? null,
+      compresor2_baja: reporte.tecnico.compresor2_baja ?? null,
+      compresor2_alta: reporte.tecnico.compresor2_alta ?? null,
+      compresor2_aceite: reporte.tecnico.compresor2_aceite ?? null,
+      compresor3_amps: reporte.tecnico.compresor3_amps ?? null,
+      compresor3_referencia: reporte.tecnico.compresor3_referencia ?? null,
+      compresor3_baja: reporte.tecnico.compresor3_baja ?? null,
+      compresor3_alta: reporte.tecnico.compresor3_alta ?? null,
+      compresor3_aceite: reporte.tecnico.compresor3_aceite ?? null,
+      motor1_amps: reporte.tecnico.motor1_amps,
+      motor2_amps: reporte.tecnico.motor2_amps ?? null,
+      motor3_amps: reporte.tecnico.motor3_amps ?? null,
+      motor4_amps: reporte.tecnico.motor4_amps ?? null,
+      motor5_amps: reporte.tecnico.motor5_amps ?? null,
+      motor6_amps: reporte.tecnico.motor6_amps ?? null,
+      linea_motor1_referencia: reporte.tecnico.linea_motor1_referencia ?? null,
+      linea_motor2_referencia: reporte.tecnico.linea_motor2_referencia ?? null,
+      evaporador_amps: reporte.tecnico.evaporador_amps,
+      evaporador_referencia: reporte.tecnico.evaporador_referencia,
+      evaporador_banda: reporte.tecnico.evaporador_banda,
+      evaporador_medida: reporte.tecnico.evaporador_medida,
+      evaporador_filtro_retorno: reporte.tecnico.evaporador_filtro_retorno,
       voltaje: reporte.tecnico.voltaje,
-      amperaje: reporte.tecnico.amperaje,
-      trabajoRealizado: reporte.tecnico.trabajoRealizado,
-      observaciones: reporte.tecnico.observaciones,
-      recomendaciones: reporte.tecnico.observacionesAdicionales,
-      fotos: reporte.fotos,
+      temp_int: reporte.tecnico.temp_int,
+      temp_ext: reporte.tecnico.temp_ext,
+      ruidos_extranos: reporte.tecnico.ruidos_extranos,
+      actividades_realizadas: reporte.tecnico.actividades_realizadas,
+      recomendaciones: reporte.tecnico.recomendaciones,
+      cobro_servicio: reporte.tecnico.cobro_servicio,
       firma: reporte.firma,
-      pdfUri: PDFuri,
+      fotos: reporte.fotos,
+      pdfUri: PDFuri,    
     });
     await addReporte(reporteCompleto!);
     
