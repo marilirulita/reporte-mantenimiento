@@ -29,15 +29,17 @@
 
   .logo {
     width: 160px;
-    height: 80px;
-    background: linear-gradient(90deg, #00a7a7, #1d6f7a);
     color: #fff;
     display: flex;
     align-items: center;
     justify-content: center;
     font-weight: 700;
     font-size: 18px;
-    border-radius: 6px;
+  }
+
+  .logo img {
+    width: 100%;
+    height: auto;
   }
 
   .title {
@@ -165,7 +167,9 @@
 <body>
   <div class="page">
     <header>
-      <div class="logo">LOGO</div>
+      <div class="logo">
+        <img src="../assets/images/logo.jpg" alt="Logo" />
+      </div>
       <div class="title">
         <h1>Aire Acondicionado</h1>
         <p>Venta · Instalación · Servicio</p>
@@ -175,7 +179,7 @@
       <div class="report-box">
         <div>REPORTE</div>
         <div class="report-number"><strong>No.</strong> {{reporte_numero}}</div>
-        <div>Tel: {{telefono_empresa}}</div>
+        <div>Tel: 686-390-1797</div>
         <div>Tecnico: {{tecnico_nombre}}</div>
       </div>
     </header>

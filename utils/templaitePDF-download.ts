@@ -1,151 +1,233 @@
-export const templaitPDFDowload = (reporte: {
+import * as FileSystem from "expo-file-system/legacy";
+import { Asset } from "expo-asset";
+
+export const templaitPDFDowload = async (reporte: {
   nombre: string;
   direccion: any;
   telefono: any;
-  correo: string;
+  referencia: string;
 
   marca: any;
   modelo: any;
-  numeroSerie: any;
-  tipoEquipo: any;
-  ubicacion: any;
+  serie: any;
+  descripcion: any;
+  ton_volt: any;
+  area: any;
 
-  fecha: any;
-  tecnico: any;
-  estadoEquipo: any;
-  tipoRefrigerante: any;
-  presion: any;
-  temperaturaAmbiente: any;
-  temperaturaEquipo: any;
-  voltaje: any;
-  amperaje: any;
-  trabajoRealizado: any;
-  observaciones: any;
-  observacionesAdicionales: any;
+  fecha_ejecucion: any;
+  tecnico_nombre: any;
+  reporte_numero: any;
+
+  compresor1_amps: any;
+  compresor1_referencia: any;
+  compresor1_baja: any;
+  compresor1_alta: any;
+  compresor1_aceite: any;
+
+  compresor2_amps: any;
+  compresor2_referencia: any;
+  compresor2_baja: any;
+  compresor2_alta: any;
+  compresor2_aceite: any;
+
+  compresor3_amps: any;
+  compresor3_referencia: any;
+  compresor3_baja: any;
+  compresor3_alta: any;
+  compresor3_aceite: any;
+
+  motor1_amps: any;
+  motor2_amps: "";
+  motor3_amps: "";
+  motor4_amps: "";
+  motor5_amps: "";
+  motor6_amps: "";
+  linea_motor1_referencia: "";
+  linea_motor2_referencia: "";
+
+  evaporador_amps: "";
+  evaporador_referencia: "";
+  evaporador_banda: "";
+  evaporador_medida: "";
+  evaporador_filtro_retorno: "";
+
+  temp_int: "";
+  temp_ext: "";
+  voltaje: "";
+  ruidos_extranos: "";
+
+  actividades_realizadas: "";
+  recomendaciones: "";
+  cobro_servicio: "";
 
   fotos: any[];
   firma: any;
 }) => {
+  // Obtén la ruta absoluta del logo usando expo-asset
+const logoAsset = Asset.fromModule(require("../assets/images/logo.jpg"));
+await logoAsset.downloadAsync();
+const logoUri = logoAsset.localUri || logoAsset.uri;
+
+// Ahora, lee el archivo y conviértelo a base64
+const logoBase64 = await FileSystem.readAsStringAsync(logoUri, {
+  encoding: FileSystem.EncodingType.Base64,
+});
+
   const dateToday = new Date().toLocaleDateString("es-MX", {
     day: "2-digit",
     month: "long",
     year: "numeric",
   });
-  const timeNow = new Date().toLocaleTimeString("es-MX", {
-    hour: "2-digit",
-    minute: "2-digit",
-  });
 
   const safe = (value: any) => value ?? ""; // usa nullish coalescing
 
-  return `<!DOCTYPE html>
+  return `<!doctype html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Reporte de Mantenimiento</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f8fafc;
-      color: #111827;
-      margin: 0;
-      padding: 0;
-    }
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Reporte de Servicio</title>
+<style>
+  body {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    background: #eaf9f9;
+    margin: 20px;
+    color: #033;
+  }
 
-    .page {
-      width: 100%;
-      margin: auto;
-      background: white;
-      box-shadow: 0 0 10px rgba(0,0,0,0.15);
-      border-radius: 8px;
-      overflow: hidden;
-    }
+  .page {
+    background: #fff;
+    max-width: 900px;
+    margin: auto;
+    padding: 20px 25px;
+    border: 1px solid #cce8e6;
+    border-radius: 8px;
+  }
 
-    /* Encabezado */
-    .header {
-      background-color: #2563eb;
-      color: white;
-      padding: 20px;
-      text-align: center;
-    }
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
 
-    .header h1 {
-      margin: 0;
-      font-size: 22px;
-    }
+  .logo {
+    width: 160px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 18px;
+  }
 
-    .header p {
-      margin: 5px 0 0;
-      font-size: 14px;
-      color: #dbeafe;
-    }
+  .logo img {
+    width: 100%;
+    height: auto;
+  }
 
-    /* Secciones */
-    .section {
-      margin: 20px;
-      border-radius: 6px;
-      overflow: hidden;
-      background: #ffffff;
-    }
+  .title {
+    text-align: center;
+    flex: 1;
+  }
 
-    .row {
-        display: grid;
-        gap: 10px 20px; /* espacio entre campos */
-      }
+  .title h1 {
+    margin: 0;
+    font-size: 26px;
+  }
 
-      .row-2 {
-        grid-template-columns: repeat(2, 1fr); /* dos columnas iguales */
-      }
+  .title p {
+    margin: 2px 0;
+    font-size: 13px;
+    color: #555;
+  }
 
-      .row-3 {
-        grid-template-columns: repeat(3, 1fr); /* dos columnas iguales */
-      }
+  .report-box {
+    text-align: left;
+    font-size: 13px;
+  }
 
-    .section-title {
-      background-color: #e2e8f0;
-      padding: 10px;
-      font-size: 16px;
-      font-weight: bold;
-      color: #111827;
-    }
+  .report-number {
+    border: 2px solid #bfe9e8;
+    padding: 8px 10px;
+    display: inline-block;
+    border-radius: 6px;
+    background: #f6ffff;
+  }
 
-    .field {
-      display: flex;
-      padding: 6px 10px;
-      font-size: 14px;
-      border-bottom: 1px solid #f1f5f9;
-    }
+  hr {
+    border: none;
+    border-top: 1px solid #cce8e6;
+    margin: 15px 0;
+  }
 
-    .field:last-child {
-      border-bottom: none;
-    }
+  h3 {
+    font-size: 16px;
+    color: #1b6f7a;
+    margin-bottom: 8px;
+  }
 
-    .field label {
-      margin-right: 10px;
-      font-weight: 600;
-      color: #374151;
-    }
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+  }
 
-    .field-tecnico label {
-      flex: 0 0 220px;
-      font-weight: 600;
-      color: #374151;
-    }
+  .card {
+    background: #f9ffff;
+    border: 1px solid #cce8e6;
+    border-radius: 6px;
+    padding: 10px 15px;
+  }
 
-    .field span {
-      flex: 1;
-      color: #111827;
-    }
+  .label {
+    font-size: 13px;
+    color: #666;
+    font-weight: bold;
+  }
 
-    /* Texto largo */
-    .long-text {
-      padding: 10px;
-      font-size: 14px;
-      line-height: 1.5;
-    }
+  .value {
+    font-size: 14px;
+    padding-bottom: 5px;
+  }
 
-    /* Fotos */
+  .section {
+    margin-top: 20px;
+  }
+
+  .fotos-section {
+    margin: 20px;
+    border-radius: 6px;
+    overflow: hidden;
+    background: #ffffff;
+  }
+
+  .cond-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 8px;
+  }
+
+  .cond-table th, .cond-table td {
+    border: 1px solid #d9f0ef;
+    padding: 6px 8px;
+    font-size: 13px;
+    text-align: center;
+  }
+
+  .cond-table th {
+    background: #f1fdfd;
+  }
+
+  .textarea {
+    border: 1px solid #cce8e6;
+    background: #f9ffff;
+    padding: 10px;
+    border-radius: 6px;
+    min-height: 80px;
+    white-space: pre-wrap;
+  }
+
+  /* Fotos */
     .photos {
       display: flex;
       flex-wrap: wrap;
@@ -176,7 +258,10 @@ export const templaitPDFDowload = (reporte: {
       border-radius: 8px;
       border: 1px solid #ccc;
     }
-    /* Firma */
+
+
+
+  /* Firma */
     .signature {
       padding: 20px;
       text-align: center;
@@ -189,141 +274,214 @@ export const templaitPDFDowload = (reporte: {
       margin-bottom: 5px;
     }
 
-    .footer {
-      text-align: center;
-      font-size: 12px;
-      color: #6b7280;
-      padding: 10px;
-      border-top: 1px solid #e5e7eb;
-    }
-  </style>
+  footer {
+    text-align: center;
+    font-size: 12px;
+    color: #666;
+    margin-top: 20px;
+  }
+
+  @media print {
+    body { background: #fff; margin: 0; }
+    .page { border: none; border-radius: 0; }
+  }
+</style>
 </head>
 <body>
   <div class="page">
-    <!-- Encabezado -->
-    <div class="header">
-      <h1>REPORTE DE MANTENIMIENTO</h1>
-      <p>Servicio de Refrigeración</p>
-    </div>
+    <header>
+      <div class="logo">
+      <img src="data:image/jpeg;base64,${logoBase64}" alt="Logo" />
+      </div>
+      <div class="title">
+        <h1>Aire Acondicionado</h1>
+        <p>Venta · Instalación · Servicio</p>
+        <p>Doméstica · Comercial · Industrial</p>
+        <h3>Reporte de Servicio</h3>
+      </div>
+      <div class="report-box">
+        <div>REPORTE</div>
+        <div class="report-number"><strong>No.</strong>${safe(reporte.reporte_numero)}</div>
+        <div>Tel: 686-390-1797</div>
+        <div>Tecnico: ${safe(reporte.tecnico_nombre)}</div>
+      </div>
+    </header>
 
-    <!-- Sección: Cliente -->
-    <div class="section">
-    
-      <div class="section-title">DATOS DEL CLIENTE</div>
-      <div class="row row-2">
-        <div class="field"><label>Nombre:</label><span>${safe(
-          reporte.nombre
-        )}</span></div>
-        <div class="field"><label>Email:</label><span>${safe(
-          reporte.correo
-        )}</span></div>
-      </div>
-      <div class="row row-2">
-        <div class="field"><label>Dirección:</label><span>${safe(
-          reporte.direccion
-        )}</span></div>
-        <div class="field"><label>Teléfono:</label><span>${safe(
-          reporte.telefono
-        )}
-      </span></div>
-      </div>
-    </div> 
+    <hr>
 
-    <!-- Sección: Equipo -->
-    <div class="section">
-      <div class="section-title">DATOS DEL EQUIPO</div>
-      <div class="row row-3">
-      <div class="field"><label>Marca:</label><span>${safe(
-        reporte.marca
-      )}</span></div>
-      <div class="field"><label>Modelo:</label><span>${safe(
-        reporte.modelo
-      )}</span></div>
-      <div class="field"><label>Serie:</label><span>${safe(
-        reporte.numeroSerie
-      )}</span></div>
+    <div class="grid">
+      <div class="card">
+        <h3>Datos del Cliente</h3>
+        <div><span class="label">Nombre:</span> ${safe(reporte.nombre)}</div>
+        <div><span class="label">Dirección:</span> ${safe(reporte.direccion)}</div>
+        <div><span class="label">Teléfono:</span> ${safe(reporte.telefono)}</div>
+        <div><span class="label">Referencia:</span> ${safe(reporte.referencia)}</div>
+        <div><span class="label">Fecha Ejecución:</span> ${safe(reporte.fecha_ejecucion)}</div>
       </div>
-      <div class="row row-3">
-      <div class="field"><label>Tipo:</label><span>${safe(
-        reporte.tipoEquipo
-      )}</span></div>
-      <div class="field"><label>Ubicación:</label><span>${safe(
-        reporte.ubicacion
-      )}</span></div>
-      <div class="field"><label></label><span></span></div>
+
+      <div class="card">
+        <h3>Datos Generales del Equipo</h3>
+        <div><span class="label">Descripción:</span> ${safe(reporte.descripcion)}</div>
+        <div><span class="label">Marca:</span> ${safe(reporte.marca)}</div>
+        <div><span class="label">Modelo:</span> ${safe(reporte.modelo)}</div>
+        <div><span class="label">Serie:</span> ${safe(reporte.serie)}</div>
+        <div><span class="label">Ton./Voltaje:</span> ${safe(reporte.ton_volt)}</div>
+        <div><span class="label">Área:</span> ${safe(reporte.area)}</div>
       </div>
     </div>
 
-    <!-- Sección: Servicio -->
+    <hr>
+
     <div class="section">
-      <div class="section-title">DATOS DEL SERVICIO</div>
-      <div class="row row-3">
-        <div class="field"><label>Fecha:</label><span>${safe(
-          reporte.fecha
-        )}</span></div>
-        <div class="field"><label>Técnico:</label><span>${safe(
-          reporte.tecnico
-        )}</span></div>
-        <div class="field"><label>Estado del equipo:</label><span>${safe(
-          reporte.estadoEquipo
-        )}</span></div>
-      </div>
+      <h3>Condiciones Generales de Operación</h3>
+      <table class="cond-table">
+        <thead>
+          <tr>
+            <th>Compresor</th>
+            <th>Amps</th>
+            <th>Referencia PSI</th>
+            <th>Baja PSI</th>
+            <th>Alta</th>
+            <th>Aceite</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>No. 1</td>
+            <td>${safe(reporte.compresor1_amps)}</td>
+            <td>${safe(reporte.compresor1_referencia)}</td>
+            <td>${safe(reporte.compresor1_baja)}</td>
+            <td>${safe(reporte.compresor1_alta)}</td>
+            <td>${safe(reporte.compresor1_aceite)}</td>
+          </tr>
+          <tr>
+            <td>No. 2</td>
+            <td>${safe(reporte.compresor2_amps)}</td>
+            <td>${safe(reporte.compresor2_referencia)}</td>
+            <td>${safe(reporte.compresor2_baja)}</td>
+            <td>${safe(reporte.compresor2_alta)}</td>
+            <td>${safe(reporte.compresor2_aceite)}</td>
+          </tr>
+          <tr>
+            <td>No. 3</td>
+            <td>${safe(reporte.compresor3_amps)}</td>
+            <td>${safe(reporte.compresor3_referencia)}</td>
+            <td>${safe(reporte.compresor3_baja)}</td>
+            <td>${safe(reporte.compresor3_alta)}</td>
+            <td>${safe(reporte.compresor3_aceite)}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
 
-    <!-- Sección: Mediciones -->
     <div class="section">
-      <div class="section-title">MEDICIONES TÉCNICAS</div>
-      <div class="row row-3">
-      <div class="field"><label>Tipo de Refrigerante:</label><span>${safe(
-        reporte.tipoRefrigerante
-      )}</span></div>
-      <div class="field"><label>Presión:</label><span>${
-        safe(reporte.presion) + " psi"
-      }</span></div>
-      <div class="field"><label>Temp. Ambiente:</label><span>${
-        safe(reporte.temperaturaAmbiente) + "°C"
-      }</span></div>
-      </div>
-      <div class="row row-3">
-      <div class="field"><label>Temp. Equipo:</label><span>${
-        safe(reporte.temperaturaEquipo) + "°C"
-      }</span></div>
-      <div class="field"><label>Voltaje:</label><span>${
-        safe(reporte.voltaje) + "V"
-      }</span></div>
-      <div class="field"><label>Amperaje:</label><span>${
-        safe(reporte.amperaje) + "A"
-      }</span></div>
-      </div>
+      <h3>Motores de condenzador</h3>
+      <table class="cond-table">
+        <thead>
+          <tr>
+            <th>No. Motor</th>
+            <th>Amps</th>
+            <th>No. Motor</th>
+            <th>Amps</th>
+            <th>No. Motor</th>
+            <th>Amps</th>
+            <th>Referencia</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>${safe(reporte.motor1_amps)}</td>
+            <td>2</td>
+            <td>${safe(reporte.motor2_amps)}</td>
+            <td>3</td>
+            <td>${safe(reporte.motor3_amps)}</td>
+            <td>${safe(reporte.linea_motor1_referencia)}</td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>${safe(reporte.motor4_amps)}</td>
+            <td>5</td>
+            <td>${safe(reporte.motor5_amps)}</td>
+            <td>6</td>
+            <td>${safe(reporte.motor6_amps)}</td>
+            <td>${safe(reporte.linea_motor2_referencia)}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
 
-    <!-- Sección: Trabajo Realizado -->
     <div class="section">
-      <div class="section-title">TRABAJO REALIZADO</div>
-      <div class="long-text">
-        ${reporte.trabajoRealizado}
-      </div>
+      <h3>Evaporador</h3>
+      <table class="cond-table">
+        <thead>
+          <tr>
+            <th>Amps</th>
+            <th>Referencia</th>
+            <th>Banda</th>
+            <th>Medida</th>
+            <th>Filtro de Retorno</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>${safe(reporte.evaporador_amps)}</td>
+            <td>${safe(reporte.evaporador_referencia)}</td>
+            <td>${safe(reporte.evaporador_banda)}</td>
+            <td>${safe(reporte.evaporador_medida)}</td>
+            <td>${safe(reporte.evaporador_filtro_retorno)}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
 
-    <!-- Sección: Observaciones -->
     <div class="section">
-      <div class="section-title">OBSERVACIONES</div>
-      <div class="long-text">
-        ${reporte.observaciones}
-      </div>
+      <h3>Generales</h3>
+      <table class="cond-table">
+        <thead>
+          <tr>
+            <th>Voltaje</th>
+            <th>Temp. Interior</th>
+            <th>Temp. Exterior</th>
+            <th>Ruidos Extraños</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>${safe(reporte.voltaje)}</td>
+            <td>${safe(reporte.temp_int)}</td>
+            <td>${safe(reporte.temp_ext)}</td>
+            <td>${safe(reporte.ruidos_extranos)}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
 
-    <!-- Sección: Recomendaciones -->
     <div class="section">
-      <div class="section-title">RECOMENDACIONES</div>
-      <div class="long-text">
-        ${reporte.observacionesAdicionales}
+      <h3>Actividades Realizadas</h3>
+      <div class="textarea">${safe(reporte.actividades_realizadas)}</div>
+    </div>
+
+    <div class="section">
+      <h3>Recomendaciones</h3>
+      <div class="textarea">${safe(reporte.recomendaciones)}</div>
+    </div>
+
+    <div class="section">
+      <div><span class="label">Cobro por Servicio:</span> $${safe(reporte.cobro_servicio)}</div>
+    </div>
+
+    <!-- Sección: Firma -->
+    <div class="fotos-section">
+      <div class="signature">
+        <img src="${reporte.firma}" style="width:200px; height:100px;" />
+        <div class="signature">Firma de Conformidad</div>
       </div>
     </div>
 
     <!-- Sección: Fotos -->
-    <div class="section">
-      <div class="section-title">FOTOGRAFÍAS DEL EQUIPO</div>
+    <div class="fotos-section">
+    <h3>Fotografias del Equipo</h3>
       <div class="photos">
         <div class="fotos">
           ${reporte.fotos
@@ -337,23 +495,11 @@ export const templaitPDFDowload = (reporte: {
         </div>
       </div>
     </div>
-    <!-- Sección: Firma -->
-    <div class="section">
-      <div class="section-title">FIRMA DEL CLIENTE</div>
-      <div class="signature">
-      ${
-        reporte.firma
-          ? `<img src="${reporte.firma}" style="width:200px; height:100px;" />
-          <p>${reporte.nombre}</p>`
-          : "<p>No se registró firma</p>"
-      }
-      </div>
-    </div>
 
-    <!-- Pie de página -->
-    <div class="footer">
-      <p>Generado el ${dateToday}<strong> Hora:</strong> ${timeNow}</p>
-    </div>
+    <footer>
+      Av. Bustamita No.1404 · Fracc. Valle del Pedregal · C.P. 21395 · Mexicali, B.C.  
+      · E-mail: conforttotal@prodigy.net.mx
+    </footer>
   </div>
 </body>
 </html>`;
