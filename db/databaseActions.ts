@@ -1,15 +1,15 @@
-import { Cliente, Equipo, Reporte } from '../models/Reporte';
 import * as SQLite from "expo-sqlite";
+import { Cliente, Equipo, Reporte } from '../models/interfaces';
 
-const db = SQLite.openDatabaseSync("reportes.db");
+const db = SQLite.openDatabaseSync("servicios.db");
 
 //////////////////////////
 // CLIENTES
 //////////////////////////
 export const addCliente = async (cliente: Cliente) => {
   const result = await db.runAsync(
-    `INSERT INTO clientes (nombre, direccion, telefono, email) VALUES (?, ?, ?, ?)`,
-    [cliente.nombre, cliente.direccion, cliente.telefono ?? null, cliente.email ?? null]
+    `INSERT INTO clientes (nombre, direccion, telefono, referencia) VALUES (?, ?, ?, ?)`,
+    [cliente.nombre, cliente.direccion, cliente.telefono, cliente.referencia]
   );
   return result.lastInsertRowId; // ✅ esto devuelve el ID generado
 };
@@ -33,17 +33,18 @@ export const deleteCliente = (id: number) => {
 // EQUIPOS
 //////////////////////////
 
-export const addEquipo = async (equipo: Equipo, idCliente: number) => {
+export const addEquipo = async (equipo: Equipo, cliente_id: number) => {
   const result = await db.runAsync(
-    `INSERT INTO equipos (idCliente, marca, modelo, numeroSerie, tipoEquipo, ubicacionEquipo)
-     VALUES (?, ?, ?, ?, ?, ?)`,
+    `INSERT INTO equipos (cliente_id, descripcion, marca, modelo, serie, ton_volt, area)
+     VALUES (?, ?, ?, ?, ?, ?, ?)`,
     [
-      idCliente,
+      cliente_id,
+      equipo.descripcion,
       equipo.marca,
       equipo.modelo,
-      equipo.numeroSerie ?? null,
-      equipo.tipoEquipo,
-      equipo.ubicacionEquipo ?? null,
+      equipo.serie,
+      equipo.ton_volt,
+      equipo.area,
     ]
   );
   return result.lastInsertRowId;
@@ -56,7 +57,7 @@ export const getEquipos = (): Equipo[] => {
 
 // 🔹 Obtiene todos los equipos asociados a un cliente
 export const getEquiposByClienteId = (clienteId: number) => {
-  const query = "SELECT * FROM equipos WHERE idCliente = ?;";
+  const query = "SELECT * FROM equipos WHERE cliente_id = ?;";
   const resultado = db.getAllAsync<Equipo>(query, [clienteId]);
   return resultado;
 };
@@ -74,45 +75,77 @@ export const addReporte = async (reporte: Reporte) => {
   console.log(fotosJSON);
   const result = await db.runAsync(
     `INSERT INTO reportes (
-      idCliente,
-      idEquipo,
-      fecha,
-      tecnico,
-      estadoEquipo,
-      tipoRefrigerante,
-      presion,
-      temperaturaAmbiente,
-      temperaturaEquipo,
-      voltaje,
-      amperaje,
-      trabajoRealizado,
-      observaciones,
-      recomendaciones,
+      cliente_id,
+      equipo_id,
+      reporte_numero,
+      tecnico_nombre,
+      fecha_ejecucion,
+      orden_trabajo,
+      compresor1_amps, compresor1_referencia, compresor1_baja, compresor1_alta, compresor1_aceite,
+      compresor2_amps, compresor2_referencia, compresor2_baja, compresor2_alta, compresor2_aceite,
+      compresor3_amps, compresor3_referencia, compresor3_baja, compresor3_alta, compresor3_aceite,
+      motor1_amps, motor2_amps, motor3_amps, motor4_amps, motor5_amps, motor6_amps,
+      linea_motor1_referencia, linea_motor2_referencia,
+      evaporador_amps, evaporador_referencia, evaporador_banda, evaporador_medida, evaporador_filtro_retorno,
+      voltaje, temp_int, temp_ext, ruidos_extranos, actividades_realizadas, recomendaciones, cobro_servicio,
       fotos,
       firma,
       pdfUri
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`,
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`,
     [
-      reporte.idCliente,
-      reporte.idEquipo,
-      reporte.fecha ?? new Date().toISOString(),
-      reporte.tecnico,
-      reporte.estadoEquipo,
-      reporte.tipoRefrigerante ?? null,
-      reporte.presion ?? null,
-      reporte.temperaturaAmbiente ?? null,
-      reporte.temperaturaEquipo ?? null,
-      reporte.voltaje ?? null,
-      reporte.amperaje ?? null,
-      reporte.trabajoRealizado,
-      reporte.observaciones ?? null,
-      reporte.recomendaciones ?? null,
+      reporte.cliente_id,
+      reporte.equipo_id,
+      reporte.reporte_numero,
+      reporte.tecnico_nombre,
+      reporte.fecha_ejecucion,
+      reporte.orden_trabajo ?? null,
+      reporte.compresor1_amps,
+      reporte.compresor1_referencia,
+      reporte.compresor1_baja,
+      reporte.compresor1_alta,
+      reporte.compresor1_aceite,
+      reporte.compresor2_amps ?? null,
+      reporte.compresor2_referencia ?? null,
+      reporte.compresor2_baja ?? null,
+      reporte.compresor2_alta ?? null,
+      reporte.compresor2_aceite ?? null,
+      reporte.compresor3_amps ?? null,
+      reporte.compresor3_referencia ?? null,
+      reporte.compresor3_baja ?? null,
+      reporte.compresor3_alta ?? null,
+      reporte.compresor3_aceite ?? null,
+      reporte.motor1_amps,
+      reporte.motor2_amps ?? null,
+      reporte.motor3_amps ?? null,
+      reporte.motor4_amps ?? null,
+      reporte.motor5_amps ?? null,
+      reporte.motor6_amps ?? null,
+      reporte.linea_motor1_referencia ?? null,
+      reporte.linea_motor2_referencia ?? null,
+      reporte.evaporador_amps,
+      reporte.evaporador_referencia,
+      reporte.evaporador_banda,
+      reporte.evaporador_medida,
+      reporte.evaporador_filtro_retorno,
+      reporte.voltaje,
+      reporte.temp_int,
+      reporte.temp_ext,
+      reporte.ruidos_extranos,
+      reporte.actividades_realizadas,
+      reporte.recomendaciones,
+      reporte.cobro_servicio,
       fotosJSON ?? null,
-      reporte.firma ?? null,
-      reporte.pdfUri ?? null
+      reporte.firma,
+      reporte.pdfUri,
     ]
   );
   return result.lastInsertRowId;
+};
+
+export const getReporte = (reporteId: number): Reporte | undefined => {
+  const result = db.getAllSync<Reporte>(`SELECT * FROM reportes WHERE id = ?`, [reporteId]);
+  const reporte = result[0];
+  return reporte;
 };
 
 export const getReportes = (): Reporte[] => {
@@ -153,15 +186,16 @@ export const getReportesConCliente = (): any[] => {
       clientes.nombre AS nombre,
       clientes.telefono AS telefono,
       clientes.direccion AS direccion,
-      clientes.email AS email,
+      clientes.referencia AS referencia,
       equipos.marca AS marca,
       equipos.modelo AS modelo,
-      equipos.numeroSerie AS numeroSerie,
-      equipos.tipoEquipo AS tipoEquipo,
-      equipos.ubicacionEquipo AS ubicacionEquipo
+      equipos.serie AS serie,
+      equipos.descripcion AS descripcion,
+      equipos.area AS area,
+      equipos.ton_volt AS ton_volt
     FROM reportes
-    INNER JOIN clientes ON reportes.idCliente = clientes.id
-    INNER JOIN equipos ON reportes.idEquipo = equipos.id
+    INNER JOIN clientes ON reportes.cliente_id = clientes.id
+    INNER JOIN equipos ON reportes.equipo_id = equipos.id
     ORDER BY reportes.id DESC;`
   
   );
