@@ -1,270 +1,358 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Reporte de Mantenimiento</title>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        background-color: #f8fafc;
-        color: #111827;
-        margin: 0;
-        padding: 0;
-      }
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Reporte de Servicio</title>
+<style>
+  body {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    background: #eaf9f9;
+    margin: 20px;
+    color: #033;
+  }
 
-      .page {
-        width: 100%;
-        margin: auto;
-        background: white;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
-        border-radius: 8px;
-        overflow: hidden;
-      }
+  .page {
+    background: #fff;
+    max-width: 900px;
+    margin: auto;
+    padding: 20px 25px;
+    border: 1px solid #cce8e6;
+    border-radius: 8px;
+  }
 
-      /* Encabezado */
-      .header {
-        background-color: #2563eb;
-        color: white;
-        padding: 20px;
-        text-align: center;
-      }
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
 
-      .header h1 {
-        margin: 0;
-        font-size: 22px;
-      }
+  .logo {
+    width: 160px;
+    height: 80px;
+    background: linear-gradient(90deg, #00a7a7, #1d6f7a);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 18px;
+    border-radius: 6px;
+  }
 
-      .header p {
-        margin: 5px 0 0;
-        font-size: 14px;
-        color: #dbeafe;
-      }
+  .title {
+    text-align: center;
+    flex: 1;
+  }
 
-      /* Secciones */
-      .section {
-        margin: 20px;
-        border-radius: 6px;
-        overflow: hidden;
-        background: #ffffff;
-      }
+  .title h1 {
+    margin: 0;
+    font-size: 26px;
+  }
 
-      .row {
-        display: grid;
-        gap: 10px 20px; /* espacio entre campos */
-      }
+  .title p {
+    margin: 2px 0;
+    font-size: 13px;
+    color: #555;
+  }
 
-      .row-2 {
-        grid-template-columns: repeat(2, 1fr); /* dos columnas iguales */
-      }
+  .report-box {
+    text-align: left;
+    font-size: 13px;
+  }
 
-      .row-3 {
-        grid-template-columns: repeat(3, 1fr); /* dos columnas iguales */
-      }
+  .report-number {
+    border: 2px solid #bfe9e8;
+    padding: 8px 10px;
+    display: inline-block;
+    border-radius: 6px;
+    background: #f6ffff;
+  }
 
-      .section-title {
-        background-color: #e2e8f0;
-        padding: 10px;
-        font-size: 16px;
-        font-weight: bold;
-        color: #111827;
-      }
+  hr {
+    border: none;
+    border-top: 1px solid #cce8e6;
+    margin: 15px 0;
+  }
 
-      .field {
-        display: flex;
-        padding: 6px 10px;
-        font-size: 14px;
-        border-bottom: 1px solid #f1f5f9;
-      }
+  h3 {
+    font-size: 16px;
+    color: #1b6f7a;
+    margin-bottom: 8px;
+  }
 
-      .field:last-child {
-        border-bottom: none;
-      }
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+  }
 
-      .field label {
-        margin-right: 10px;
-        font-weight: 600;
-        color: #374151;
-      }
+  .card {
+    background: #f9ffff;
+    border: 1px solid #cce8e6;
+    border-radius: 6px;
+    padding: 10px 15px;
+  }
 
-      .field span {
-        flex: 1;
-        color: #111827;
-      }
+  .label {
+    font-size: 13px;
+    color: #666;
+    font-weight: bold;
+  }
 
-      /* Texto largo */
-      .long-text {
-        padding: 10px;
-        font-size: 14px;
-        line-height: 1.5;
-      }
+  .value {
+    font-size: 14px;
+    padding-bottom: 5px;
+  }
 
-      /* Fotos */
-      .photos {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        padding: 10px;
-        justify-content: start;
-      }
+  .section {
+    margin-top: 20px;
+  }
 
-      .photos img {
-        width: 180px;
-        height: 120px;
-        object-fit: cover;
-        border: 1px solid #e5e7eb;
-        border-radius: 4px;
-      }
+  .cond-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 8px;
+  }
 
-      /* Firma */
-      .signature {
-        padding: 20px;
-        text-align: center;
-      }
+  .cond-table th, .cond-table td {
+    border: 1px solid #d9f0ef;
+    padding: 6px 8px;
+    font-size: 13px;
+    text-align: center;
+  }
 
-      .signature img {
-        width: 200px;
-        height: auto;
-        border-bottom: 1px solid #000;
-        margin-bottom: 5px;
-      }
+  .cond-table th {
+    background: #f1fdfd;
+  }
 
-      .footer {
-        text-align: center;
-        font-size: 12px;
-        color: #6b7280;
-        padding: 10px;
-        border-top: 1px solid #e5e7eb;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="page">
-      <!-- Encabezado -->
-      <div class="header">
-        <h1>REPORTE DE MANTENIMIENTO</h1>
-        <p>Servicio de Refrigeración</p>
+  .textarea {
+    border: 1px solid #cce8e6;
+    background: #f9ffff;
+    padding: 10px;
+    border-radius: 6px;
+    min-height: 80px;
+    white-space: pre-wrap;
+  }
+
+  .signatures {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+  }
+
+  .signature {
+    text-align: center;
+    width: 45%;
+    border-top: 1px dashed #a0d6d4;
+    padding-top: 5px;
+    font-size: 13px;
+  }
+
+  footer {
+    text-align: center;
+    font-size: 12px;
+    color: #666;
+    margin-top: 20px;
+  }
+
+  @media print {
+    body { background: #fff; margin: 0; }
+    .page { border: none; border-radius: 0; }
+  }
+</style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <div class="logo">LOGO</div>
+      <div class="title">
+        <h1>Aire Acondicionado</h1>
+        <p>Venta · Instalación · Servicio</p>
+        <p>Doméstica · Comercial · Industrial</p>
+        <h3>Reporte de Servicio</h3>
+      </div>
+      <div class="report-box">
+        <div>REPORTE</div>
+        <div class="report-number"><strong>No.</strong> {{reporte_numero}}</div>
+        <div>Tel: {{telefono_empresa}}</div>
+        <div>Tecnico: {{tecnico_nombre}}</div>
+      </div>
+    </header>
+
+    <hr>
+
+    <div class="grid">
+      <div class="card">
+        <h3>Datos del Cliente</h3>
+        <div><span class="label">Nombre:</span> {{cliente_nombre}}</div>
+        <div><span class="label">Dirección:</span> {{cliente_direccion}}</div>
+        <div><span class="label">Teléfono:</span> {{cliente_telefono}}</div>
+        <div><span class="label">Referencia:</span> {{cliente_referencia}}</div>
+        <div><span class="label">Fecha Ejecución:</span> {{fecha_ejecucion}}</div>
+        <div><span class="label">O. Trabajo:</span> {{orden_trabajo}}</div>
       </div>
 
-      <!-- Sección: Cliente -->
-      <div class="section">
-        <div class="section-title">DATOS DEL CLIENTE</div>
-        <div class="row row-2">
-          <div class="field"><label>Nombre:</label><span>Juan Pérez</span></div>
-          <div class="field">
-            <label>Email:</label><span>juanperez@email.com</span>
-          </div>
-        </div>
-        <div class="row row-2">
-          <div class="field">
-            <label>Dirección:</label><span>Av. Central #123</span>
-          </div>
-          <div class="field">
-            <label>Teléfono:</label><span>664-555-1234</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Sección: Equipo -->
-      <div class="section">
-        <div class="section-title">DATOS DEL EQUIPO</div>
-        <div class="row row-3">
-          <div class="field"><label>Marca:</label><span>LG</span></div>
-          <div class="field"><label>Modelo:</label><span>R410</span></div>
-          <div class="field"><label>Serie:</label><span>ABCD12345</span></div>
-        </div>
-        <div class="row row-3">
-          <div class="field">
-            <label>Tipo:</label><span>Aire Acondicionado Split</span>
-          </div>
-          <div class="field">
-            <label>Ubicación:</label><span>Oficina principal</span>
-          </div>
-          <div class="field"><label></label><span></span></div>
-        </div>
-      </div>
-
-      <!-- Sección: Servicio -->
-      <div class="section">
-      <div class="section-title">DATOS DEL SERVICIO</div>
-      <div class="row row-3">
-        <div class="field field-tecnico"><label>Fecha:</label><span>25 sep 2025</span></div>
-        <div class="field field-tecnico"><label>Técnico:</label><span>carlos lopez</span></div>
-        <div class="field field-tecnico"><label>Estado del equipo:</label><span>bueno</span></div>
+      <div class="card">
+        <h3>Datos Generales del Equipo</h3>
+        <div><span class="label">Descripción:</span> {{equipo_descripcion}}</div>
+        <div><span class="label">Marca:</span> {{equipo_marca}}</div>
+        <div><span class="label">Modelo:</span> {{equipo_modelo}}</div>
+        <div><span class="label">Serie:</span> {{equipo_serie}}</div>
+        <div><span class="label">Ton./Voltaje:</span> {{equipo_ton_volt}}</div>
+        <div><span class="label">Área:</span> {{equipo_area}}</div>
       </div>
     </div>
 
-      <!-- Sección: Mediciones -->
-      <div class="section">
-        <div class="section-title">MEDICIONES TÉCNICAS</div>
-        <div class="row row-3">
-          <div class="field">
-            <label>Tipo de Refrigerante:</label><span>R-410A</span>
-          </div>
-          <div class="field"><label>Presión:</label><span>70 psi</span></div>
-          <div class="field">
-            <label>Temp. Ambiente:</label><span>28°C</span>
-          </div>
-        </div>
-        <div class="row row-3">
-          <div class="field"><label>Temp. Equipo:</label><span>18°C</span></div>
-          <div class="field"><label>Voltaje:</label><span>220V</span></div>
-          <div class="field"><label>Amperaje:</label><span>3.2A</span></div>
-        </div>
-      </div>
+    <hr>
 
-      <!-- Sección: Trabajo Realizado -->
-      <div class="section">
-        <div class="section-title">TRABAJO REALIZADO</div>
-        <div class="long-text">
-          Se realizó la limpieza general del condensador y evaporador. Se revisó
-          la carga de gas refrigerante y se encontró en niveles óptimos. Se
-          reemplazó el filtro de aire.
-        </div>
-      </div>
-
-      <!-- Sección: Observaciones -->
-      <div class="section">
-        <div class="section-title">OBSERVACIONES</div>
-        <div class="long-text">
-          Se recomienda mantener el área libre de polvo y realizar mantenimiento
-          cada seis meses.
-        </div>
-      </div>
-
-      <!-- Sección: Recomendaciones -->
-      <div class="section">
-        <div class="section-title">RECOMENDACIONES</div>
-        <div class="long-text">
-          Cambiar el filtro de aire periódicamente y evitar el uso continuo por
-          más de 8 horas diarias.
-        </div>
-      </div>
-
-      <!-- Sección: Fotos -->
-      <div class="section">
-        <div class="section-title">FOTOGRAFÍAS DEL EQUIPO</div>
-        <div class="photos">
-          <img src="https://via.placeholder.com/180x120" alt="Foto 1" />
-          <img src="https://via.placeholder.com/180x120" alt="Foto 2" />
-          <img src="https://via.placeholder.com/180x120" alt="Foto 3" />
-        </div>
-      </div>
-
-      <!-- Sección: Firma -->
-      <div class="section">
-        <div class="section-title">FIRMA DEL CLIENTE</div>
-        <div class="signature">
-          <img
-            src="https://via.placeholder.com/200x60?text=Firma"
-            alt="Firma del cliente"
-          />
-          <p>Juan Pérez</p>
-        </div>
-      </div>
-
-      <!-- Pie de página -->
-      <div class="footer">Página 1 de 1 — Generado el 28/10/2025</div>
+    <div class="section">
+      <h3>Condiciones Generales de Operación</h3>
+      <table class="cond-table">
+        <thead>
+          <tr>
+            <th>Compresor</th>
+            <th>Amps</th>
+            <th>Referencia PSI</th>
+            <th>Baja PSI</th>
+            <th>Alta</th>
+            <th>Aceite</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>No. 1</td>
+            <td>{{compresor1_amps}}</td>
+            <td>{{compresor1_referencia}}</td>
+            <td>{{compresor1_baja}}</td>
+            <td>{{compresor1_alta}}</td>
+            <td>{{compresor1_aceite}}</td>
+          </tr>
+          <tr>
+            <td>No. 2</td>
+            <td>{{compresor2_amps}}</td>
+            <td>{{compresor2_referencia}}</td>
+            <td>{{compresor2_baja}}</td>
+            <td>{{compresor2_alta}}</td>
+            <td>{{compresor2_aceite}}</td>
+          </tr>
+          <tr>
+            <td>No. 3</td>
+            <td>{{compresor3_amps}}</td>
+            <td>{{compresor3_referencia}}</td>
+            <td>{{compresor3_baja}}</td>
+            <td>{{compresor3_alta}}</td>
+            <td>{{compresor3_aceite}}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-  </body>
+
+    <div class="section">
+      <h3>Motores de condenzador</h3>
+      <table class="cond-table">
+        <thead>
+          <tr>
+            <th>No. Motor</th>
+            <th>Amps</th>
+            <th>No. Motor</th>
+            <th>Amps</th>
+            <th>No. Motor</th>
+            <th>Amps</th>
+            <th>Referencia</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>{{motor1_amps}}</td>
+            <td>2</td>
+            <td>{{motor2_amps}}</td>
+            <td>3</td>
+            <td>{{motor3_amps}}</td>
+            <td>{{linea_motor1_referencia}}</td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>{{motor4_amps}}</td>
+            <td>5</td>
+            <td>{{motor5_amps}}</td>
+            <td>6</td>
+            <td>{{motor6_amps}}</td>
+            <td>{{linea_motor2_referencia}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section">
+      <h3>Evaporador</h3>
+      <table class="cond-table">
+        <thead>
+          <tr>
+            <th>Amps</th>
+            <th>Referencia</th>
+            <th>Banda</th>
+            <th>Medida</th>
+            <th>Filtro de Retorno</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{{evaporador_amps}}</td>
+            <td>{{evaporador_referencia}}</td>
+            <td>{{evaporador_banda}}</td>
+            <td>{{evaporador_medida}}</td>
+            <td>{{evaporador_filtro_retorno}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section">
+      <h3>Generales</h3>
+      <table class="cond-table">
+        <thead>
+          <tr>
+            <th>Voltaje</th>
+            <th>Temp. Interior</th>
+            <th>Temp. Exterior</th>
+            <th>Ruidos Extraños</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{{voltaje}}</td>
+            <td>{{temp_int}}</td>
+            <td>{{temp_ext}}</td>
+            <td>{{ruidos_extranos}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section">
+      <h3>Actividades Realizadas</h3>
+      <div class="textarea">{{actividades_realizadas}}</div>
+    </div>
+
+    <div class="section">
+      <h3>Recomendaciones</h3>
+      <div class="textarea">{{recomendaciones}}</div>
+    </div>
+
+    <div class="section">
+      <div><span class="label">Cobro por Servicio:</span> ${{cobro_servicio}}</div>
+    </div>
+
+    <div class="signatures">
+      <div class="signature">Firma de Conformidad</div>
+    </div>
+
+    <footer>
+      Av. Bustamita No.1404 · Fracc. Valle del Pedregal · C.P. 21395 · Mexicali, B.C.  
+      · E-mail: conforttotal@prodigy.net.mx
+    </footer>
+  </div>
+</body>
 </html>
