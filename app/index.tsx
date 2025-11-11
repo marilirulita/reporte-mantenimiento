@@ -3,9 +3,12 @@ import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
 import { ClipboardList, History, Snowflake } from "lucide-react-native";
 import { LinearGradient } from "expo-linear-gradient";
+import { useReporte } from "@/context/ReporteContext";
 
 export default function PantallaInicio() {
   const router = useRouter();
+  const { reporte, setReporte } = useReporte();
+
   return (
     <LinearGradient
       colors={["#eff6ff", "#f1f5f9"]} // from-blue-50 to-slate-100
@@ -26,12 +29,22 @@ export default function PantallaInicio() {
       <View style={styles.cardsContainer}>
         <TouchableOpacity
           style={[styles.card, styles.cardActive]}
-          onPress={() => router.push("./reporte")}
+          onPress={() => {
+            setReporte({
+              activeTab: "cliente",
+              cliente: {},
+              equipo: {},
+              tecnico: {},
+              fotos: [],
+              firma: null,
+            });
+            router.push("./reporte");
+          }}
         >
           <View style={[styles.iconBox, styles.iconBoxBlue]}>
             <ClipboardList color="#2563eb" size={28} />
           </View>
-          <View style={{flex: 1}}>
+          <View style={{ flex: 1 }}>
             <Text style={styles.cardTitle}>Nuevo Reporte</Text>
             <Text style={styles.cardSubtitle}>
               Crear un nuevo reporte de mantenimiento
@@ -46,7 +59,7 @@ export default function PantallaInicio() {
           <View style={[styles.iconBox, styles.iconBoxGray]}>
             <History color="#334155" size={28} />
           </View>
-          <View style={{flex: 1}}>
+          <View style={{ flex: 1 }}>
             <Text style={styles.cardTitle}>Historial</Text>
             <Text style={styles.cardSubtitle}>
               Ver reportes anteriores guardados
@@ -125,7 +138,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "600",
     color: "#1e293b",
-    
   },
   cardSubtitle: {
     fontSize: 13,

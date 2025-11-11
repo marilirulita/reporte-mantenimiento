@@ -86,7 +86,7 @@ const ClienteScreen = () => {
         clienteId = await addCliente(cliente); // addCliente debe retornar el ID
         setCliente((prev) => ({ ...prev, id: clienteId }));
       } else {
-        console.log("Cliente existente, usando ID:", clienteId);
+        console.log("Cliente existente, usando ID guardado");
       }
 
       // 🧩 2. Crear equipo asociado al cliente
@@ -108,7 +108,6 @@ const ClienteScreen = () => {
     clienteId: number
   ): Promise<number> => {
     let equipoId = equipo.id;
-    console.log("equipo y cliente ID al guardar equipo:", equipo, clienteId)
     try {
       if (!equipoId || equipoId === 0) {
         // 🧩 Insertar nuevo equipo en la base de datos
@@ -117,7 +116,7 @@ const ClienteScreen = () => {
         // Actualizar el estado local (sin depender de él)
         setEquipo((prev) => ({ ...prev, id: equipoId }));
       } else {
-        console.log("Equipo existente, usando ID:", equipoId);
+        console.log("Equipo existente, usando ID guardado");
       }
 
       // ✅ Retornar el ID para que la función llamante pueda usarlo
@@ -130,12 +129,10 @@ const ClienteScreen = () => {
   };
 
   const cargarEquipos = async (clienteId: number | undefined) => {
-    console.log("cliente id:", clienteId)
     // 🔹 Cargar equipos del cliente
     if (clienteId !== undefined) {
       const equiposCliente = await getEquiposByClienteId(clienteId!);
       setEquipos(equiposCliente);
-      console.log(equipos);
     }
   };
 
@@ -279,7 +276,7 @@ const ClienteScreen = () => {
 
           <View style={styles.row}>
             <View style={styles.column}>
-              <Text style={styles.label}>Número de Serie</Text>
+              <Text style={styles.label}>Número de Serie *</Text>
               <CustomInput
                 placeholder="SN123456789"
                 value={equipo.serie ?? ""}
@@ -288,7 +285,7 @@ const ClienteScreen = () => {
             </View>
 
             <View style={styles.column}>
-              <Text style={styles.label}>Tonelada / Voltaje *</Text>
+              <Text style={styles.label}>Tonelada / Voltaje</Text>
               <CustomInput
                 placeholder="Tonelada / Voltaje"
                 value={equipo.ton_volt}
@@ -312,14 +309,6 @@ const ClienteScreen = () => {
           />
 
           <Botton classname={styles.button} onPress={() => saveClienteEquipo()}>
-            <Text style={styles.text}>Siguiente</Text>
-          </Botton>
-          <Botton classname={styles.button} onPress={() => {
-            const equipos = getAllReportes();
-            console.log(equipos);
-            //console.log("pending...");
-            //deleteEquipo(1)
-          } }>
             <Text style={styles.text}>Siguiente</Text>
           </Botton>
         </View>

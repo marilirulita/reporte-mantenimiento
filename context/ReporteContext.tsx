@@ -27,7 +27,6 @@ export const ReporteProvider = ({ children }: { children: React.ReactNode }) => 
     firma: null,
   });
 
-  console.log(reporte);
   return (
     <ReporteContext.Provider value={{ reporte, setReporte }}>
       {children}

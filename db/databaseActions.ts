@@ -72,7 +72,6 @@ export const deleteEquipo = (id: number) => {
 
 export const addReporte = async (reporte: Reporte) => {
   const fotosJSON = JSON.stringify(reporte.fotos ?? []);
-  console.log(fotosJSON);
   const result = await db.runAsync(
     `INSERT INTO reportes (
       cliente_id,
@@ -165,6 +164,28 @@ export const getReportes = (): Reporte[] => {
     })()
 }))
 };
+
+export async function buscarReportes(texto: string) {
+  try {
+    const like = `%${texto}%`;
+    const query = `
+      SELECT * FROM reportes r
+      LEFT JOIN clientes c ON r.cliente_id = c.id
+      LEFT JOIN equipos e ON e.id = r.equipo_id
+      WHERE c.nombre LIKE ? 
+         OR e.serie LIKE ? 
+         OR r.fecha_ejecucion LIKE ? 
+         OR r.tecnico_nombre LIKE ? 
+         OR r.reporte_numero LIKE ?
+      ORDER BY r.fecha DESC;
+    `;
+    const result = await db.getAllAsync(query, [like, like, like, like, like]);
+    return result;
+  } catch (err) {
+    console.error("Error al buscar reportes:", err);
+    return [];
+  }
+}
 
 export const deleteReporte = (id: number) => {
   db.runSync(`DELETE FROM reportes WHERE id = ?`, [id]);

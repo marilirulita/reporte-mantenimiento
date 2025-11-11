@@ -27,19 +27,38 @@ import { generarPDF } from "../utils/generarPDF";
 
 export default function HistorialScreen() {
   const router = useRouter();
+  const [reportes, setReportes] = useState<any[]>([]);
+  const [resultados, setResultados] = useState<any[]>([]);
   const [busqueda, setBusqueda] = useState("");
-  const [reportes, setReportes] = useState<Reporte[]>([]);
 
-  // tengo que buscar como traer el nombre del cliente y del equipo del reporte
-
+  const filtrarReportes = () => {
+    if (busqueda.trim().length > 1) {
+      const query = busqueda.toLowerCase();
+      const filtrados = reportes.filter(r =>
+        (r.nombre && r.nombre.toLowerCase().includes(query)) ||
+        (r.serie && r.serie.toLowerCase().includes(query)) ||
+        (r.tecnico_nombre && r.tecnico_nombre.toLowerCase().includes(query)) ||
+        (r.reporte_numero && r.reporte_numero.toLowerCase().includes(query)) ||
+        (r.fecha_ejecucion && r.fecha_ejecucion.includes(query))
+      );
+      setResultados(filtrados);
+    } else {
+      setResultados(reportes);
+    }
+  };
+  
   useEffect(() => {
     cargarReportes();
   }, []);
 
-  async function cargarReportes() {
-    //const data = await getAllReportes();
+  useEffect(() => {
+    filtrarReportes();
+  }, [busqueda, reportes]);
+
+  const cargarReportes = async () => {
     const data = await getReportesConCliente();
     setReportes(data);
+    setResultados(data);
   }
 
   const descargarPDF = async (id: number) => {
@@ -121,7 +140,7 @@ export default function HistorialScreen() {
         <TextInput
           placeholder="Buscar por cliente, técnico, marca..."
           value={busqueda}
-          onChangeText={setBusqueda}
+          onChangeText={(text) => setBusqueda(text)}
           placeholderTextColor="#94a3b8"
           style={styles.searchInput}
         />
@@ -148,7 +167,7 @@ export default function HistorialScreen() {
         </View>
       ) : (
         <FlatList
-          data={reportes}
+          data={resultados}
           renderItem={renderReporte}
           keyExtractor={(item) => item.id!.toString()}
           contentContainerStyle={{ paddingBottom: 40 }}

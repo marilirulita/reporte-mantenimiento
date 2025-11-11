@@ -114,7 +114,7 @@ const logoBase64 = await FileSystem.readAsStringAsync(logoUri, {
   }
 
   .logo {
-    width: 160px;
+    flex: 0.5;
     color: #fff;
     display: flex;
     align-items: center;
@@ -135,7 +135,7 @@ const logoBase64 = await FileSystem.readAsStringAsync(logoUri, {
 
   .title h1 {
     margin: 0;
-    font-size: 26px;
+    font-size: 20px;
   }
 
   .title p {
@@ -152,7 +152,6 @@ const logoBase64 = await FileSystem.readAsStringAsync(logoUri, {
   .report-number {
     border: 2px solid #bfe9e8;
     padding: 8px 10px;
-    display: inline-block;
     border-radius: 6px;
     background: #f6ffff;
   }
@@ -197,13 +196,6 @@ const logoBase64 = await FileSystem.readAsStringAsync(logoUri, {
     margin-top: 20px;
   }
 
-  .fotos-section {
-    margin: 20px;
-    border-radius: 6px;
-    overflow: hidden;
-    background: #ffffff;
-  }
-
   .cond-table {
     width: 100%;
     border-collapse: collapse;
@@ -230,22 +222,6 @@ const logoBase64 = await FileSystem.readAsStringAsync(logoUri, {
     white-space: pre-wrap;
   }
 
-  /* Fotos */
-    .photos {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      padding: 10px;
-      justify-content: start;
-    }
-
-    .photos img {
-      width: 180px;
-      height: 120px;
-      object-fit: cover;
-      border: 1px solid #e5e7eb;
-      border-radius: 4px;
-    }
 
     .fotos {
       display: grid;
@@ -256,13 +232,12 @@ const logoBase64 = await FileSystem.readAsStringAsync(logoUri, {
 
     .foto img {
       width: 100%;
-      height: 150px;
       object-fit: cover;
       border-radius: 8px;
-      border: 1px solid #ccc;
+      border: 1px solid #ccc;    
+      aspect-ratio: 1 / 1;  
+      display: block;
     }
-
-
 
   /* Firma */
     .signature {
@@ -303,8 +278,8 @@ const logoBase64 = await FileSystem.readAsStringAsync(logoUri, {
         <h3>Reporte de Servicio</h3>
       </div>
       <div class="report-box">
-        <div>REPORTE</div>
-        <div class="report-number"><strong>No.</strong>${safe(reporte.tecnico.reporte_numero)}</div>
+        <div>REPORTE No.</div>
+        <div class="report-number"><strong></strong>${safe(reporte.tecnico.reporte_numero)}</div>
         <div>Tel: 686-390-1797</div>
         <div>Tecnico: ${safe(reporte.tecnico.tecnico_nombre)}</div>
       </div>
@@ -485,20 +460,21 @@ const logoBase64 = await FileSystem.readAsStringAsync(logoUri, {
     <!-- Sección: Fotos -->
     <div class="fotos-section">
     <h3>Fotografias del Equipo</h3>
-      <div class="photos">
-        <div class="fotos">
-          ${reporte.fotos
-            .map(
-              (foto, i) =>
-                `<div class="foto">
-              <img src="${foto}" alt="Foto ${i + 1}" />
-            </div>`
-            )
-            .join("")}
-        </div>
+
+      <div class="fotos">
+        ${reporte.fotos
+          .map(
+            (foto, i) =>
+              `<div class="foto">
+            <img src="${foto}" alt="Foto ${i + 1}" />
+          </div>`
+          )
+          .join("")}
       </div>
     </div>
 
+    <hr>
+    
     <footer>
       Av. Bustamita No.1404 · Fracc. Valle del Pedregal · C.P. 21395 · Mexicali, B.C.  
       · E-mail: conforttotal@prodigy.net.mx

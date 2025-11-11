@@ -64,14 +64,14 @@ export const templaitPDFDowload = async (reporte: {
   firma: any;
 }) => {
   // Obtén la ruta absoluta del logo usando expo-asset
-const logoAsset = Asset.fromModule(require("../assets/images/logo.jpg"));
-await logoAsset.downloadAsync();
-const logoUri = logoAsset.localUri || logoAsset.uri;
+  const logoAsset = Asset.fromModule(require("../assets/images/logo.jpg"));
+  await logoAsset.downloadAsync();
+  const logoUri = logoAsset.localUri || logoAsset.uri;
 
-// Ahora, lee el archivo y conviértelo a base64
-const logoBase64 = await FileSystem.readAsStringAsync(logoUri, {
-  encoding: FileSystem.EncodingType.Base64,
-});
+  // Ahora, lee el archivo y conviértelo a base64
+  const logoBase64 = await FileSystem.readAsStringAsync(logoUri, {
+    encoding: FileSystem.EncodingType.Base64,
+  });
 
   const dateToday = new Date().toLocaleDateString("es-MX", {
     day: "2-digit",
@@ -111,7 +111,7 @@ const logoBase64 = await FileSystem.readAsStringAsync(logoUri, {
   }
 
   .logo {
-    width: 160px;
+    flex: 0.5;
     color: #fff;
     display: flex;
     align-items: center;
@@ -132,7 +132,7 @@ const logoBase64 = await FileSystem.readAsStringAsync(logoUri, {
 
   .title h1 {
     margin: 0;
-    font-size: 26px;
+    font-size: 20px;
   }
 
   .title p {
@@ -149,7 +149,6 @@ const logoBase64 = await FileSystem.readAsStringAsync(logoUri, {
   .report-number {
     border: 2px solid #bfe9e8;
     padding: 8px 10px;
-    display: inline-block;
     border-radius: 6px;
     background: #f6ffff;
   }
@@ -194,13 +193,6 @@ const logoBase64 = await FileSystem.readAsStringAsync(logoUri, {
     margin-top: 20px;
   }
 
-  .fotos-section {
-    margin: 20px;
-    border-radius: 6px;
-    overflow: hidden;
-    background: #ffffff;
-  }
-
   .cond-table {
     width: 100%;
     border-collapse: collapse;
@@ -227,22 +219,6 @@ const logoBase64 = await FileSystem.readAsStringAsync(logoUri, {
     white-space: pre-wrap;
   }
 
-  /* Fotos */
-    .photos {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      padding: 10px;
-      justify-content: start;
-    }
-
-    .photos img {
-      width: 180px;
-      height: 120px;
-      object-fit: cover;
-      border: 1px solid #e5e7eb;
-      border-radius: 4px;
-    }
 
     .fotos {
       display: grid;
@@ -253,13 +229,12 @@ const logoBase64 = await FileSystem.readAsStringAsync(logoUri, {
 
     .foto img {
       width: 100%;
-      height: 150px;
       object-fit: cover;
       border-radius: 8px;
-      border: 1px solid #ccc;
+      border: 1px solid #ccc;    
+      aspect-ratio: 1 / 1;  
+      display: block;
     }
-
-
 
   /* Firma */
     .signature {
@@ -300,8 +275,10 @@ const logoBase64 = await FileSystem.readAsStringAsync(logoUri, {
         <h3>Reporte de Servicio</h3>
       </div>
       <div class="report-box">
-        <div>REPORTE</div>
-        <div class="report-number"><strong>No.</strong>${safe(reporte.reporte_numero)}</div>
+        <div>REPORTE No.</div>
+        <div class="report-number"><strong></strong>${safe(
+          reporte.reporte_numero
+        )}</div>
         <div>Tel: 686-390-1797</div>
         <div>Tecnico: ${safe(reporte.tecnico_nombre)}</div>
       </div>
@@ -313,19 +290,31 @@ const logoBase64 = await FileSystem.readAsStringAsync(logoUri, {
       <div class="card">
         <h3>Datos del Cliente</h3>
         <div><span class="label">Nombre:</span> ${safe(reporte.nombre)}</div>
-        <div><span class="label">Dirección:</span> ${safe(reporte.direccion)}</div>
-        <div><span class="label">Teléfono:</span> ${safe(reporte.telefono)}</div>
-        <div><span class="label">Referencia:</span> ${safe(reporte.referencia)}</div>
-        <div><span class="label">Fecha Ejecución:</span> ${safe(reporte.fecha_ejecucion)}</div>
+        <div><span class="label">Dirección:</span> ${safe(
+          reporte.direccion
+        )}</div>
+        <div><span class="label">Teléfono:</span> ${safe(
+          reporte.telefono
+        )}</div>
+        <div><span class="label">Referencia:</span> ${safe(
+          reporte.referencia
+        )}</div>
+        <div><span class="label">Fecha Ejecución:</span> ${safe(
+          reporte.fecha_ejecucion
+        )}</div>
       </div>
 
       <div class="card">
         <h3>Datos Generales del Equipo</h3>
-        <div><span class="label">Descripción:</span> ${safe(reporte.descripcion)}</div>
+        <div><span class="label">Descripción:</span> ${safe(
+          reporte.descripcion
+        )}</div>
         <div><span class="label">Marca:</span> ${safe(reporte.marca)}</div>
         <div><span class="label">Modelo:</span> ${safe(reporte.modelo)}</div>
         <div><span class="label">Serie:</span> ${safe(reporte.serie)}</div>
-        <div><span class="label">Ton./Voltaje:</span> ${safe(reporte.ton_volt)}</div>
+        <div><span class="label">Ton./Voltaje:</span> ${safe(
+          reporte.ton_volt
+        )}</div>
         <div><span class="label">Área:</span> ${safe(reporte.area)}</div>
       </div>
     </div>
@@ -468,7 +457,9 @@ const logoBase64 = await FileSystem.readAsStringAsync(logoUri, {
     </div>
 
     <div class="section">
-      <div><span class="label">Cobro por Servicio:</span> $${safe(reporte.cobro_servicio)}</div>
+      <div><span class="label">Cobro por Servicio:</span> $${safe(
+        reporte.cobro_servicio
+      )}</div>
     </div>
 
     <!-- Sección: Firma -->
@@ -482,7 +473,7 @@ const logoBase64 = await FileSystem.readAsStringAsync(logoUri, {
     <!-- Sección: Fotos -->
     <div class="fotos-section">
     <h3>Fotografias del Equipo</h3>
-      <div class="photos">
+
         <div class="fotos">
           ${reporte.fotos
             .map(
@@ -493,9 +484,11 @@ const logoBase64 = await FileSystem.readAsStringAsync(logoUri, {
             )
             .join("")}
         </div>
-      </div>
+
     </div>
 
+    <hr>
+    
     <footer>
       Av. Bustamita No.1404 · Fracc. Valle del Pedregal · C.P. 21395 · Mexicali, B.C.  
       · E-mail: conforttotal@prodigy.net.mx

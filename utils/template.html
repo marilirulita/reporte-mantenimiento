@@ -1,362 +1,438 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
-<head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Reporte de Servicio</title>
-<style>
-  body {
-    font-family: "Helvetica Neue", Arial, sans-serif;
-    background: #eaf9f9;
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Reporte de Servicio</title>
+    <style>
+      body {
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        background: #eaf9f9;
+        margin: 20px;
+        color: #033;
+      }
+
+      .page {
+        background: #fff;
+        max-width: 900px;
+        margin: auto;
+        padding: 20px 25px;
+        border: 1px solid #cce8e6;
+        border-radius: 8px;
+      }
+
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+      }
+
+      .logo {
+        flex: 0.5;
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 18px;
+      }
+
+      .logo img {
+        width: 100%;
+      }
+
+      .title {
+        text-align: center;
+        flex: 1;
+      }
+
+      .title h1 {
+        margin: 0;
+        font-size: 26px;
+      }
+
+      .title p {
+        margin: 2px 0;
+        font-size: 13px;
+        color: #555;
+      }
+
+      .report-box {
+        text-align: left;
+        font-size: 13px;
+      }
+
+      .report-number {
+        border: 2px solid #bfe9e8;
+        padding: 8px 10px;
+        display: inline-block;
+        border-radius: 6px;
+        background: #f6ffff;
+      }
+
+      hr {
+        border: none;
+        border-top: 1px solid #cce8e6;
+        margin: 15px 0;
+      }
+
+      h3 {
+        font-size: 16px;
+        color: #1b6f7a;
+        margin-bottom: 8px;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+      }
+
+      .card {
+        background: #f9ffff;
+        border: 1px solid #cce8e6;
+        border-radius: 6px;
+        padding: 10px 15px;
+      }
+
+      .label {
+        font-size: 13px;
+        color: #666;
+        font-weight: bold;
+      }
+
+      .value {
+        font-size: 14px;
+        padding-bottom: 5px;
+      }
+
+      .section {
+        margin-top: 20px;
+      }
+
+      .fotos-section {
     margin: 20px;
-    color: #033;
-  }
-
-  .page {
-    background: #fff;
-    max-width: 900px;
-    margin: auto;
-    padding: 20px 25px;
-    border: 1px solid #cce8e6;
-    border-radius: 8px;
-  }
-
-  header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-  }
-
-  .logo {
-    width: 160px;
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-    font-size: 18px;
-  }
-
-  .logo img {
-    width: 100%;
-    height: auto;
-  }
-
-  .title {
-    text-align: center;
-    flex: 1;
-  }
-
-  .title h1 {
-    margin: 0;
-    font-size: 26px;
-  }
-
-  .title p {
-    margin: 2px 0;
-    font-size: 13px;
-    color: #555;
-  }
-
-  .report-box {
-    text-align: left;
-    font-size: 13px;
-  }
-
-  .report-number {
-    border: 2px solid #bfe9e8;
-    padding: 8px 10px;
-    display: inline-block;
     border-radius: 6px;
-    background: #f6ffff;
+    overflow: hidden;
+    background: #ffffff;
   }
 
-  hr {
-    border: none;
-    border-top: 1px solid #cce8e6;
-    margin: 15px 0;
-  }
+  /* Fotos */
+  .photos {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding: 10px;
+      justify-content: start;
+    }
 
-  h3 {
-    font-size: 16px;
-    color: #1b6f7a;
-    margin-bottom: 8px;
-  }
+    .photos img {
+      width: 180px;
+      height: 120px;
+      object-fit: cover;
+      border: 1px solid #e5e7eb;
+      border-radius: 4px;
+    }
 
-  .grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 15px;
-  }
+    .fotos {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-top: 16px;
+    }
 
-  .card {
-    background: #f9ffff;
-    border: 1px solid #cce8e6;
-    border-radius: 6px;
-    padding: 10px 15px;
-  }
+    .foto img {
+      width: 100%;
+   
+      object-fit: cover;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
 
-  .label {
-    font-size: 13px;
-    color: #666;
-    font-weight: bold;
-  }
+      .cond-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 8px;
+      }
 
-  .value {
-    font-size: 14px;
-    padding-bottom: 5px;
-  }
+      .cond-table th,
+      .cond-table td {
+        border: 1px solid #d9f0ef;
+        padding: 6px 8px;
+        font-size: 13px;
+        text-align: center;
+      }
 
-  .section {
-    margin-top: 20px;
-  }
+      .cond-table th {
+        background: #f1fdfd;
+      }
 
-  .cond-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 8px;
-  }
+      .textarea {
+        border: 1px solid #cce8e6;
+        background: #f9ffff;
+        padding: 10px;
+        border-radius: 6px;
+        min-height: 80px;
+        white-space: pre-wrap;
+      }
 
-  .cond-table th, .cond-table td {
-    border: 1px solid #d9f0ef;
-    padding: 6px 8px;
-    font-size: 13px;
-    text-align: center;
-  }
+      .signatures {
+        display: flex;
+        justify-content: center;
+        margin-top: 40px;
+      }
 
-  .cond-table th {
-    background: #f1fdfd;
-  }
+      .signature {
+        text-align: center;
+        width: 45%;
+        border-top: 1px dashed #a0d6d4;
+        padding-top: 5px;
+        font-size: 13px;
+      }
 
-  .textarea {
-    border: 1px solid #cce8e6;
-    background: #f9ffff;
-    padding: 10px;
-    border-radius: 6px;
-    min-height: 80px;
-    white-space: pre-wrap;
-  }
+      footer {
+        text-align: center;
+        font-size: 12px;
+        color: #666;
+        margin-top: 20px;
+      }
 
-  .signatures {
-    display: flex;
-    justify-content: center;
-    margin-top: 40px;
-  }
+      @media print {
+        body {
+          background: #fff;
+          margin: 0;
+        }
+        .page {
+          border: none;
+          border-radius: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <header>
+        <div class="logo">
+          <img src="../assets/images/logo.jpg" alt="Logo" />
+        </div>
+        <div class="title">
+          <h1>Aire Acondicionado</h1>
+          <p>Venta · Instalación · Servicio</p>
+          <p>Doméstica · Comercial · Industrial</p>
+          <h3>Reporte de Servicio</h3>
+        </div>
+        <div class="report-box">
+          <div>REPORTE No.</div>
+          <div class="report-number"><strong></strong> {{reporte_numero}}</div>
+          <div>Tel: 686-390-1797</div>
+          <div>Tecnico: {{tecnico_nombre}}</div>
+        </div>
+      </header>
 
-  .signature {
-    text-align: center;
-    width: 45%;
-    border-top: 1px dashed #a0d6d4;
-    padding-top: 5px;
-    font-size: 13px;
-  }
+      <hr />
 
-  footer {
-    text-align: center;
-    font-size: 12px;
-    color: #666;
-    margin-top: 20px;
-  }
+      <div class="grid">
+        <div class="card">
+          <h3>Datos del Cliente</h3>
+          <div><span class="label">Nombre:</span> {{cliente_nombre}}</div>
+          <div><span class="label">Dirección:</span> {{cliente_direccion}}</div>
+          <div><span class="label">Teléfono:</span> {{cliente_telefono}}</div>
+          <div>
+            <span class="label">Referencia:</span> {{cliente_referencia}}
+          </div>
+          <div>
+            <span class="label">Fecha Ejecución:</span> {{fecha_ejecucion}}
+          </div>
+          <div><span class="label">O. Trabajo:</span> {{orden_trabajo}}</div>
+        </div>
 
-  @media print {
-    body { background: #fff; margin: 0; }
-    .page { border: none; border-radius: 0; }
-  }
-</style>
-</head>
-<body>
-  <div class="page">
-    <header>
-      <div class="logo">
-        <img src="../assets/images/logo.jpg" alt="Logo" />
+        <div class="card">
+          <h3>Datos Generales del Equipo</h3>
+          <div>
+            <span class="label">Descripción:</span> {{equipo_descripcion}}
+          </div>
+          <div><span class="label">Marca:</span> {{equipo_marca}}</div>
+          <div><span class="label">Modelo:</span> {{equipo_modelo}}</div>
+          <div><span class="label">Serie:</span> {{equipo_serie}}</div>
+          <div>
+            <span class="label">Ton./Voltaje:</span> {{equipo_ton_volt}}
+          </div>
+          <div><span class="label">Área:</span> {{equipo_area}}</div>
+        </div>
       </div>
-      <div class="title">
-        <h1>Aire Acondicionado</h1>
-        <p>Venta · Instalación · Servicio</p>
-        <p>Doméstica · Comercial · Industrial</p>
-        <h3>Reporte de Servicio</h3>
+
+      <hr />
+
+      <div class="section">
+        <h3>Condiciones Generales de Operación</h3>
+        <table class="cond-table">
+          <thead>
+            <tr>
+              <th>Compresor</th>
+              <th>Amps</th>
+              <th>Referencia PSI</th>
+              <th>Baja PSI</th>
+              <th>Alta</th>
+              <th>Aceite</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>No. 1</td>
+              <td>{{compresor1_amps}}</td>
+              <td>{{compresor1_referencia}}</td>
+              <td>{{compresor1_baja}}</td>
+              <td>{{compresor1_alta}}</td>
+              <td>{{compresor1_aceite}}</td>
+            </tr>
+            <tr>
+              <td>No. 2</td>
+              <td>{{compresor2_amps}}</td>
+              <td>{{compresor2_referencia}}</td>
+              <td>{{compresor2_baja}}</td>
+              <td>{{compresor2_alta}}</td>
+              <td>{{compresor2_aceite}}</td>
+            </tr>
+            <tr>
+              <td>No. 3</td>
+              <td>{{compresor3_amps}}</td>
+              <td>{{compresor3_referencia}}</td>
+              <td>{{compresor3_baja}}</td>
+              <td>{{compresor3_alta}}</td>
+              <td>{{compresor3_aceite}}</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
-      <div class="report-box">
-        <div>REPORTE</div>
-        <div class="report-number"><strong>No.</strong> {{reporte_numero}}</div>
-        <div>Tel: 686-390-1797</div>
-        <div>Tecnico: {{tecnico_nombre}}</div>
+
+      <div class="section">
+        <h3>Motores de condenzador</h3>
+        <table class="cond-table">
+          <thead>
+            <tr>
+              <th>No. Motor</th>
+              <th>Amps</th>
+              <th>No. Motor</th>
+              <th>Amps</th>
+              <th>No. Motor</th>
+              <th>Amps</th>
+              <th>Referencia</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>{{motor1_amps}}</td>
+              <td>2</td>
+              <td>{{motor2_amps}}</td>
+              <td>3</td>
+              <td>{{motor3_amps}}</td>
+              <td>{{linea_motor1_referencia}}</td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td>{{motor4_amps}}</td>
+              <td>5</td>
+              <td>{{motor5_amps}}</td>
+              <td>6</td>
+              <td>{{motor6_amps}}</td>
+              <td>{{linea_motor2_referencia}}</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
-    </header>
 
-    <hr>
-
-    <div class="grid">
-      <div class="card">
-        <h3>Datos del Cliente</h3>
-        <div><span class="label">Nombre:</span> {{cliente_nombre}}</div>
-        <div><span class="label">Dirección:</span> {{cliente_direccion}}</div>
-        <div><span class="label">Teléfono:</span> {{cliente_telefono}}</div>
-        <div><span class="label">Referencia:</span> {{cliente_referencia}}</div>
-        <div><span class="label">Fecha Ejecución:</span> {{fecha_ejecucion}}</div>
-        <div><span class="label">O. Trabajo:</span> {{orden_trabajo}}</div>
+      <div class="section">
+        <h3>Evaporador</h3>
+        <table class="cond-table">
+          <thead>
+            <tr>
+              <th>Amps</th>
+              <th>Referencia</th>
+              <th>Banda</th>
+              <th>Medida</th>
+              <th>Filtro de Retorno</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{{evaporador_amps}}</td>
+              <td>{{evaporador_referencia}}</td>
+              <td>{{evaporador_banda}}</td>
+              <td>{{evaporador_medida}}</td>
+              <td>{{evaporador_filtro_retorno}}</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
 
-      <div class="card">
-        <h3>Datos Generales del Equipo</h3>
-        <div><span class="label">Descripción:</span> {{equipo_descripcion}}</div>
-        <div><span class="label">Marca:</span> {{equipo_marca}}</div>
-        <div><span class="label">Modelo:</span> {{equipo_modelo}}</div>
-        <div><span class="label">Serie:</span> {{equipo_serie}}</div>
-        <div><span class="label">Ton./Voltaje:</span> {{equipo_ton_volt}}</div>
-        <div><span class="label">Área:</span> {{equipo_area}}</div>
+      <div class="section">
+        <h3>Generales</h3>
+        <table class="cond-table">
+          <thead>
+            <tr>
+              <th>Voltaje</th>
+              <th>Temp. Interior</th>
+              <th>Temp. Exterior</th>
+              <th>Ruidos Extraños</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{{voltaje}}</td>
+              <td>{{temp_int}}</td>
+              <td>{{temp_ext}}</td>
+              <td>{{ruidos_extranos}}</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
+
+      <div class="section">
+        <h3>Actividades Realizadas</h3>
+        <div class="textarea">{{actividades_realizadas}}</div>
+      </div>
+
+      <div class="section">
+        <h3>Recomendaciones</h3>
+        <div class="textarea">{{recomendaciones}}</div>
+      </div>
+
+      <div class="section">
+        <div>
+          <span class="label">Cobro por Servicio:</span> ${{cobro_servicio}}
+        </div>
+      </div>
+
+      <div class="signatures">
+        <div class="signature">Firma de Conformidad</div>
+      </div>
+
+      <!-- Sección: Fotos -->
+      <div class="fotos-section">
+        <h3>Fotografias del Equipo</h3>
+        
+          <div class="fotos">
+            <div class="foto">
+              <img src="" alt="Foto 1" />
+            </div>
+            <div class="foto">
+              <img src="" alt="Foto 2" />
+            </div>
+            <div class="foto">
+              <img src="" alt="Foto 3" />
+            </div>
+            <div class="foto">
+              <img src="" alt="Foto 4" />
+            </div>
+          </div>
+        
+      </div>
+
+      <footer>
+        Av. Bustamita No.1404 · Fracc. Valle del Pedregal · C.P. 21395 ·
+        Mexicali, B.C. · E-mail: conforttotal@prodigy.net.mx
+      </footer>
     </div>
-
-    <hr>
-
-    <div class="section">
-      <h3>Condiciones Generales de Operación</h3>
-      <table class="cond-table">
-        <thead>
-          <tr>
-            <th>Compresor</th>
-            <th>Amps</th>
-            <th>Referencia PSI</th>
-            <th>Baja PSI</th>
-            <th>Alta</th>
-            <th>Aceite</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>No. 1</td>
-            <td>{{compresor1_amps}}</td>
-            <td>{{compresor1_referencia}}</td>
-            <td>{{compresor1_baja}}</td>
-            <td>{{compresor1_alta}}</td>
-            <td>{{compresor1_aceite}}</td>
-          </tr>
-          <tr>
-            <td>No. 2</td>
-            <td>{{compresor2_amps}}</td>
-            <td>{{compresor2_referencia}}</td>
-            <td>{{compresor2_baja}}</td>
-            <td>{{compresor2_alta}}</td>
-            <td>{{compresor2_aceite}}</td>
-          </tr>
-          <tr>
-            <td>No. 3</td>
-            <td>{{compresor3_amps}}</td>
-            <td>{{compresor3_referencia}}</td>
-            <td>{{compresor3_baja}}</td>
-            <td>{{compresor3_alta}}</td>
-            <td>{{compresor3_aceite}}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="section">
-      <h3>Motores de condenzador</h3>
-      <table class="cond-table">
-        <thead>
-          <tr>
-            <th>No. Motor</th>
-            <th>Amps</th>
-            <th>No. Motor</th>
-            <th>Amps</th>
-            <th>No. Motor</th>
-            <th>Amps</th>
-            <th>Referencia</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>1</td>
-            <td>{{motor1_amps}}</td>
-            <td>2</td>
-            <td>{{motor2_amps}}</td>
-            <td>3</td>
-            <td>{{motor3_amps}}</td>
-            <td>{{linea_motor1_referencia}}</td>
-          </tr>
-          <tr>
-            <td>4</td>
-            <td>{{motor4_amps}}</td>
-            <td>5</td>
-            <td>{{motor5_amps}}</td>
-            <td>6</td>
-            <td>{{motor6_amps}}</td>
-            <td>{{linea_motor2_referencia}}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="section">
-      <h3>Evaporador</h3>
-      <table class="cond-table">
-        <thead>
-          <tr>
-            <th>Amps</th>
-            <th>Referencia</th>
-            <th>Banda</th>
-            <th>Medida</th>
-            <th>Filtro de Retorno</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>{{evaporador_amps}}</td>
-            <td>{{evaporador_referencia}}</td>
-            <td>{{evaporador_banda}}</td>
-            <td>{{evaporador_medida}}</td>
-            <td>{{evaporador_filtro_retorno}}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="section">
-      <h3>Generales</h3>
-      <table class="cond-table">
-        <thead>
-          <tr>
-            <th>Voltaje</th>
-            <th>Temp. Interior</th>
-            <th>Temp. Exterior</th>
-            <th>Ruidos Extraños</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>{{voltaje}}</td>
-            <td>{{temp_int}}</td>
-            <td>{{temp_ext}}</td>
-            <td>{{ruidos_extranos}}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="section">
-      <h3>Actividades Realizadas</h3>
-      <div class="textarea">{{actividades_realizadas}}</div>
-    </div>
-
-    <div class="section">
-      <h3>Recomendaciones</h3>
-      <div class="textarea">{{recomendaciones}}</div>
-    </div>
-
-    <div class="section">
-      <div><span class="label">Cobro por Servicio:</span> ${{cobro_servicio}}</div>
-    </div>
-
-    <div class="signatures">
-      <div class="signature">Firma de Conformidad</div>
-    </div>
-
-    <footer>
-      Av. Bustamita No.1404 · Fracc. Valle del Pedregal · C.P. 21395 · Mexicali, B.C.  
-      · E-mail: conforttotal@prodigy.net.mx
-    </footer>
-  </div>
-</body>
+  </body>
 </html>

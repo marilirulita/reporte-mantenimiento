@@ -102,7 +102,7 @@ export default function Equipo() {
     ) {
       Alert.alert(
         "Campos requeridos",
-        "Por favor, completa fecha, nombre del tecnico, observaciones..."
+        "Por favor, completa nombre del tecnico, infomracion del servicio, observaciones..."
       );
       return;
     }
@@ -265,7 +265,7 @@ export default function Equipo() {
           <Text style={styles.sectionTitle}>Motores de Condensador</Text>
           <View style={styles.row}>
             <View style={styles.column}>
-              <Text style={styles.label}>Motor 1</Text>
+              <Text style={styles.label}>Motor 1 *</Text>
               <CustomInput
                 placeholder="Amps"
                 value={motores.motor1_amps}
@@ -386,7 +386,7 @@ export default function Equipo() {
 
           <View style={styles.row}>
             <View style={styles.column}>
-              <Text style={styles.label}>Amps</Text>
+              <Text style={styles.label}>Amps *</Text>
               <CustomInput
                 placeholder="Amps"
                 value={evaporador.evaporador_amps}
@@ -400,7 +400,7 @@ export default function Equipo() {
             </View>
 
             <View style={styles.column}>
-              <Text style={styles.label}>Banda</Text>
+              <Text style={styles.label}>Banda *</Text>
               <CustomInput
                 placeholder="..."
                 value={evaporador.evaporador_banda}
@@ -414,7 +414,7 @@ export default function Equipo() {
             </View>
 
             <View style={styles.column}>
-              <Text style={styles.label}>Medida</Text>
+              <Text style={styles.label}>Medida *</Text>
               <CustomInput
                 placeholder="..."
                 value={evaporador.evaporador_medida}
@@ -430,7 +430,7 @@ export default function Equipo() {
 
           <View style={styles.row}>
             <View style={styles.column}>
-              <Text style={styles.label}>Referencia</Text>
+              <Text style={styles.label}>Referencia *</Text>
               <CustomInput
                 placeholder="..."
                 value={evaporador.evaporador_referencia}
@@ -444,7 +444,7 @@ export default function Equipo() {
             </View>
 
             <View style={styles.column}>
-              <Text style={styles.label}>Filtro Retorno</Text>
+              <Text style={styles.label}>Filtro Retorno *</Text>
               <CustomInput
                 placeholder="..."
                 value={evaporador.evaporador_filtro_retorno}
@@ -463,22 +463,9 @@ export default function Equipo() {
           <Text style={styles.sectionTitle}>Mediciones Generales</Text>
 
           <View style={styles.row}>
+            
             <View style={styles.column}>
-              <Text style={styles.label}>Voltaje</Text>
-              <CustomInput
-                placeholder="..."
-                value={medicionesGenerales.voltaje}
-                setValue={(text) =>
-                  setMedicionesGenerales({
-                    ...medicionesGenerales,
-                    voltaje: text,
-                  })
-                }
-              />
-            </View>
-
-            <View style={styles.column}>
-              <Text style={styles.label}>Temp. Int</Text>
+              <Text style={styles.label}>Temp. Int *</Text>
               <CustomInput
                 placeholder="..."
                 value={medicionesGenerales.temp_int}
@@ -491,7 +478,7 @@ export default function Equipo() {
               />
             </View>
             <View style={styles.column}>
-              <Text style={styles.label}>Temp. Ext</Text>
+              <Text style={styles.label}>Temp. Ext *</Text>
               <CustomInput
                 placeholder="..."
                 value={medicionesGenerales.temp_ext}
@@ -506,8 +493,21 @@ export default function Equipo() {
           </View>
 
           <View style={styles.row}>
+          <View style={styles.column}>
+              <Text style={styles.label}>Voltaje *</Text>
+              <CustomInput
+                placeholder="..."
+                value={medicionesGenerales.voltaje}
+                setValue={(text) =>
+                  setMedicionesGenerales({
+                    ...medicionesGenerales,
+                    voltaje: text,
+                  })
+                }
+              />
+            </View>
             <View style={styles.column}>
-              <Text style={styles.label}>Ruidos Extraños</Text>
+              <Text style={styles.label}>Ruidos Extraños *</Text>
               <CustomInput
                 placeholder="..."
                 value={medicionesGenerales.ruidos_extranos}

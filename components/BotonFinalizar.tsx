@@ -1,6 +1,4 @@
 import { addReporte } from "@/db/databaseActions";
-import { Reporte } from "@/models/interfaces";
-import { useState } from "react";
 import { Alert, StyleSheet, Text } from "react-native";
 import { useReporte } from "../context/ReporteContext";
 import { generarPDF } from "../utils/generarPDF";
@@ -8,7 +6,6 @@ import { Botton } from "./ui/button";
 
 const BotonFinalizar = () => {
   const { reporte } = useReporte();
-  const [reporteCompleto, setReporteCompleto] = useState<Reporte>();
 
   const handleFinalizar = async () => {
     if (reporte.firma === null) {
@@ -21,21 +18,19 @@ const BotonFinalizar = () => {
       return;
     }
 
-    /*if (!reporte.tecnico?.fecha_ejecucion) {;
+    if (!reporte.tecnico?.fecha_ejecucion) {;
       Alert.alert("Requisito Reporte", "Faltan datos del area tecnica");
       return;
-    }*/
+    }
 
     if (reporte.fotos.length <= 0) {;
       Alert.alert("Requisito Reporte", "Faltan fotos");
       return;
     }
 
-    console.log(reporte, reporte.tecnico.reporte_numero, "*-*--*-*-*-*-*-")
-
     const PDFuri = await generarPDF(reporte, false);
 
-    setReporteCompleto({
+    const reporteCompleto = {
       cliente_id: reporte.cliente.id,
       equipo_id: reporte.equipo.id,
       reporte_numero: reporte.tecnico.reporte_numero,
@@ -77,10 +72,11 @@ const BotonFinalizar = () => {
       actividades_realizadas: reporte.tecnico.actividades_realizadas,
       recomendaciones: reporte.tecnico.recomendaciones,
       cobro_servicio: reporte.tecnico.cobro_servicio,
-      firma: reporte.firma,
       fotos: reporte.fotos,
+      firma: reporte.firma,
       pdfUri: PDFuri,    
-    });
+    };
+
     await addReporte(reporteCompleto!);
     
     alert("Reporte guardado con éxito ✅");

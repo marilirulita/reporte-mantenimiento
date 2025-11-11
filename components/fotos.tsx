@@ -93,7 +93,7 @@ export default function Fotos() {
           Agregue fotos del equipo para incluirlas en el reporte
         </Text>
         <Text style={[styles.subtitle, { fontStyle: "italic", marginTop: 4 }]}>
-          (máximo 4 fotos)
+          (minimo 2, máximo 4 fotos)
         </Text>
 
         {/* Botones */}
