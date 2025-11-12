@@ -275,11 +275,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#ccc",
     borderRadius: 12,
+    color: "#333",
   },
   picker: {
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 12,
+    color: "#333",
   },
   section: {
     marginBottom: 32, // mb-8
