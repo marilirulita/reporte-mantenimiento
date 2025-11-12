@@ -171,6 +171,7 @@ export default function Equipo() {
               <Picker
                 selectedValue={numCompresores}
                 onValueChange={(value) => setNumCompresores(value)}
+                style={{color: "#333"}}
               >
                 <Picker.Item label="1" value={1} />
                 <Picker.Item label="2" value={2} />
@@ -591,7 +592,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#aaa",
     borderRadius: 12,
-   flex: 0.9,
+    flex: 0.8,
+    color: "#333",
   },
   section: {
     marginBottom: 32, // mb-8
