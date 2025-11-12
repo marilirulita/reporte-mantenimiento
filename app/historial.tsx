@@ -27,19 +27,39 @@ import { generarPDF } from "../utils/generarPDF";
 
 export default function HistorialScreen() {
   const router = useRouter();
+  const [reportes, setReportes] = useState<any[]>([]);
+  const [resultados, setResultados] = useState<any[]>([]);
   const [busqueda, setBusqueda] = useState("");
-  const [reportes, setReportes] = useState<Reporte[]>([]);
 
-  // tengo que buscar como traer el nombre del cliente y del equipo del reporte
-
+  const filtrarReportes = () => {
+    if (busqueda.trim().length > 1) {
+      const query = busqueda.toLowerCase();
+      const filtrados = reportes.filter(r =>
+        (r.nombre && r.nombre.toLowerCase().includes(query)) ||
+        (r.numeroSerie && r.numeroSerie.toLowerCase().includes(query)) ||
+        (r.tecnico && r.tecnico.toLowerCase().includes(query)) ||
+        (r.tipoEquipo && r.tipoEquipo.toLowerCase().includes(query)) ||
+        (r.fecha && r.fecha.includes(query))
+      );
+      setResultados(filtrados);
+    } else {
+      setResultados(reportes);
+    }
+  };
+  
   useEffect(() => {
     cargarReportes();
   }, []);
 
-  async function cargarReportes() {
-    //const data = await getAllReportes();
+  useEffect(() => {
+    filtrarReportes();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [busqueda, reportes]);
+
+  const cargarReportes = async () => {
     const data = await getReportesConCliente();
     setReportes(data);
+    setResultados(data);
   }
 
   const descargarPDF = async (id: number) => {
@@ -148,7 +168,7 @@ export default function HistorialScreen() {
         </View>
       ) : (
         <FlatList
-          data={reportes}
+          data={resultados}
           renderItem={renderReporte}
           keyExtractor={(item) => item.id!.toString()}
           contentContainerStyle={{ paddingBottom: 40 }}

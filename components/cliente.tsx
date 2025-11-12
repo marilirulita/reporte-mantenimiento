@@ -74,7 +74,7 @@ const ClienteScreen = () => {
       clienteId = await addCliente(cliente); // addCliente debe retornar el ID
       setCliente((prev) => ({ ...prev, id: clienteId }));
     } else {
-      console.log("Cliente existente, usando ID:", clienteId);
+      console.log("Cliente existente, usando ID");
     }
 
     // 🧩 2. Crear equipo asociado al cliente
@@ -103,7 +103,7 @@ const ClienteScreen = () => {
       // Actualizar el estado local (sin depender de él)
       setEquipo((prev) => ({ ...prev, id: equipoId }));
     } else {
-      console.log("Equipo existente, usando ID:", equipoId);
+      console.log("Equipo existente, usando ID");
     }
 
     // ✅ Retornar el ID para que la función llamante pueda usarlo

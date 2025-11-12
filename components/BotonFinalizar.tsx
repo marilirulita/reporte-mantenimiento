@@ -3,12 +3,9 @@ import { generarPDF } from "../utils/generarPDF";
 import { Text, StyleSheet, Alert } from "react-native";
 import { Botton } from "./ui/button";
 import { addReporte } from "@/db/databaseActions";
-import { Reporte } from "@/models/Reporte";
-import { useState } from "react";
 
 const BotonFinalizar = () => {
   const { reporte } = useReporte();
-  const [reporteCompleto, setReporteCompleto] = useState<Reporte>();
 
   const handleFinalizar = async () => {
     if (reporte.firma === null) {
@@ -33,7 +30,7 @@ const BotonFinalizar = () => {
 
     const PDFuri = await generarPDF(reporte, false);
 
-    setReporteCompleto({
+    const reporteCompleto = {
       idCliente: reporte.cliente.cliente.id,
       idEquipo: reporte.cliente.equipo.id,
       fecha: reporte.tecnico.fechaServicio,
@@ -51,8 +48,8 @@ const BotonFinalizar = () => {
       fotos: reporte.fotos,
       firma: reporte.firma,
       pdfUri: PDFuri,
-    });
-    await addReporte(reporteCompleto!);
+    };
+    await addReporte(reporteCompleto);
     
     alert("Reporte guardado con éxito ✅");
   };

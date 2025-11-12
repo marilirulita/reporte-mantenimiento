@@ -71,7 +71,6 @@ export const deleteEquipo = (id: number) => {
 
 export const addReporte = async (reporte: Reporte) => {
   const fotosJSON = JSON.stringify(reporte.fotos ?? []);
-  console.log(fotosJSON);
   const result = await db.runAsync(
     `INSERT INTO reportes (
       idCliente,

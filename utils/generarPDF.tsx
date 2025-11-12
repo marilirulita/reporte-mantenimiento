@@ -5,8 +5,6 @@ import { templaitPDFDowload } from "./templaitePDF-download";
 import getBase64Image from "./getBase64Image";
 
 export const generarPDF = async (reporte: any, download: boolean) => {
-
-  console.log(reporte)
   // Aseguramos que fotos siempre sea un array
   let fotosArray: string[] = [];
 
@@ -35,7 +33,6 @@ export const generarPDF = async (reporte: any, download: boolean) => {
   const html = download ? templaitPDFDowload(reporteConFotos) : templaitPDF(reporteConFotos);
 
   const { uri } = await Print.printToFileAsync({ html });
-  console.log("PDF generado en:", uri);
 
   if (await Sharing.isAvailableAsync()) {
     await Sharing.shareAsync(uri);
