@@ -7,7 +7,8 @@ export default function CustomInput({
   setValue,
   keyboardType = "default",
   multiline = false,
-}: {placeholder: string; value: string; setValue: (text: string) => void; keyboardType?: 'default' | 'email-address' | 'numeric' | 'phone-pad'; multiline?: true | false}) {
+  secureTextEntry = false,
+}: {placeholder: string; value: string; setValue: (text: string) => void; keyboardType?: 'default' | 'email-address' | 'numeric' | 'phone-pad'; multiline?: true | false; secureTextEntry?: true | false}) {
   const [focused, setFocused] = useState(false);
   const animatedShadow = useState(new Animated.Value(0))[0];
 
@@ -52,6 +53,7 @@ export default function CustomInput({
         onBlur={handleBlur}
         keyboardType={keyboardType}
         multiline={multiline}
+        secureTextEntry={secureTextEntry}
         style={styles.textInput}
         placeholderTextColor="#9ca3af" // gris-400
       />
