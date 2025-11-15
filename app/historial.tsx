@@ -171,6 +171,7 @@ export default function HistorialScreen() {
           renderItem={renderReporte}
           keyExtractor={(item) => item.id!.toString()}
           contentContainerStyle={{ paddingBottom: 40 }}
+          showsVerticalScrollIndicator={false}
         />
       )}
     </LinearGradient>

@@ -12,10 +12,15 @@ export default function RootLayout() {
     <ReporteProvider>
     <Stack>
       <Stack.Screen name="index" options={{ title: "Home" }} />
+      <Stack.Screen name="LoginScreen" options={{ title: "Login" }} />
       <Stack.Screen name="reporte" options={{ title: "Nuevo Reporte" }} />
       <Stack.Screen
         name="historial"
         options={{ title: "Historial de Reportes" }}
+      />
+      <Stack.Screen
+        name="UserManagementScreen"
+        options={{ title: "Administracion de Usuarios" }}
       />
       <Stack.Screen
         name="PanelFirma"
