@@ -1,6 +1,6 @@
 import { Feather, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
-import React from "react";
+import React, { useState } from "react";
 import {
   FlatList,
   StyleSheet,
@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import UserForm from "@/components/userForm";
 
 const users: {
   id: number;
@@ -30,8 +31,11 @@ const users: {
 ];
 
 const UserManagementScreen = () => {
+  const [modalVisible, setModalVisible] = useState(false);
+  const [user, setUser] = useState({})
+
   /* User List */
-  const renderUser = ({ item }: { item: typeof users[0] }) => (
+  const renderUser = ({ item }: { item: (typeof users)[0] }) => (
     <View style={styles.card}>
       <View style={styles.userInfo}>
         {/* Icon */}
@@ -79,7 +83,12 @@ const UserManagementScreen = () => {
 
       {/* Action Buttons */}
       <View style={styles.actions}>
-        <TouchableOpacity style={styles.editButton}>
+        <TouchableOpacity 
+        style={styles.editButton}
+        onPress={() => {
+          setUser(item);
+          setModalVisible(true)}}
+        >
           <Feather name="edit" size={20} color="#4B5563" />
         </TouchableOpacity>
 
@@ -111,7 +120,10 @@ const UserManagementScreen = () => {
       </View>
       {/* Boton nuevo usuario */}
       <View style={styles.botonContainer}>
-        <TouchableOpacity style={styles.newUserButton}>
+        <TouchableOpacity 
+        style={styles.newUserButton}
+        onPress={() => setModalVisible(true)}
+        >
           <Feather name="user-plus" size={18} color="#fff" />
           <Text style={styles.newUserText}>Nuevo Usuario</Text>
         </TouchableOpacity>
@@ -123,6 +135,21 @@ const UserManagementScreen = () => {
         keyExtractor={(item) => item.id.toString()}
         contentContainerStyle={{ paddingBottom: 40 }}
         showsVerticalScrollIndicator={false}
+      />
+
+      {/* Modal para crear y editar user */}
+      <UserForm
+        visible={modalVisible}
+        onClose={() => {
+          setModalVisible(false);
+          setUser({});
+        }}
+        onSubmit={(data) => {
+          console.log("Usuario creado:", data);
+          setModalVisible(false);
+          setUser({});
+        }}
+        initialData={user}
       />
     </LinearGradient>
   );
