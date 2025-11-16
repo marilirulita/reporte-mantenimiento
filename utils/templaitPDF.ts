@@ -1,5 +1,5 @@
-import * as FileSystem from "expo-file-system/legacy";
 import { Asset } from "expo-asset";
+import * as FileSystem from "expo-file-system/legacy";
 
 export const templaitPDF = async (reporte: {
   cliente: {
@@ -66,21 +66,20 @@ export const templaitPDF = async (reporte: {
   fotos: any[];
   firma: any;
 }) => {
-// Obtén la ruta absoluta del logo usando expo-asset
-const logoAsset = Asset.fromModule(require("../assets/images/logo.jpg"));
-await logoAsset.downloadAsync();
-const logoUri = logoAsset.localUri || logoAsset.uri;
 
-// Ahora, lee el archivo y conviértelo a base64
-const logoBase64 = await FileSystem.readAsStringAsync(logoUri, {
-  encoding: FileSystem.EncodingType.Base64,
-});
-
-  const dateToday = new Date().toLocaleDateString("es-MX", {
-    day: "2-digit",
-    month: "long",
-    year: "numeric",
-  });
+  const logo = await (async () => {
+    try {
+      const asset = Asset.fromModule(require("../assets/images/logo.jpg"));
+      await asset.downloadAsync(); // asegura que exista localmente
+      const base64 = await FileSystem.readAsStringAsync(asset.localUri!, {
+        encoding: FileSystem.EncodingType.Base64,
+      });
+      return `data:image/jpeg;base64,${base64}`;
+    } catch (err) {
+      console.log("Error cargando logo:", err);
+      return "";
+    }
+  })();
 
   const safe = (value: any) => value ?? ""; // usa nullish coalescing
 
@@ -269,7 +268,7 @@ const logoBase64 = await FileSystem.readAsStringAsync(logoUri, {
   <div class="page">
     <header>
       <div class="logo">
-      <img src="data:image/jpeg;base64,${logoBase64}" alt="Logo" />
+      <img src="${logo}" alt="Logo" />
       </div>
       <div class="title">
         <h1>Aire Acondicionado</h1>

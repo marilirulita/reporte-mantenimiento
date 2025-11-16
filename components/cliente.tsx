@@ -3,7 +3,6 @@ import {
   addEquipo,
   buscarClientesPorNombre,
   getEquiposByClienteId,
-  getAllReportes,
 } from "@/db/databaseActions";
 import { Cliente, Equipo } from "@/models/interfaces";
 import React, { useEffect, useState } from "react";
@@ -58,22 +57,18 @@ const ClienteScreen = () => {
   const { handleNext } = useNextSection("tecnico");
 
   const saveClienteEquipo = async () => {
-    if (
-      !cliente.nombre.trim() ||
-      !cliente.direccion.trim() ||
-      !cliente.telefono?.trim()
-    ) {
+    if (!cliente.nombre.trim()) {
       Alert.alert(
-        "Campos requeridos",
-        "Por favor, completa nombre, telefono y dirección del cliente."
+        "Campo requerido",
+        "Por favor, completa nombre del cliente."
       );
       return;
     }
 
-    if (!equipo.marca.trim() || !equipo.modelo.trim() || !equipo.serie.trim()) {
+    if (!equipo.marca.trim() || !equipo.modelo.trim() || !equipo.serie.trim() || !equipo.ton_volt.trim() || !equipo.area.trim() || !equipo.descripcion.trim()) {
       Alert.alert(
         "Campos requeridos",
-        "Por favor, completa datos del equipo: marca, modelo, serie del equipo."
+        "Por favor, completa todos los datos del equipo: marca, modelo, serie..."
       );
       return;
     }
@@ -194,7 +189,7 @@ const ClienteScreen = () => {
               </View>
             )}
           </View>
-          <Text style={styles.label}>Teléfono *</Text>
+          <Text style={styles.label}>Teléfono</Text>
           <CustomInput
             placeholder="555-123-4567"
             value={cliente.telefono ?? ""}
@@ -203,7 +198,7 @@ const ClienteScreen = () => {
           />
 
           {/* Dirección */}
-          <Text style={styles.label}>Dirección *</Text>
+          <Text style={styles.label}>Dirección</Text>
           <CustomInput
             placeholder="Calle Principal #123, Ciudad"
             value={cliente.direccion}
@@ -285,7 +280,7 @@ const ClienteScreen = () => {
             </View>
 
             <View style={styles.column}>
-              <Text style={styles.label}>Tonelada / Voltaje</Text>
+              <Text style={styles.label}>Tonelada / Voltaje *</Text>
               <CustomInput
                 placeholder="Tonelada / Voltaje"
                 value={equipo.ton_volt}
@@ -294,14 +289,14 @@ const ClienteScreen = () => {
             </View>
           </View>
 
-          <Text style={styles.label}>Area</Text>
+          <Text style={styles.label}>Area *</Text>
           <CustomInput
             placeholder="Cocina, Almacén, etc."
             value={equipo.area ?? ""}
             setValue={(text) => setEquipo({ ...equipo, area: text })}
           />
 
-          <Text style={styles.label}>Descripcion</Text>
+          <Text style={styles.label}>Descripcion *</Text>
           <CustomInput
             placeholder="Descricion del equipo"
             value={equipo.descripcion ?? ""}

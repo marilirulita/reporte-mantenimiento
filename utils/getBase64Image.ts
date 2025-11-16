@@ -4,12 +4,12 @@ import * as FileSystem from "expo-file-system/legacy";
 const getBase64Image = async (uri: string) => {
   try {
     const base64 = await FileSystem.readAsStringAsync(uri, {
-      encoding: "base64",
+      encoding: FileSystem.EncodingType.Base64,
     });
     return `data:image/jpeg;base64,${base64}`;
   } catch (error) {
-    console.error("Error al convertir imagen:", error);
-    return null;
+    console.error("Error al convertir imagen:", error, uri);
+    return "";
   }
 };
 

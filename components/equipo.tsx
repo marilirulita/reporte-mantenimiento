@@ -185,7 +185,7 @@ export default function Equipo() {
           <Text style={styles.label}>Compresor {i + 1}</Text>
           <View style={styles.row}>
             <View style={styles.column}>
-              <Text style={styles.label}>Amps</Text>
+              <Text style={styles.label}>Amps {i === 0 && "*"}</Text>
               <CustomInput
                 placeholder="Amps"
                 value={compresores[`compresor${i + 1}_amps` as keyof typeof compresores]}
@@ -199,7 +199,7 @@ export default function Equipo() {
             </View>
 
             <View style={styles.column}>
-              <Text style={styles.label}>Baja</Text>
+              <Text style={styles.label}>Baja {i === 0 && "*"}</Text>
               <CustomInput
                 placeholder="Psi"
                 value={compresores[`compresor${i + 1}_baja` as keyof typeof compresores]}
@@ -213,7 +213,7 @@ export default function Equipo() {
             </View>
 
             <View style={styles.column}>
-              <Text style={styles.label}>Alta</Text>
+              <Text style={styles.label}>Alta {i === 0 && "*"}</Text>
               <CustomInput
                 placeholder="Psi"
                 value={compresores[`compresor${i + 1}_alta` as keyof typeof compresores]}
@@ -229,7 +229,7 @@ export default function Equipo() {
 
           <View style={styles.row}>
             <View style={styles.column}>
-              <Text style={styles.label}>Referencia</Text>
+              <Text style={styles.label}>Referencia {i === 0 && "*"}</Text>
               <CustomInput
                 placeholder="Psi"
                 value={compresores[`compresor${i + 1}_referencia` as keyof typeof compresores]}
@@ -243,7 +243,7 @@ export default function Equipo() {
             </View>
 
             <View style={styles.column}>
-              <Text style={styles.label}>Aceite</Text>
+              <Text style={styles.label}>Aceite {i === 0 && "*"}</Text>
               <CustomInput
                 placeholder="..."
                 value={compresores[`compresor${i + 1}_aceite` as keyof typeof compresores]}
