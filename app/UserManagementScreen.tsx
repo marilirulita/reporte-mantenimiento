@@ -1,6 +1,6 @@
 import { Feather, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   FlatList,
   StyleSheet,
@@ -9,31 +9,37 @@ import {
   View,
 } from "react-native";
 import UserForm from "@/components/userForm";
-
-const users: {
-  id: number;
-  name: string;
-  role: string;
-  username: string;
-}[] = [
-  {
-    id: 1,
-    name: "Administrador",
-    role: "Administrador",
-    username: "@admin",
-  },
-  {
-    id: 2,
-    name: "Carlos Técnico",
-    role: "Técnico",
-    username: "@tecnico1",
-  },
-];
+import { User } from "../models/interfaces";
+import { getUsers, deleteUser } from "@/db/databaseActions";
+import shortenText from "@/utils/shortenText";
 
 const UserManagementScreen = () => {
   const [modalVisible, setModalVisible] = useState(false);
-  const [user, setUser] = useState({})
+  const [users, setUsers] = useState<User[]>([]);
+  const [user, setUser] = useState<User>({
+    id: 0,
+    name: "",
+    role: "Tecnico",
+    username: "",
+    password: "",
+  });
+  const [loading, setLoading] = useState(true);
 
+  const loadUsers = async () => {
+    try {
+      const result = await getUsers();
+      setUsers(result);
+    } catch (error) {
+      console.log("Error al cargar usuarios:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadUsers();
+  }, []);
+  
   /* User List */
   const renderUser = ({ item }: { item: (typeof users)[0] }) => (
     <View style={styles.card}>
@@ -56,7 +62,7 @@ const UserManagementScreen = () => {
         </View>
 
         <View style={styles.textInfo}>
-          <Text style={styles.name}>{item.name}</Text>
+          <Text style={styles.name}>{shortenText(item.name, 10)}</Text>
           <View
             style={[
               styles.badge,
@@ -74,10 +80,10 @@ const UserManagementScreen = () => {
                 },
               ]}
             >
-              {item.role}
+              {shortenText(item.role, 15)}
             </Text>
           </View>
-          <Text style={styles.smallText}>{item.username}</Text>
+          <Text style={styles.smallText}>@{shortenText(item.username, 10)}</Text>
         </View>
       </View>
 
@@ -92,7 +98,12 @@ const UserManagementScreen = () => {
           <Feather name="edit" size={20} color="#4B5563" />
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.deleteButton}>
+        <TouchableOpacity style={styles.deleteButton}
+        onPress={async () => {
+          await deleteUser(item.id!);
+          loadUsers();
+        }}
+        >
           <Feather name="trash-2" size={20} color="#DC2626" />
         </TouchableOpacity>
       </View>
@@ -128,26 +139,44 @@ const UserManagementScreen = () => {
           <Text style={styles.newUserText}>Nuevo Usuario</Text>
         </TouchableOpacity>
       </View>
+      {loading ? (
+        <Text>Cargando...</Text>
+      ) : (
 
       <FlatList
         data={users}
         renderItem={renderUser}
-        keyExtractor={(item) => item.id.toString()}
+        keyExtractor={(item) => item?.id ? item.id.toString() : Math.random().toString()}
         contentContainerStyle={{ paddingBottom: 40 }}
         showsVerticalScrollIndicator={false}
       />
+      )}
 
       {/* Modal para crear y editar user */}
       <UserForm
         visible={modalVisible}
         onClose={() => {
           setModalVisible(false);
-          setUser({});
+          setUser({
+            id: 0,
+            name: "",
+            role: "Tecnico",
+            username: "",
+            password: "",
+          });
+          loadUsers();
         }}
         onSubmit={(data) => {
           console.log("Usuario creado:", data);
           setModalVisible(false);
-          setUser({});
+          setUser({
+            id: 0,
+            name: "",
+            role: "Tecnico",
+            username: "",
+            password: "",
+          });
+          loadUsers();
         }}
         initialData={user}
       />

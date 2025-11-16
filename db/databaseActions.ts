@@ -1,7 +1,58 @@
 import * as SQLite from "expo-sqlite";
-import { Cliente, Equipo, Reporte } from '../models/interfaces';
+import { Cliente, Equipo, Reporte, User } from '../models/interfaces';
 
 const db = SQLite.openDatabaseSync("servicios.db");
+
+//////////////////////////
+// USUARIOS
+//////////////////////////
+// Crear usuario
+export const createUser = async (user: User): Promise<number> => {
+  const result = await db.runAsync(
+    `INSERT INTO users (name, username, role, password) VALUES (?, ?, ?, ?);`,
+    [user.name, user.username, user.role, user.password]
+  );
+  return result.lastInsertRowId;
+};
+
+// Obtener todos los usuarios
+export const getUsers = (): User[] => {
+  const result = db.getAllSync<User>(`SELECT * FROM users ORDER BY role ASC;`);
+  return result;
+};
+
+// Obtener un solo usuario por ID
+export const getUserById = (id: number): User | undefined => {
+  const result = db.getAllSync<User>(`SELECT * FROM users WHERE id = ?;`, [id]);
+  return result[0];
+};
+
+// Tipo para actualizar usuario (password opcional)
+type UpdateUserData = Omit<User, "password"> & { password?: string };
+
+// Actualizar usuario
+export const updateUser = async (user: UpdateUserData): Promise<void> => {
+  if (!user.id) {
+    throw new Error("El usuario debe tener un ID para actualizar");
+  }
+  // Si no se proporciona password, solo actualizamos los otros campos
+  if (user.password) {
+    await db.runAsync(
+      `UPDATE users SET name=?, username=?, role=?, password=? WHERE id=?;`,
+      [user.name, user.username, user.role, user.password, user.id]
+    );
+  } else {
+    await db.runAsync(
+      `UPDATE users SET name=?, username=?, role=? WHERE id=?;`,
+      [user.name, user.username, user.role, user.id]
+    );
+  }
+};
+
+// Eliminar usuario
+export const deleteUser = (id: number): void => {
+  db.runSync(`DELETE FROM users WHERE id = ?;`, [id]);
+};
 
 //////////////////////////
 // CLIENTES

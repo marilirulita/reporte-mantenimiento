@@ -1,11 +1,7 @@
+import { createUser, updateUser } from "@/db/databaseActions";
+import { User } from "@/models/interfaces";
 import React, { useEffect, useState } from "react";
-import {
-  Modal,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Alert, Modal, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import CustomInput from "./ui/custom-input";
 import Dropdown from "./ui/dropdown";
 
@@ -15,13 +11,14 @@ type UserFormProps = {
   onSubmit: (data: {
     username: string;
     name: string;
-    role: string;
+    role: User["role"];
     password?: string;
   }) => void;
   initialData?: {
+    id?: number;
     username?: string;
     name?: string;
-    role?: string;
+    role?: User["role"];
   };
 };
 
@@ -31,23 +28,27 @@ export default function UserForm({
   onSubmit,
   initialData,
 }: UserFormProps) {
-  const isEditing =
-    initialData !== undefined && Object.keys(initialData).length > 0;
+  const isEditing = initialData !== undefined && initialData.id !== 0;
 
+  const [id, setId] = useState(initialData?.id || 0);
   const [username, setUsername] = useState(initialData?.username || "");
   const [name, setName] = useState(initialData?.name || "");
   const [role, setRole] = useState(initialData?.role || "Seleccionar rol");
   const [password, setPassword] = useState("");
 
+  const [editingPassword, setEditingPassword] = useState(false);
+
   // Actualizar los estados cuando initialData cambia o cuando el modal se abre
   useEffect(() => {
     if (visible) {
       if (isEditing && initialData) {
+        setId(initialData.id || 0);
         setUsername(initialData.username || "");
         setName(initialData.name || "");
         setRole(initialData.role || "");
       } else {
         // Resetear para modo creación
+        setId(0);
         setUsername("");
         setName("");
         setRole("Seleccionar rol");
@@ -55,6 +56,43 @@ export default function UserForm({
       setPassword("");
     }
   }, [visible, initialData, isEditing]);
+
+  const handleCreate = async () => {
+    
+    if (!name.trim() || !username.trim() || !role.trim() || !password.trim()) {
+      alert("Completa todos los campos");
+      return;
+    }
+    if (role !== "Administrador" && role !== "Tecnico") {
+      alert("Rol invalido");
+      return;
+    }
+    await createUser({
+      name,
+      username,
+      role: role as User["role"],
+      password,
+    });
+  };
+
+  const handleEdit = async () => {
+    if (role !== "Administrador" && role !== "Tecnico") {
+      alert("Rol invalido");
+      return;
+    }
+    if (!name.trim() || !username.trim() || !role.trim()) {
+      alert("Completa todos los campos");
+      return;
+    }
+    const userData = {
+      id,
+      name,
+      username,
+      role: role as User["role"],
+      ...(password && password.trim() !== "" && { password }),
+    };
+    await updateUser(userData);
+  };
 
   return (
     <Modal animationType="fade" transparent visible={visible}>
@@ -93,7 +131,7 @@ export default function UserForm({
               setValue={setName}
             />
 
-            <Text style={styles.label}>Rol *</Text>
+            <Text style={styles.label}>Role *</Text>
             <Dropdown
               initialRole={role}
               onSelectRole={(newRole) => setRole(newRole)}
@@ -110,17 +148,57 @@ export default function UserForm({
                 />
               </>
             )}
+
+            {isEditing && !editingPassword && (
+              <TouchableOpacity
+                style={styles.changePasswordButton}
+                onPress={() => setEditingPassword(true)}
+              >
+                <Text style={styles.changePasswordText}>
+                  Cambiar contraseña
+                </Text>
+              </TouchableOpacity>
+            )}
+
+            {isEditing && editingPassword && (
+              <>
+                <Text style={styles.label}>Nueva Contraseña *</Text>
+                <CustomInput
+                  placeholder="********"
+                  secureTextEntry
+                  value={password}
+                  setValue={setPassword}
+                />
+              </>
+            )}
           </View>
 
           {/* Buttons */}
           <View style={styles.footer}>
-            <TouchableOpacity style={styles.cancelBtn} onPress={onClose}>
+            <TouchableOpacity style={styles.cancelBtn} 
+            onPress={() => {
+              setEditingPassword(false);
+              onClose();
+            }}>
               <Text style={styles.cancelText}>Cancelar</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
               style={styles.submitBtn}
-              onPress={() => onSubmit({ username, name, role, password })}
+              onPress={async () => {
+                if (isEditing) {
+                  await handleEdit();
+                } else {
+                  await handleCreate();
+                }
+                onSubmit({
+                  username,
+                  name,
+                  role: role as User["role"],
+                  password: password || undefined,
+                });
+                setEditingPassword(false);
+              }}
             >
               <Text style={styles.submitText}>
                 {isEditing ? "Guardar" : "Crear"}
@@ -181,16 +259,12 @@ const styles = StyleSheet.create({
     color: "#111827",
     marginBottom: -4,
   },
-
-  input: {
-    backgroundColor: "#F3F4F6",
-    padding: 12,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: "#E5E7EB",
-    fontSize: 15,
+  changePasswordButton: {},
+  changePasswordText: {
+    textDecorationLine: "underline",
+    color: "#2563EB",
+    fontWeight: 700,
   },
-
   footer: {
     flexDirection: "row",
     justifyContent: "space-between",

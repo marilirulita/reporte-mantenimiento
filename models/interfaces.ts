@@ -6,6 +6,14 @@ export interface Cliente {
   referencia: string;
 }
 
+export interface User {
+  id?: number;
+  name: string;
+  username: string;
+  role: "Administrador" | "Tecnico";
+  password: string;
+}
+
 export interface Equipo {
   id?: number;
   cliente_id: number; // FK hacia Cliente

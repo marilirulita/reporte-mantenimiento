@@ -7,7 +7,7 @@ export const checkTables = () => {
 
 export const checkColumns = () => {
   try {
-    const columns: any[] = db.getAllSync("PRAGMA table_info(clientes);");
+    const columns: any[] = db.getAllSync("PRAGMA table_info(users);");
     console.log("Columnas de clientes:", columns);
   } catch (error) {
     console.error("Error al obtener columnas:", error);

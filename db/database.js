@@ -5,6 +5,14 @@ const db = SQLite.openDatabaseSync("servicios.db");
 // Inicializa la tabla
 export const createTables = () => {
   db.execAsync(`
+    CREATE TABLE IF NOT EXISTS users (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        nombre TEXT NOT NULL,
+        username TEXT UNIQUE NOT NULL,
+        role TEXT NOT NULL,
+        password TEXT NOT NULL
+      );
+
     CREATE TABLE IF NOT EXISTS clientes (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         nombre TEXT,

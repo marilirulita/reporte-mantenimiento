@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Modal, StyleSheet, Text, TouchableOpacity, View, Animated } from "react-native";
+import { Animated, Modal, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 type DropdownProps = {
   initialRole?: string;
@@ -85,7 +85,7 @@ export default function Dropdown({ initialRole, onSelectRole }: DropdownProps) {
 
             <TouchableOpacity
               style={styles.option}
-              onPress={() => handleSelect("Técnico")}
+              onPress={() => handleSelect("Tecnico")}
             >
               <Text style={styles.optionText}>Técnico</Text>
             </TouchableOpacity>
