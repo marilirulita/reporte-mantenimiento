@@ -1,32 +1,50 @@
+import { AuthProvider, useAuth } from "@/context/AuthContext";
+import { ReporteProvider } from "@/context/ReporteContext";
 import { Stack } from "expo-router";
-import { ReporteProvider } from "@/context/ReporteContext"; 
 import React, { useEffect } from "react";
 import { createTables } from "../db/database";
+
+function ProtectedStack() {
+  const { user, loading } = useAuth();
+
+  if (loading) return null; // opcional: pantalla de splash
+
+  const unauthenticatedScreens = [
+    { name: "LoginScreen", options: { title: "Login" } },
+  ];
+
+  const authenticatedScreens = [
+    { name: "index", options: { title: "Home" } },
+    { name: "reporte", options: { title: "Nuevo Reporte" } },
+    { name: "historial", options: { title: "Historial de Reportes" } },
+    {
+      name: "UserManagementScreen",
+      options: { title: "Administracion de Usuarios" },
+    },
+    { name: "PanelFirma", options: { title: "Panel para firma" } },
+  ];
+
+  const screensToRender = user ? authenticatedScreens : unauthenticatedScreens;
+
+  return (
+    <Stack>
+      {screensToRender.map((screen) => (
+        <Stack.Screen key={screen.name} {...screen} />
+      ))}
+    </Stack>
+  );
+}
 
 export default function RootLayout() {
   useEffect(() => {
     createTables();
   }, []);
-  
+
   return (
-    <ReporteProvider>
-    <Stack>
-      <Stack.Screen name="index" options={{ title: "Home" }} />
-      <Stack.Screen name="LoginScreen" options={{ title: "Login" }} />
-      <Stack.Screen name="reporte" options={{ title: "Nuevo Reporte" }} />
-      <Stack.Screen
-        name="historial"
-        options={{ title: "Historial de Reportes" }}
-      />
-      <Stack.Screen
-        name="UserManagementScreen"
-        options={{ title: "Administracion de Usuarios" }}
-      />
-      <Stack.Screen
-        name="PanelFirma"
-        options={{ title: "Panel para firma" }}
-      />
-    </Stack>
-    </ReporteProvider>
+    <AuthProvider>
+      <ReporteProvider>
+        <ProtectedStack />
+      </ReporteProvider>
+    </AuthProvider>
   );
 }

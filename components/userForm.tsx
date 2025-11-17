@@ -1,7 +1,7 @@
 import { createUser, updateUser } from "@/db/databaseActions";
 import { User } from "@/models/interfaces";
 import React, { useEffect, useState } from "react";
-import { Alert, Modal, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Modal, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import CustomInput from "./ui/custom-input";
 import Dropdown from "./ui/dropdown";
 

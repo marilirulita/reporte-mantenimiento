@@ -5,11 +5,13 @@ import { ClipboardList, History } from "lucide-react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useReporte } from "@/context/ReporteContext";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import { MaterialIcons, Ionicons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
+import { useAuth } from "@/context/AuthContext";
 
 export default function PantallaInicio() {
   const router = useRouter();
   const { setReporte } = useReporte();
+  const { user } = useAuth();
 
   return (
     <LinearGradient
@@ -41,8 +43,8 @@ export default function PantallaInicio() {
         {/* Encabezado rol */}
         <View style={styles.roleContainer}>
           <Ionicons name="shield-checkmark-outline" size={20} color="#5A48FF" />
-          <Text style={styles.roleText}>Administrador</Text>
-          <Text style={styles.roleBadge}>Admin</Text>
+          <Text style={styles.roleText}>{user?.name}</Text>
+          <Text style={styles.roleBadge}>{user?.role === "Administrador" ? "Admin" : "Tecnico"}</Text>
         </View>
 
         {/* Botones */}

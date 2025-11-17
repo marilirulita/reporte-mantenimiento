@@ -6,15 +6,16 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import { useNextSection } from "../hooks/useNextSection";
 import { useReporte } from "../context/ReporteContext";
 import { Picker } from "@react-native-picker/picker";
-import uuid from 'react-native-uuid';
+import uuid from "react-native-uuid";
 
 export default function Equipo() {
+  const { reporte, setReporte } = useReporte();
   const dateToday = new Date().toLocaleDateString("es-MX", {
     day: "2-digit",
     month: "2-digit",
     year: "numeric",
   });
-  const folio = `R-${uuid.v4().slice(0,6).toUpperCase()}`; // R-9A2FBC
+  const folio = `R-${uuid.v4().slice(0, 6).toUpperCase()}`; // R-9A2FBC
   const [numCompresores, setNumCompresores] = useState(1);
 
   const [infServicio, setInfServicio] = useState({
@@ -77,7 +78,7 @@ export default function Equipo() {
   });
 
   const { handleNext } = useNextSection("fotos");
-  const { reporte, setReporte } = useReporte();
+
   const saveTecnico = () => {
     if (
       !compresores.compresor1_aceite.trim() ||
@@ -140,12 +141,15 @@ export default function Equipo() {
             </View>
 
             <View style={styles.column}>
-              <Text style={styles.label}>Nombre del Técnico *</Text>
+              <Text style={styles.label}>Precio del Servicio *</Text>
               <CustomInput
-                placeholder="Carlos López"
-                value={infServicio.tecnico_nombre}
+                placeholder="$1,000"
+                value={detallesServicio.cobro_servicio}
                 setValue={(text) =>
-                  setInfServicio({ ...infServicio, tecnico_nombre: text })
+                  setDetallesServicio({
+                    ...detallesServicio,
+                    cobro_servicio: text,
+                  })
                 }
               />
             </View>
@@ -171,7 +175,7 @@ export default function Equipo() {
               <Picker
                 selectedValue={numCompresores}
                 onValueChange={(value) => setNumCompresores(value)}
-                style={{color: "#333"}}
+                style={{ color: "#333" }}
               >
                 <Picker.Item label="1" value={1} />
                 <Picker.Item label="2" value={2} />
@@ -182,85 +186,105 @@ export default function Equipo() {
 
           {Array.from({ length: numCompresores }, (_, i) => (
             <View key={i}>
-          <Text style={styles.label}>Compresor {i + 1}</Text>
-          <View style={styles.row}>
-            <View style={styles.column}>
-              <Text style={styles.label}>Amps {i === 0 && "*"}</Text>
-              <CustomInput
-                placeholder="Amps"
-                value={compresores[`compresor${i + 1}_amps` as keyof typeof compresores]}
-                setValue={(text) =>
-                  setCompresores({
-                    ...compresores,
-                    [`compresor${i + 1}_amps`]: text,
-                  })
-                }
-              />
-            </View>
+              <Text style={styles.label}>Compresor {i + 1}</Text>
+              <View style={styles.row}>
+                <View style={styles.column}>
+                  <Text style={styles.label}>Amps {i === 0 && "*"}</Text>
+                  <CustomInput
+                    placeholder="Amps"
+                    value={
+                      compresores[
+                        `compresor${i + 1}_amps` as keyof typeof compresores
+                      ]
+                    }
+                    setValue={(text) =>
+                      setCompresores({
+                        ...compresores,
+                        [`compresor${i + 1}_amps`]: text,
+                      })
+                    }
+                  />
+                </View>
 
-            <View style={styles.column}>
-              <Text style={styles.label}>Baja {i === 0 && "*"}</Text>
-              <CustomInput
-                placeholder="Psi"
-                value={compresores[`compresor${i + 1}_baja` as keyof typeof compresores]}
-                setValue={(text) =>
-                  setCompresores({
-                    ...compresores,
-                    [`compresor${i + 1}_baja`]: text,
-                  })
-                }
-              />
-            </View>
+                <View style={styles.column}>
+                  <Text style={styles.label}>Baja {i === 0 && "*"}</Text>
+                  <CustomInput
+                    placeholder="Psi"
+                    value={
+                      compresores[
+                        `compresor${i + 1}_baja` as keyof typeof compresores
+                      ]
+                    }
+                    setValue={(text) =>
+                      setCompresores({
+                        ...compresores,
+                        [`compresor${i + 1}_baja`]: text,
+                      })
+                    }
+                  />
+                </View>
 
-            <View style={styles.column}>
-              <Text style={styles.label}>Alta {i === 0 && "*"}</Text>
-              <CustomInput
-                placeholder="Psi"
-                value={compresores[`compresor${i + 1}_alta` as keyof typeof compresores]}
-                setValue={(text) =>
-                  setCompresores({
-                    ...compresores,
-                    [`compresor${i + 1}_alta`]: text,
-                  })
-                }
-              />
-            </View>
-          </View>
+                <View style={styles.column}>
+                  <Text style={styles.label}>Alta {i === 0 && "*"}</Text>
+                  <CustomInput
+                    placeholder="Psi"
+                    value={
+                      compresores[
+                        `compresor${i + 1}_alta` as keyof typeof compresores
+                      ]
+                    }
+                    setValue={(text) =>
+                      setCompresores({
+                        ...compresores,
+                        [`compresor${i + 1}_alta`]: text,
+                      })
+                    }
+                  />
+                </View>
+              </View>
 
-          <View style={styles.row}>
-            <View style={styles.column}>
-              <Text style={styles.label}>Referencia {i === 0 && "*"}</Text>
-              <CustomInput
-                placeholder="Psi"
-                value={compresores[`compresor${i + 1}_referencia` as keyof typeof compresores]}
-                setValue={(text) =>
-                  setCompresores({
-                    ...compresores,
-                    [`compresor${i + 1}_referencia`]: text,
-                  })
-                }
-              />
-            </View>
+              <View style={styles.row}>
+                <View style={styles.column}>
+                  <Text style={styles.label}>Referencia {i === 0 && "*"}</Text>
+                  <CustomInput
+                    placeholder="Psi"
+                    value={
+                      compresores[
+                        `compresor${
+                          i + 1
+                        }_referencia` as keyof typeof compresores
+                      ]
+                    }
+                    setValue={(text) =>
+                      setCompresores({
+                        ...compresores,
+                        [`compresor${i + 1}_referencia`]: text,
+                      })
+                    }
+                  />
+                </View>
 
-            <View style={styles.column}>
-              <Text style={styles.label}>Aceite {i === 0 && "*"}</Text>
-              <CustomInput
-                placeholder="..."
-                value={compresores[`compresor${i + 1}_aceite` as keyof typeof compresores]}
-                setValue={(text) =>
-                  setCompresores({
-                    ...compresores,
-                    [`compresor${i + 1}_aceite`]: text,
-                  })
-                }
-              />
+                <View style={styles.column}>
+                  <Text style={styles.label}>Aceite {i === 0 && "*"}</Text>
+                  <CustomInput
+                    placeholder="..."
+                    value={
+                      compresores[
+                        `compresor${i + 1}_aceite` as keyof typeof compresores
+                      ]
+                    }
+                    setValue={(text) =>
+                      setCompresores({
+                        ...compresores,
+                        [`compresor${i + 1}_aceite`]: text,
+                      })
+                    }
+                  />
+                </View>
+              </View>
             </View>
-            
-          </View>
-          </View>
           ))}
         </View>
-      
 
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Motores de Condensador</Text>
@@ -464,7 +488,6 @@ export default function Equipo() {
           <Text style={styles.sectionTitle}>Mediciones Generales</Text>
 
           <View style={styles.row}>
-            
             <View style={styles.column}>
               <Text style={styles.label}>Temp. Int *</Text>
               <CustomInput
@@ -494,7 +517,7 @@ export default function Equipo() {
           </View>
 
           <View style={styles.row}>
-          <View style={styles.column}>
+            <View style={styles.column}>
               <Text style={styles.label}>Voltaje *</Text>
               <CustomInput
                 placeholder="..."
@@ -550,18 +573,6 @@ export default function Equipo() {
               })
             }
             multiline={true}
-          />
-
-          <Text style={styles.label}>Precio del Servicio *</Text>
-          <CustomInput
-            placeholder="Cobro por servicio..."
-            value={detallesServicio.cobro_servicio}
-            setValue={(text) =>
-              setDetallesServicio({
-                ...detallesServicio,
-                cobro_servicio: text,
-              })
-            }
           />
 
           <View style={styles.buttonContainer}>

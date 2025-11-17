@@ -21,6 +21,23 @@ export const getUsers = (): User[] => {
   return result;
 };
 
+// obtener usuario por username y password
+export const getUserByUsernameAndPassword = async (
+  username: string,
+  password: string
+): Promise<User | null> => {
+  try {
+    const result = await db.getFirstAsync<User>(
+      `SELECT * FROM users WHERE username = ? AND password = ?`,
+      [username, password]
+    );
+    return result ?? null;
+  } catch (error) {
+    console.error("Error al verificar usuario:", error);
+    throw error;
+  }
+};
+
 // Obtener un solo usuario por ID
 export const getUserById = (id: number): User | undefined => {
   const result = db.getAllSync<User>(`SELECT * FROM users WHERE id = ?;`, [id]);

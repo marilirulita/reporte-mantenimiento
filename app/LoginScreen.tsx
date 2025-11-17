@@ -6,18 +6,40 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Alert,
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import CustomInput from "@/components/ui/custom-input";
+import { useAuth } from "../context/AuthContext";
+import { getUserByUsernameAndPassword } from "@/db/databaseActions";
+import { useRouter } from "expo-router";
+
+
 
 export default function LoginScreen() {
+  const { login } = useAuth();
   const [usuario, setUsuario] = useState("");
   const [password, setPassword] = useState("");
+  const router = useRouter();
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     console.log("Usuario:", usuario);
     console.log("Password:", password);
-    // Aquí luego agregas tu lógica: SQLite, backend local o Supabase
+    if (!usuario || !password) {
+      Alert.alert("Error", "Ingresa todos los campos.");
+      return;
+    }
+
+    const userFound = await getUserByUsernameAndPassword(usuario, password);
+
+    if (!userFound) {
+      Alert.alert("Error", "Credenciales incorrectas");
+      return;
+    }
+
+    login(userFound); // Guardar en contexto + AsyncStorage
+
+    router.replace("/");
   };
 
   return (

@@ -7,7 +7,7 @@ export const createTables = () => {
   db.execAsync(`
     CREATE TABLE IF NOT EXISTS users (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        nombre TEXT NOT NULL,
+        name TEXT NOT NULL,
         username TEXT UNIQUE NOT NULL,
         role TEXT NOT NULL,
         password TEXT NOT NULL
