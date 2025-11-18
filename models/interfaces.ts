@@ -30,9 +30,10 @@ export interface Reporte {
   cliente_id: number; // FK hacia Cliente
   equipo_id: number;  // FK hacia Equipo
   reporte_numero: string;
+  tecnico_id: number;
   tecnico_nombre: string;
   fecha_ejecucion: string;
-  orden_trabajo?: string;
+  pendiente: number;
 
   // Compresores
   compresor1_amps: string;
@@ -81,8 +82,7 @@ export interface Reporte {
   recomendaciones: string;
   cobro_servicio: string;
 
-  // Firma, fotos, pdfUri
-  firma: string;
+  // Firma, fotos
+  firma?: string;
   fotos: string[];
-  pdfUri: string;
 }

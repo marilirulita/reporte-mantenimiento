@@ -38,9 +38,10 @@ export const createTables = () => {
         cliente_id INTEGER,
         equipo_id INTEGER,
         reporte_numero TEXT,
+        tecnico_id INTEGER,
         tecnico_nombre TEXT,
         fecha_ejecucion TEXT,
-        orden_trabajo TEXT,
+        pendiente INTEGER DEFAULT 0,
 
         compresor1_amps TEXT, compresor1_referencia TEXT, compresor1_baja TEXT, compresor1_alta TEXT, compresor1_aceite TEXT,
         compresor2_amps TEXT, compresor2_referencia TEXT, compresor2_baja TEXT, compresor2_alta TEXT, compresor2_aceite TEXT,
@@ -56,7 +57,6 @@ export const createTables = () => {
 
         firma TEXT,
         fotos TEXT,
-        pdfUri TEXT,
 
         FOREIGN KEY (cliente_id) REFERENCES clientes (id),
         FOREIGN KEY (equipo_id) REFERENCES equipos (id)

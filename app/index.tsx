@@ -7,6 +7,7 @@ import { useReporte } from "@/context/ReporteContext";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { Ionicons } from "@expo/vector-icons";
 import { useAuth } from "@/context/AuthContext";
+import shortenText from "@/utils/shortenText";
 
 export default function PantallaInicio() {
   const router = useRouter();
@@ -43,7 +44,7 @@ export default function PantallaInicio() {
         {/* Encabezado rol */}
         <View style={styles.roleContainer}>
           <Ionicons name="shield-checkmark-outline" size={20} color="#5A48FF" />
-          <Text style={styles.roleText}>{user?.name}</Text>
+          <Text style={styles.roleText}>{shortenText(user?.name, 13)}</Text>
           <Text style={styles.roleBadge}>{user?.role === "Administrador" ? "Admin" : "Tecnico"}</Text>
         </View>
 
@@ -54,6 +55,7 @@ export default function PantallaInicio() {
             onPress={() => {
               setReporte({
                 activeTab: "cliente",
+                pendiente: 1,
                 cliente: {},
                 equipo: {},
                 tecnico: {},

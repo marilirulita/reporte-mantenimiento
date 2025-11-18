@@ -19,6 +19,7 @@ export default function Firma() {
 
   const handleSaveSignature = (uri: string) => {
     setSignature(uri);
+    setReporte({ ...reporte, pendiente: 0 })
     handleNext("firma", uri);
   };
 

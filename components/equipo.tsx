@@ -5,11 +5,13 @@ import { Botton } from "./ui/button";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { useNextSection } from "../hooks/useNextSection";
 import { useReporte } from "../context/ReporteContext";
+import { useAuth } from "@/context/AuthContext";
 import { Picker } from "@react-native-picker/picker";
 import uuid from "react-native-uuid";
 
 export default function Equipo() {
   const { reporte, setReporte } = useReporte();
+  const { user } = useAuth();
   const dateToday = new Date().toLocaleDateString("es-MX", {
     day: "2-digit",
     month: "2-digit",
@@ -21,8 +23,8 @@ export default function Equipo() {
   const [infServicio, setInfServicio] = useState({
     reporte_numero: folio,
     fecha_ejecucion: dateToday,
-    tecnico_nombre: "",
-    //orden_trabajo: "",
+    tecnico_nombre: user?.name,
+    tecnico_id: user?.id,
   });
 
   const [compresores, setCompresores] = useState({
@@ -96,14 +98,13 @@ export default function Equipo() {
       !medicionesGenerales.temp_ext.trim() ||
       !medicionesGenerales.temp_int.trim() ||
       !medicionesGenerales.voltaje.trim() ||
-      !infServicio.tecnico_nombre.trim() ||
       !detallesServicio.cobro_servicio.trim() ||
       !detallesServicio.recomendaciones.trim() ||
       !detallesServicio.actividades_realizadas.trim()
     ) {
       Alert.alert(
         "Campos requeridos",
-        "Por favor, completa nombre del tecnico, infomracion del servicio, observaciones..."
+        "Por favor, completa infomracion del servicio, observaciones..."
       );
       return;
     }

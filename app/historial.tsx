@@ -1,8 +1,11 @@
 import {
   deleteReporte,
-  getReportesConCliente
+  getReportesConCliente,
+  updateReporte,
 } from "@/db/databaseActions";
 import { Reporte } from "@/models/interfaces";
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
 import {
@@ -16,6 +19,7 @@ import {
 } from "lucide-react-native";
 import React, { useEffect, useState } from "react";
 import {
+  Alert,
   FlatList,
   StyleSheet,
   Text,
@@ -23,43 +27,57 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { RootStackParamList } from "../types/navigation"; // importa tus tipos
 import { generarPDF } from "../utils/generarPDF";
+
+type FirmaScreenNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  "Firma"
+>;
 
 export default function HistorialScreen() {
   const router = useRouter();
+  const navigation = useNavigation<FirmaScreenNavigationProp>();
   const [reportes, setReportes] = useState<any[]>([]);
   const [resultados, setResultados] = useState<any[]>([]);
   const [busqueda, setBusqueda] = useState("");
 
-  const filtrarReportes = () => {
-    if (busqueda.trim().length > 1) {
-      const query = busqueda.toLowerCase();
-      const filtrados = reportes.filter(r =>
-        (r.nombre && r.nombre.toLowerCase().includes(query)) ||
-        (r.serie && r.serie.toLowerCase().includes(query)) ||
-        (r.tecnico_nombre && r.tecnico_nombre.toLowerCase().includes(query)) ||
-        (r.reporte_numero && r.reporte_numero.toLowerCase().includes(query)) ||
-        (r.fecha_ejecucion && r.fecha_ejecucion.includes(query))
-      );
-      setResultados(filtrados);
-    } else {
-      setResultados(reportes);
-    }
-  };
-  
   useEffect(() => {
     cargarReportes();
   }, []);
 
   useEffect(() => {
-    filtrarReportes();
+    if (busqueda.trim().length > 1) {
+      const query = busqueda.toLowerCase();
+      const filtrados = reportes.filter(
+        (r) =>
+          (r.nombre && r.nombre.toLowerCase().includes(query)) ||
+          (r.serie && r.serie.toLowerCase().includes(query)) ||
+          (r.tecnico_nombre &&
+            r.tecnico_nombre.toLowerCase().includes(query)) ||
+          (r.reporte_numero &&
+            r.reporte_numero.toLowerCase().includes(query)) ||
+          (r.fecha_ejecucion && r.fecha_ejecucion.includes(query))
+      );
+      setResultados(filtrados);
+    } else {
+      setResultados(reportes);
+    }
   }, [busqueda, reportes]);
 
   const cargarReportes = async () => {
     const data = await getReportesConCliente();
     setReportes(data);
     setResultados(data);
-  }
+  };
+
+  const handleSaveSignature = async (id: number, uri: string) => {
+    await updateReporte(id, uri);
+    const data = await getReportesConCliente();
+    const reporte = data.find((r) => r.id === id);
+    await generarPDF(reporte, true);
+    cargarReportes();
+  };
 
   const descargarPDF = async (id: number) => {
     const reporte = reportes.find((r) => r.id === id);
@@ -87,22 +105,39 @@ export default function HistorialScreen() {
 
         <View style={styles.reporteDetalle}>
           <User size={16} color="#475569" />
-          <Text style={styles.reporteTexto}>Técnico: {item.tecnico_nombre}</Text>
+          <Text style={styles.reporteTexto}>
+            Técnico: {item.tecnico_nombre}
+          </Text>
         </View>
 
         <View style={styles.reporteDetalle}>
           <FileText size={16} color="#475569" />
-          <Text style={styles.reporteTexto}>{item.marca} - {item.modelo}</Text>
+          <Text style={styles.reporteTexto}>
+            {item.marca} - {item.modelo}
+          </Text>
         </View>
       </View>
 
       <View style={styles.reporteBotones}>
-        <TouchableOpacity
-          style={styles.btnDescargar}
-          onPress={() => descargarPDF(item.id!)}
-        >
-          <Download size={18} color="#1e293b" />
-        </TouchableOpacity>
+        {item.pendiente === 1 ? (
+          <TouchableOpacity
+            style={{ backgroundColor: "gray" }}
+            onPress={() =>
+              navigation.navigate("PanelFirma", {
+                onSave: (uri: string) => handleSaveSignature(item.id!, uri),
+              })
+            }
+          >
+            <Text style={{ color: "red" }}>Completar</Text>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            style={styles.btnDescargar}
+            onPress={() => descargarPDF(item.id!)}
+          >
+            <Download size={18} color="#1e293b" />
+          </TouchableOpacity>
+        )}
 
         <TouchableOpacity
           style={styles.btnEliminar}
@@ -159,7 +194,7 @@ export default function HistorialScreen() {
 
           <TouchableOpacity
             style={styles.primaryButton}
-            onPress={() => router.push("./reporte")}
+            onPress={() => router.replace("./reporte")}
           >
             <ClipboardList color="white" size={24} style={{ marginRight: 8 }} />
             <Text style={styles.primaryButtonText}>Crear Primer Reporte</Text>

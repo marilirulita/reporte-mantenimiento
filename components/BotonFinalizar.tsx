@@ -5,20 +5,15 @@ import { generarPDF } from "../utils/generarPDF";
 import { Botton } from "./ui/button";
 
 const BotonFinalizar = () => {
-  const { reporte } = useReporte();
+  const { reporte, setReporte } = useReporte();
 
   const handleFinalizar = async () => {
-    if (reporte.firma === null) {
-      Alert.alert("Requisito Firma", "Nesesita agregar una firma");
-      return;
-    }
-
     if (!reporte.cliente?.id || !reporte.equipo?.id ) {;
       Alert.alert("Requisito Reporte", "Faltan datos del cliente y equipo");
       return;
     }
 
-    if (!reporte.tecnico?.fecha_ejecucion) {;
+    if (!reporte.tecnico?.cobro_servicio) {;
       Alert.alert("Requisito Reporte", "Faltan datos del area tecnica");
       return;
     }
@@ -28,15 +23,14 @@ const BotonFinalizar = () => {
       return;
     }
 
-    const PDFuri = await generarPDF(reporte, false);
-
     const reporteCompleto = {
       cliente_id: reporte.cliente.id,
       equipo_id: reporte.equipo.id,
       reporte_numero: reporte.tecnico.reporte_numero,
+      tecnico_id: reporte.tecnico.tecnico_id,
       tecnico_nombre: reporte.tecnico.tecnico_nombre,
       fecha_ejecucion: reporte.tecnico.fecha_ejecucion,
-      orden_trabajo: reporte.tecnico.orden_trabajo ?? null,
+      pendiente: reporte.pendiente,
       compresor1_amps: reporte.tecnico.compresor1_amps,
       compresor1_referencia: reporte.tecnico.compresor1_referencia,
       compresor1_baja: reporte.tecnico.compresor1_baja,
@@ -73,19 +67,39 @@ const BotonFinalizar = () => {
       recomendaciones: reporte.tecnico.recomendaciones,
       cobro_servicio: reporte.tecnico.cobro_servicio,
       fotos: reporte.fotos,
-      firma: reporte.firma,
-      pdfUri: PDFuri,    
+      firma: reporte.firma ?? "",   
     };
-
+    // se guarda el reporte en la base de datos
     await addReporte(reporteCompleto!);
-    
-    alert("Reporte guardado con éxito ✅");
+
+    // si el pendiente es 0 se crea PDF, si es 1 solo se guarda como pendiente
+    if (reporte?.pendiente === 0) {
+      const PDFuri = await generarPDF(reporte, false);
+      alert("Reporte creado con éxito ✅");
+      console.log("PDF creado correctamente", PDFuri);
+    } else {
+      alert("Reporte guardado como pendiente ✅");
+    }
+
+    setReporte({
+      activeTab: "cliente",
+      pendiente: 1,
+      cliente: {},
+      equipo: {},
+      tecnico: {},
+      fotos: [],
+      firma: null,
+    });
   };
 
   return (
-    <Botton onPress={handleFinalizar} classname={styles.buttonPrimary}>
-      <Text style={styles.textPrimary}>Finalizar</Text>
-    </Botton>
+    <>
+      <Botton onPress={handleFinalizar} classname={styles.buttonPrimary}>
+        <Text style={styles.textPrimary}>
+          {reporte?.pendiente === 1 ? "Pendiente" : "Finalizar"}
+        </Text>
+      </Botton>
+    </>
   );
 };
 

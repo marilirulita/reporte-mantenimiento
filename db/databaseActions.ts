@@ -1,5 +1,5 @@
 import * as SQLite from "expo-sqlite";
-import { Cliente, Equipo, Reporte, User } from '../models/interfaces';
+import { Cliente, Equipo, Reporte, User } from "../models/interfaces";
 
 const db = SQLite.openDatabaseSync("servicios.db");
 
@@ -83,7 +83,9 @@ export const addCliente = async (cliente: Cliente) => {
 };
 
 export const getClientes = (): Cliente[] => {
-  const result = db.getAllSync<Cliente>(`SELECT * FROM clientes ORDER BY nombre DESC`);
+  const result = db.getAllSync<Cliente>(
+    `SELECT * FROM clientes ORDER BY nombre DESC`
+  );
   return result;
 };
 
@@ -145,9 +147,10 @@ export const addReporte = async (reporte: Reporte) => {
       cliente_id,
       equipo_id,
       reporte_numero,
+      tecnico_id,
       tecnico_nombre,
       fecha_ejecucion,
-      orden_trabajo,
+      pendiente,
       compresor1_amps, compresor1_referencia, compresor1_baja, compresor1_alta, compresor1_aceite,
       compresor2_amps, compresor2_referencia, compresor2_baja, compresor2_alta, compresor2_aceite,
       compresor3_amps, compresor3_referencia, compresor3_baja, compresor3_alta, compresor3_aceite,
@@ -156,16 +159,16 @@ export const addReporte = async (reporte: Reporte) => {
       evaporador_amps, evaporador_referencia, evaporador_banda, evaporador_medida, evaporador_filtro_retorno,
       voltaje, temp_int, temp_ext, ruidos_extranos, actividades_realizadas, recomendaciones, cobro_servicio,
       fotos,
-      firma,
-      pdfUri
+      firma
     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`,
     [
       reporte.cliente_id,
       reporte.equipo_id,
       reporte.reporte_numero,
+      reporte.tecnico_id,
       reporte.tecnico_nombre,
       reporte.fecha_ejecucion,
-      reporte.orden_trabajo ?? null,
+      reporte.pendiente,
       reporte.compresor1_amps,
       reporte.compresor1_referencia,
       reporte.compresor1_baja,
@@ -202,21 +205,24 @@ export const addReporte = async (reporte: Reporte) => {
       reporte.recomendaciones,
       reporte.cobro_servicio,
       fotosJSON ?? null,
-      reporte.firma,
-      reporte.pdfUri,
+      reporte.firma ?? null,
     ]
   );
   return result.lastInsertRowId;
 };
 
 export const getReporte = (reporteId: number): Reporte | undefined => {
-  const result = db.getAllSync<Reporte>(`SELECT * FROM reportes WHERE id = ?`, [reporteId]);
+  const result = db.getAllSync<Reporte>(`SELECT * FROM reportes WHERE id = ?`, [
+    reporteId,
+  ]);
   const reporte = result[0];
   return reporte;
 };
 
 export const getReportes = (): Reporte[] => {
-  const result = db.getAllSync<Reporte>(`SELECT * FROM reportes ORDER BY id DESC;`);
+  const result = db.getAllSync<Reporte>(
+    `SELECT * FROM reportes ORDER BY pendiente ASC, fecha_ejecucion DESC;`
+  );
   return result.map((r) => ({
     ...r,
     fotos: (() => {
@@ -229,8 +235,8 @@ export const getReportes = (): Reporte[] => {
         }
       }
       return Array.isArray(r.fotos) ? r.fotos : [];
-    })()
-}))
+    })(),
+  }));
 };
 
 export async function buscarReportes(texto: string) {
@@ -261,15 +267,16 @@ export const deleteReporte = (id: number) => {
 
 export const getAllReportes = (): Reporte[] => {
   // 🔹 Usamos un tipo auxiliar para lo que devuelve SQLite
-  const result = db.getAllSync<Reporte>(`SELECT * FROM reportes ORDER BY id DESC;`);
+  const result = db.getAllSync<Reporte>(
+    `SELECT * FROM reportes ORDER BY id DESC;`
+  );
 
   // 🔹 Mapeamos los resultados a tu modelo tipado Reporte
   return result;
 };
 
-export const getReportesConCliente = (): any[] => {
-
-  const result = db.getAllSync(
+export const getReportesConCliente = async (): Promise<any[]> => {
+  const result = await db.getAllAsync(
     `SELECT 
       reportes.*,
       clientes.nombre AS nombre,
@@ -286,8 +293,21 @@ export const getReportesConCliente = (): any[] => {
     INNER JOIN clientes ON reportes.cliente_id = clientes.id
     INNER JOIN equipos ON reportes.equipo_id = equipos.id
     ORDER BY reportes.id DESC;`
-  
   );
 
   return result;
+};
+
+// Actualizar reporte
+export const updateReporte = async (id: number, firma: string): Promise<void> => {
+  if (!id) {
+    throw new Error("El ID no econtrado para actualizar");
+  }
+  await db.runAsync(
+    `UPDATE reportes SET 
+      firma = ?, 
+      pendiente = 0
+    WHERE id = ?`,
+    [firma, id]
+  );
 };

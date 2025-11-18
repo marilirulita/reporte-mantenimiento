@@ -62,7 +62,7 @@ const UserManagementScreen = () => {
         </View>
 
         <View style={styles.textInfo}>
-          <Text style={styles.name}>{shortenText(item.name, 10)}</Text>
+          <Text style={styles.name}>{shortenText(item.name, 12)}</Text>
           <View
             style={[
               styles.badge,
@@ -83,7 +83,7 @@ const UserManagementScreen = () => {
               {shortenText(item.role, 15)}
             </Text>
           </View>
-          <Text style={styles.smallText}>@{shortenText(item.username, 10)}</Text>
+          <Text style={styles.smallText}>@{shortenText(item.username, 12)}</Text>
         </View>
       </View>
 

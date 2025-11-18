@@ -9,22 +9,20 @@ import {
   Alert,
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { Ionicons } from "@expo/vector-icons";
 import CustomInput from "@/components/ui/custom-input";
 import { useAuth } from "../context/AuthContext";
 import { getUserByUsernameAndPassword } from "@/db/databaseActions";
 import { useRouter } from "expo-router";
 
-
-
 export default function LoginScreen() {
   const { login } = useAuth();
   const [usuario, setUsuario] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
 
   const handleLogin = async () => {
-    console.log("Usuario:", usuario);
-    console.log("Password:", password);
     if (!usuario || !password) {
       Alert.alert("Error", "Ingresa todos los campos.");
       return;
@@ -68,7 +66,6 @@ export default function LoginScreen() {
 
         {/* CARD DEL FORMULARIO */}
         <View style={styles.card}>
-
           <Text style={styles.label}>Usuario *</Text>
           <CustomInput
             placeholder="Ingresa tu usuario"
@@ -77,30 +74,31 @@ export default function LoginScreen() {
           />
 
           <Text style={styles.label}>Contraseña *</Text>
-          <CustomInput
-            placeholder="Ingresa tu contraseña"
-            value={password}
-            secureTextEntry={true}
-            setValue={setPassword}
-          />
+          <View style={styles.passwordContainer}>
+            <View style={styles.passwordInputWrapper}>
+              <CustomInput
+                placeholder="Ingresa tu contraseña"
+                value={password}
+                secureTextEntry={!showPassword}
+                setValue={setPassword}
+              />
+            </View>
+            <TouchableOpacity
+              style={styles.eyeButton}
+              onPress={() => setShowPassword(!showPassword)}
+            >
+              <Ionicons
+                name={showPassword ? "eye-off" : "eye"}
+                size={22}
+                color="#6B7280"
+              />
+            </TouchableOpacity>
+          </View>
 
           <TouchableOpacity style={styles.button} onPress={handleLogin}>
             <Text style={styles.buttonText}>Iniciar Sesión</Text>
           </TouchableOpacity>
-
-          {/* Credenciales de prueba */}
-          <View style={styles.credentialsBox}>
-            <Text style={styles.credentialsText}>
-              <Text style={{ fontWeight: "bold" }}>Admin:</Text> admin /
-              admin123
-            </Text>
-            <Text style={styles.credentialsText}>
-              <Text style={{ fontWeight: "bold" }}>Técnico:</Text> tecnico1 /
-              tecnico123
-            </Text>
-          </View>
         </View>
-
         <Text style={styles.version}>
           Versión 1.0 - Sistema de Gestión de Mantenimiento
         </Text>
@@ -156,13 +154,21 @@ const styles = StyleSheet.create({
     marginBottom: 4, // mb-1
     fontSize: 14, // text-sm
   },
-  input: {
-    backgroundColor: "#F3F6FB",
-    padding: 12,
-    borderRadius: 8,
-    marginBottom: 20,
-    borderWidth: 1,
-    borderColor: "#E1E5EB",
+  passwordContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  passwordInputWrapper: {
+    flex: 1,
+  },
+  inputPassword: {
+    minHeight: 40,
+  },
+  eyeButton: {
+    paddingHorizontal: 8,
+    paddingVertical: 8,
+    justifyContent: "center",
+    alignItems: "center",
   },
   button: {
     backgroundColor: "#1B64F2",
@@ -175,16 +181,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontWeight: "600",
     fontSize: 16,
-  },
-  credentialsBox: {
-    marginTop: 20,
-    backgroundColor: "#F3F6FF",
-    padding: 12,
-    borderRadius: 10,
-  },
-  credentialsText: {
-    color: "#333",
-    marginBottom: 5,
   },
   version: {
     marginTop: 30,
