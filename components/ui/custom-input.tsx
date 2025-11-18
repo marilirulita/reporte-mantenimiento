@@ -1,14 +1,23 @@
 import React, { useState } from "react";
-import { TextInput, StyleSheet, Animated } from "react-native";
+import { Animated, StyleProp, StyleSheet, TextInput, TextStyle } from "react-native";
 
 export default function CustomInput({
   placeholder,
   value,
   setValue,
+  style,
   keyboardType = "default",
   multiline = false,
   secureTextEntry = false,
-}: {placeholder: string; value: string; setValue: (text: string) => void; keyboardType?: 'default' | 'email-address' | 'numeric' | 'phone-pad'; multiline?: true | false; secureTextEntry?: true | false}) {
+}: {
+  placeholder: string;
+  value: string;
+  setValue: (text: string) => void;
+  keyboardType?: "default" | "email-address" | "numeric" | "phone-pad";
+  style?: StyleProp<TextStyle>;
+  multiline?: true | false;
+  secureTextEntry?: true | false;
+}) {
   const [focused, setFocused] = useState(false);
   const animatedShadow = useState(new Animated.Value(0))[0];
 
@@ -54,7 +63,7 @@ export default function CustomInput({
         keyboardType={keyboardType}
         multiline={multiline}
         secureTextEntry={secureTextEntry}
-        style={styles.textInput}
+        style={style ? [styles.textInput, style] : styles.textInput}
         placeholderTextColor="#9ca3af" // gris-400
       />
     </Animated.View>

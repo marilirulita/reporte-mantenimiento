@@ -1,5 +1,6 @@
 import { createUser, updateUser } from "@/db/databaseActions";
 import { User } from "@/models/interfaces";
+import { Ionicons } from "@expo/vector-icons"; // Si usas Expo
 import React, { useEffect, useState } from "react";
 import { Modal, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import CustomInput from "./ui/custom-input";
@@ -37,6 +38,7 @@ export default function UserForm({
   const [password, setPassword] = useState("");
 
   const [editingPassword, setEditingPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   // Actualizar los estados cuando initialData cambia o cuando el modal se abre
   useEffect(() => {
@@ -58,7 +60,6 @@ export default function UserForm({
   }, [visible, initialData, isEditing]);
 
   const handleCreate = async () => {
-    
     if (!name.trim() || !username.trim() || !role.trim() || !password.trim()) {
       alert("Completa todos los campos");
       return;
@@ -76,12 +77,12 @@ export default function UserForm({
   };
 
   const handleEdit = async () => {
-    if (role !== "Administrador" && role !== "Tecnico") {
-      alert("Rol invalido");
-      return;
-    }
     if (!name.trim() || !username.trim() || !role.trim()) {
       alert("Completa todos los campos");
+      return;
+    }
+    if (role !== "Administrador" && role !== "Tecnico") {
+      alert("Rol invalido");
       return;
     }
     const userData = {
@@ -117,13 +118,6 @@ export default function UserForm({
 
           {/* Inputs */}
           <View style={styles.form}>
-            <Text style={styles.label}>Usuario *</Text>
-            <CustomInput
-              placeholder="usuario123"
-              value={username}
-              setValue={setUsername}
-            />
-
             <Text style={styles.label}>Nombre Completo *</Text>
             <CustomInput
               placeholder="Juan Pérez"
@@ -137,23 +131,42 @@ export default function UserForm({
               onSelectRole={(newRole) => setRole(newRole)}
             />
 
+            <Text style={styles.label}>Usuario *</Text>
+            <CustomInput
+              placeholder="usuario123"
+              value={username}
+              setValue={setUsername}
+            />
+
             {!isEditing && (
               <>
                 <Text style={styles.label}>Contraseña *</Text>
-                <CustomInput
-                  placeholder="********"
-                  secureTextEntry
-                  value={password}
-                  setValue={setPassword}
-                />
+                <View style={styles.passwordContainer}>
+                  <View style={styles.passwordInputWrapper}>
+                    <CustomInput
+                      placeholder="********"
+                      secureTextEntry={!showPassword}
+                      style={styles.inputPassword}
+                      value={password}
+                      setValue={setPassword}
+                    />
+                  </View>
+                  <TouchableOpacity
+                    style={styles.eyeButton}
+                    onPress={() => setShowPassword(!showPassword)}
+                  >
+                    <Ionicons
+                      name={showPassword ? "eye-off" : "eye"}
+                      size={22}
+                      color="#6B7280"
+                    />
+                  </TouchableOpacity>
+                </View>
               </>
             )}
 
             {isEditing && !editingPassword && (
-              <TouchableOpacity
-                style={styles.changePasswordButton}
-                onPress={() => setEditingPassword(true)}
-              >
+              <TouchableOpacity onPress={() => setEditingPassword(true)}>
                 <Text style={styles.changePasswordText}>
                   Cambiar contraseña
                 </Text>
@@ -163,23 +176,39 @@ export default function UserForm({
             {isEditing && editingPassword && (
               <>
                 <Text style={styles.label}>Nueva Contraseña *</Text>
-                <CustomInput
-                  placeholder="********"
-                  secureTextEntry
-                  value={password}
-                  setValue={setPassword}
-                />
+                <View style={styles.passwordContainer}>
+                  <View style={styles.passwordInputWrapper}>
+                    <CustomInput
+                      placeholder="********"
+                      secureTextEntry={!showPassword}
+                      value={password}
+                      setValue={setPassword}
+                    />
+                  </View>
+                  <TouchableOpacity
+                    style={styles.eyeButton}
+                    onPress={() => setShowPassword(!showPassword)}
+                  >
+                    <Ionicons
+                      name={showPassword ? "eye-off" : "eye"}
+                      size={22}
+                      color="#6B7280"
+                    />
+                  </TouchableOpacity>
+                </View>
               </>
             )}
           </View>
 
           {/* Buttons */}
           <View style={styles.footer}>
-            <TouchableOpacity style={styles.cancelBtn} 
-            onPress={() => {
-              setEditingPassword(false);
-              onClose();
-            }}>
+            <TouchableOpacity
+              style={styles.cancelBtn}
+              onPress={() => {
+                setEditingPassword(false);
+                onClose();
+              }}
+            >
               <Text style={styles.cancelText}>Cancelar</Text>
             </TouchableOpacity>
 
@@ -227,7 +256,6 @@ const styles = StyleSheet.create({
     padding: 20,
     elevation: 10,
   },
-
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -244,26 +272,38 @@ const styles = StyleSheet.create({
     paddingHorizontal: 6,
     color: "#6B7280",
   },
-
   description: {
     fontSize: 14,
     color: "#6B7280",
     marginBottom: 16,
   },
-
   form: { gap: 12 },
-
   label: {
     fontSize: 14,
     fontWeight: "600",
     color: "#111827",
     marginBottom: -4,
   },
-  changePasswordButton: {},
   changePasswordText: {
     textDecorationLine: "underline",
     color: "#2563EB",
     fontWeight: 700,
+  },
+  passwordContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  passwordInputWrapper: {
+    flex: 1,
+  },
+  inputPassword: {
+    minHeight: 40,
+  },
+  eyeButton: {
+    paddingHorizontal: 8,
+    paddingVertical: 8,
+    justifyContent: "center",
+    alignItems: "center",
   },
   footer: {
     flexDirection: "row",
@@ -271,7 +311,6 @@ const styles = StyleSheet.create({
     marginTop: 20,
     gap: 12,
   },
-
   cancelBtn: {
     paddingVertical: 10,
     paddingHorizontal: 18,
