@@ -12,7 +12,7 @@ import shortenText from "@/utils/shortenText";
 export default function PantallaInicio() {
   const router = useRouter();
   const { setReporte } = useReporte();
-  const { user } = useAuth();
+  const { user, isAdmin, logout } = useAuth();
 
   return (
     <LinearGradient
@@ -92,6 +92,7 @@ export default function PantallaInicio() {
           </TouchableOpacity>
 
           {/* --- BOTÓN NUEVO: Gestión de Usuarios --- */}
+          {isAdmin && (
           <TouchableOpacity
             style={styles.card}
             onPress={() => router.push("./UserManagementScreen")}
@@ -106,11 +107,15 @@ export default function PantallaInicio() {
               </Text>
             </View>
           </TouchableOpacity>
+          )}
 
           {/* --- BOTÓN NUEVO: Cerrar Sesión --- */}
           <TouchableOpacity
             style={styles.card}
-            onPress={() => router.push("./LoginScreen")}
+            onPress={() => {
+              logout();
+              router.replace("./LoginScreen");
+            }}
           >
             <View style={[styles.iconBox, styles.iconContainerRed]}>
               <Ionicons name="log-out-outline" size={30} color="#E74C3C" />
@@ -120,6 +125,7 @@ export default function PantallaInicio() {
               <Text style={styles.cardSubtitle}>Salir del sistema</Text>
             </View>
           </TouchableOpacity>
+
         </View>
 
         {/* Versión */}

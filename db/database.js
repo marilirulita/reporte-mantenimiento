@@ -10,7 +10,8 @@ export const createTables = () => {
         name TEXT NOT NULL,
         username TEXT UNIQUE NOT NULL,
         role TEXT NOT NULL,
-        password TEXT NOT NULL
+        password_hash TEXT NOT NULL,
+        is_active INTEGER DEFAULT 1
       );
 
     CREATE TABLE IF NOT EXISTS clientes (

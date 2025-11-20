@@ -31,7 +31,7 @@ export default function LoginScreen() {
     const userFound = await getUserByUsernameAndPassword(usuario, password);
 
     if (!userFound) {
-      Alert.alert("Error", "Credenciales incorrectas");
+      Alert.alert("Error", "Credenciales incorrectas o usuario desactivado.");
       return;
     }
 

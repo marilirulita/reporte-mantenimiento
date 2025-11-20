@@ -11,7 +11,8 @@ export interface User {
   name: string;
   username: string;
   role: "Administrador" | "Tecnico";
-  password: string;
+  is_active: number;
+  password_hash: string;
 }
 
 export interface Equipo {

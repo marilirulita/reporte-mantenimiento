@@ -7,8 +7,8 @@ export const checkTables = () => {
 
 export const checkColumns = () => {
   try {
-    const columns: any[] = db.getAllSync("PRAGMA table_info(users);");
-    console.log("Columnas de clientes:", columns);
+    const users: any[] = db.getAllSync("PRAGMA table_info(users);");
+    console.log("Columnas de clientes:", users);
   } catch (error) {
     console.error("Error al obtener columnas:", error);
   }
@@ -18,9 +18,7 @@ export const deleteTables = () => {
   try {
     // 🔹 Eliminar tablas si existen
     db.execSync(`
-      DROP TABLE IF EXISTS clientes;
-      DROP TABLE IF EXISTS equipos;
-      DROP TABLE IF EXISTS reportes;
+      DROP TABLE IF EXISTS users;
     `);
   
     console.log("Tablas eliminadas correctamente.");

@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import { Modal, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import CustomInput from "./ui/custom-input";
 import Dropdown from "./ui/dropdown";
+import LoadingModal from "./LoadingModal";
 
 type UserFormProps = {
   visible: boolean;
@@ -40,6 +41,8 @@ export default function UserForm({
   const [editingPassword, setEditingPassword] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
+  const [loading, setLoading] = useState(false);
+
   // Actualizar los estados cuando initialData cambia o cuando el modal se abre
   useEffect(() => {
     if (visible) {
@@ -62,37 +65,67 @@ export default function UserForm({
   const handleCreate = async () => {
     if (!name.trim() || !username.trim() || !role.trim() || !password.trim()) {
       alert("Completa todos los campos");
-      return;
+      return false;
+    }
+    if ( password.length < 8) {
+      alert("Pasword deve de ser de al menos 8 caracteres");
+      return false;
     }
     if (role !== "Administrador" && role !== "Tecnico") {
       alert("Rol invalido");
-      return;
+      return false;
     }
-    await createUser({
-      name,
-      username,
-      role: role as User["role"],
-      password,
-    });
+    try {
+      setLoading(true);
+      await createUser({
+        name,
+        username,
+        role: role as User["role"],
+        password_hash: password,
+        is_active: 1,
+      });
+      setLoading(false);
+      return true;
+    } catch (error: unknown) {
+      const message =
+        error instanceof Error ? error.message : "Error al crear usuario";
+      alert(message);
+      return false;
+    }
   };
 
   const handleEdit = async () => {
     if (!name.trim() || !username.trim() || !role.trim()) {
       alert("Completa todos los campos");
-      return;
+      return false;
+    }
+    if ( password.length < 8 && editingPassword === true) {
+      alert("Pasword deve de ser de al menos 8 caracteres");
+      return false;
     }
     if (role !== "Administrador" && role !== "Tecnico") {
       alert("Rol invalido");
-      return;
+      return false;
     }
     const userData = {
       id,
       name,
       username,
       role: role as User["role"],
-      ...(password && password.trim() !== "" && { password }),
+      is_active: 1,
+      ...(password && password.trim() !== "" && { password_hash: password }),
     };
-    await updateUser(userData);
+    try {
+      setLoading(true);
+      await updateUser(userData);
+      setLoading(false);
+      return true;
+    } catch (error: unknown) {
+      const message =
+        error instanceof Error ? error.message : "Error al actualizar usuario";
+      alert(message);
+      return false;
+    }
   };
 
   return (
@@ -131,7 +164,8 @@ export default function UserForm({
               onSelectRole={(newRole) => setRole(newRole)}
             />
 
-            <Text style={styles.label}>Usuario *</Text>
+            <Text style={styles.label}>Usuario * <Text style={{fontWeight: 300, fontStyle: "italic"}}>Deve ser unico</Text></Text>
+            
             <CustomInput
               placeholder="usuario123"
               value={username}
@@ -215,18 +249,21 @@ export default function UserForm({
             <TouchableOpacity
               style={styles.submitBtn}
               onPress={async () => {
+                let complete = null;
                 if (isEditing) {
-                  await handleEdit();
+                  complete = await handleEdit();
                 } else {
-                  await handleCreate();
+                  complete = await handleCreate();
                 }
-                onSubmit({
-                  username,
-                  name,
-                  role: role as User["role"],
-                  password: password || undefined,
-                });
-                setEditingPassword(false);
+                if (complete) {
+                  onSubmit({
+                    username,
+                    name,
+                    role: role as User["role"],
+                    password: "",
+                  });
+                  setEditingPassword(false);
+                }
               }}
             >
               <Text style={styles.submitText}>
@@ -236,6 +273,7 @@ export default function UserForm({
           </View>
         </View>
       </View>
+      <LoadingModal visible={loading} />
     </Modal>
   );
 }

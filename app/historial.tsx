@@ -1,3 +1,4 @@
+import { useAuth } from "@/context/AuthContext";
 import {
   deleteReporte,
   getReportesConCliente,
@@ -16,16 +17,16 @@ import {
   Search,
   Trash2,
   User,
+  AlertCircle,
 } from "lucide-react-native";
 import React, { useEffect, useState } from "react";
 import {
-  Alert,
   FlatList,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
-  View,
+  View
 } from "react-native";
 import { RootStackParamList } from "../types/navigation"; // importa tus tipos
 import { generarPDF } from "../utils/generarPDF";
@@ -42,9 +43,11 @@ export default function HistorialScreen() {
   const [resultados, setResultados] = useState<any[]>([]);
   const [busqueda, setBusqueda] = useState("");
 
+  const { isAdmin, user } = useAuth();
+
   useEffect(() => {
     cargarReportes();
-  }, []);
+  }, [isAdmin, user?.id]);
 
   useEffect(() => {
     if (busqueda.trim().length > 1) {
@@ -67,8 +70,23 @@ export default function HistorialScreen() {
 
   const cargarReportes = async () => {
     const data = await getReportesConCliente();
-    setReportes(data);
-    setResultados(data);
+    if (isAdmin) {
+      setReportes(data);
+      setResultados(data);
+      return;
+    }
+
+    if (!user?.id) {
+      setReportes([]);
+      setResultados([]);
+      return;
+    }
+
+    const filteredData = data.filter(
+      (r) => r.tecnico_id === user.id && r.pendiente === 1
+    );
+    setReportes(filteredData);
+    setResultados(filteredData);
   };
 
   const handleSaveSignature = async (id: number, uri: string) => {
@@ -121,21 +139,21 @@ export default function HistorialScreen() {
       <View style={styles.reporteBotones}>
         {item.pendiente === 1 ? (
           <TouchableOpacity
-            style={{ backgroundColor: "gray" }}
+            style={[styles.btnDescargar, {backgroundColor: "#f3da0b"}]}
             onPress={() =>
               navigation.navigate("PanelFirma", {
                 onSave: (uri: string) => handleSaveSignature(item.id!, uri),
               })
             }
           >
-            <Text style={{ color: "red" }}>Completar</Text>
+            <AlertCircle size={24} color="#191919" />
           </TouchableOpacity>
         ) : (
           <TouchableOpacity
             style={styles.btnDescargar}
             onPress={() => descargarPDF(item.id!)}
           >
-            <Download size={18} color="#1e293b" />
+            <Download size={24} color="#1e293b" />
           </TouchableOpacity>
         )}
 
@@ -143,7 +161,7 @@ export default function HistorialScreen() {
           style={styles.btnEliminar}
           onPress={() => handleEliminar(item.id!)}
         >
-          <Trash2 size={18} color="#ef4444" />
+          <Trash2 size={24} color="#ef4444" />
         </TouchableOpacity>
       </View>
     </View>

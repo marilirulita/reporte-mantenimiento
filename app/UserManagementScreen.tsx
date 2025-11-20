@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import UserForm from "@/components/userForm";
 import { User } from "../models/interfaces";
-import { getUsers, deleteUser } from "@/db/databaseActions";
+import { getUsers, desactivarUser } from "@/db/databaseActions";
 import shortenText from "@/utils/shortenText";
 
 const UserManagementScreen = () => {
@@ -21,7 +21,8 @@ const UserManagementScreen = () => {
     name: "",
     role: "Tecnico",
     username: "",
-    password: "",
+    password_hash: "",
+    is_active: 1,
   });
   const [loading, setLoading] = useState(true);
 
@@ -98,14 +99,25 @@ const UserManagementScreen = () => {
           <Feather name="edit" size={20} color="#4B5563" />
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.deleteButton}
+        {item.is_active === 1 ? (
+        <TouchableOpacity style={[styles.deleteButton, {backgroundColor: "#0BDA30",}]}
         onPress={async () => {
-          await deleteUser(item.id!);
+          await desactivarUser(item.id!, item.is_active === 1 ? 0 : 1 );
           loadUsers();
         }}
         >
-          <Feather name="trash-2" size={20} color="#DC2626" />
+            <Feather name="circle" size={30} color="#0AAA40" />
         </TouchableOpacity>
+        ) : (
+          <TouchableOpacity style={[styles.deleteButton, {backgroundColor: "#D3D3D3",}]}
+        onPress={async () => {
+          await desactivarUser(item.id!, item.is_active === 1 ? 0 : 1 );
+          loadUsers();
+        }}
+        >                    
+          <Feather name="circle" size={30} color="#878787" />
+        </TouchableOpacity>
+        )}  
       </View>
     </View>
   );
@@ -162,7 +174,8 @@ const UserManagementScreen = () => {
             name: "",
             role: "Tecnico",
             username: "",
-            password: "",
+            password_hash: "",
+            is_active: 1,
           });
           loadUsers();
         }}
@@ -174,7 +187,8 @@ const UserManagementScreen = () => {
             name: "",
             role: "Tecnico",
             username: "",
-            password: "",
+            password_hash: "",
+            is_active: 1,
           });
           loadUsers();
         }}
@@ -303,9 +317,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   deleteButton: {
-    padding: 8,
+    padding: 3,
     borderRadius: 8,
-    backgroundColor: "#fee2e2",
     width: 50,
     alignItems: "center",
   },

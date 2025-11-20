@@ -1,23 +1,50 @@
+import bcrypt from "bcryptjs";
 import * as SQLite from "expo-sqlite";
 import { Cliente, Equipo, Reporte, User } from "../models/interfaces";
 
 const db = SQLite.openDatabaseSync("servicios.db");
+
+const SALT_ROUNDS = 10; // 10-12 recomendado
+
+if (typeof bcrypt.getRounds !== "function") {
+  // noop, ensures module is loaded to avoid tree-shaking issues
+}
+
+if ((bcrypt as any).setRandomFallback) {
+  (bcrypt as any).setRandomFallback((len: number) => {
+    const buf = new Uint8Array(len);
+    for (let i = 0; i < len; i += 1) {
+      buf[i] = Math.floor(Math.random() * 256);
+    }
+    return buf;
+  });
+}
 
 //////////////////////////
 // USUARIOS
 //////////////////////////
 // Crear usuario
 export const createUser = async (user: User): Promise<number> => {
-  const result = await db.runAsync(
-    `INSERT INTO users (name, username, role, password) VALUES (?, ?, ?, ?);`,
-    [user.name, user.username, user.role, user.password]
-  );
-  return result.lastInsertRowId;
+  try {
+    const salt = bcrypt.genSaltSync(SALT_ROUNDS);
+    const hash = bcrypt.hashSync(user.password_hash, salt);
+    const result = await db.runAsync(
+      `INSERT INTO users (name, username, role, password_hash, is_active) VALUES (?, ?, ?, ?, 1);`,
+      [user.name, user.username, user.role, hash]
+    );
+    return result.lastInsertRowId;
+  } catch (error) {
+    if (isUniqueUsernameError(error)) {
+      throw new Error("El nombre de usuario ya existe. Elige otro distinto.");
+    }
+    console.error("Error al crear usuario:", error);
+    throw error;
+  }
 };
 
 // Obtener todos los usuarios
 export const getUsers = (): User[] => {
-  const result = db.getAllSync<User>(`SELECT * FROM users ORDER BY role ASC;`);
+  const result = db.getAllSync<User>(`SELECT * FROM users ORDER BY is_active DESC, role ASC;`);
   return result;
 };
 
@@ -28,10 +55,24 @@ export const getUserByUsernameAndPassword = async (
 ): Promise<User | null> => {
   try {
     const result = await db.getFirstAsync<User>(
-      `SELECT * FROM users WHERE username = ? AND password = ?`,
-      [username, password]
+      `SELECT * FROM users WHERE username = ? AND is_active = 1`,
+      [username]
     );
-    return result ?? null;
+
+    if (!result?.password_hash) {
+      return null;
+    }
+
+    const passwordMatches = bcrypt.compareSync(password, result.password_hash);
+
+    if (!passwordMatches) {
+      return null;
+    }
+
+    // Devuelve el usuario sin la contraseña, pero asegura el tipo User (c/ password_hash como string vacío)
+    const { password_hash, ...safeUser } = result;
+    return { ...safeUser, password_hash: "" };
+
   } catch (error) {
     console.error("Error al verificar usuario:", error);
     throw error;
@@ -45,24 +86,61 @@ export const getUserById = (id: number): User | undefined => {
 };
 
 // Tipo para actualizar usuario (password opcional)
-type UpdateUserData = Omit<User, "password"> & { password?: string };
+type UpdateUserData = Omit<User, "password_hash"> & { password_hash?: string };
 
 // Actualizar usuario
 export const updateUser = async (user: UpdateUserData): Promise<void> => {
   if (!user.id) {
     throw new Error("El usuario debe tener un ID para actualizar");
   }
-  // Si no se proporciona password, solo actualizamos los otros campos
-  if (user.password) {
-    await db.runAsync(
-      `UPDATE users SET name=?, username=?, role=?, password=? WHERE id=?;`,
-      [user.name, user.username, user.role, user.password, user.id]
-    );
-  } else {
-    await db.runAsync(
-      `UPDATE users SET name=?, username=?, role=? WHERE id=?;`,
-      [user.name, user.username, user.role, user.id]
-    );
+  try {
+    // Si no se proporciona password, solo actualizamos los otros campos
+    if (user.password_hash) {
+      const salt = bcrypt.genSaltSync(SALT_ROUNDS);
+      const hash = bcrypt.hashSync(user.password_hash, salt);
+      await db.runAsync(
+        `UPDATE users SET name=?, username=?, role=?, password_hash=? WHERE id=?;`,
+        [user.name, user.username, user.role, hash, user.id]
+      );
+    } else {
+      await db.runAsync(
+        `UPDATE users SET name=?, username=?, role=? WHERE id=?;`,
+        [user.name, user.username, user.role, user.id]
+      );
+    }
+  } catch (error) {
+    if (isUniqueUsernameError(error)) {
+      throw new Error("El nombre de usuario ya existe. Elige otro distinto.");
+    }
+    console.error("Error al actualizar usuario:", error);
+    throw error;
+  }
+};
+
+const isUniqueUsernameError = (error: unknown): boolean => {
+  if (!error) return false;
+  const message =
+    error instanceof Error
+      ? error.message
+      : typeof error === "object" && "message" in (error as any)
+      ? String((error as any).message)
+      : "";
+  return message.includes("UNIQUE constraint failed: users.username");
+};
+
+// Actualizar usuario
+export const desactivarUser = async (user_id: number, is_active: number): Promise<void> => {
+  if (!user_id) {
+    throw new Error("El usuario debe tener un ID para actualizar");
+  }
+  try {
+      await db.runAsync(
+        `UPDATE users SET is_active=? WHERE id=?;`,
+        [is_active, user_id]
+      );
+  } catch (error) {
+    console.error("Error al actualizar usuario:", error);
+    throw error;
   }
 };
 
@@ -299,7 +377,10 @@ export const getReportesConCliente = async (): Promise<any[]> => {
 };
 
 // Actualizar reporte
-export const updateReporte = async (id: number, firma: string): Promise<void> => {
+export const updateReporte = async (
+  id: number,
+  firma: string
+): Promise<void> => {
   if (!id) {
     throw new Error("El ID no econtrado para actualizar");
   }

@@ -38,7 +38,7 @@ export default function NuevoReporteScreen() {
           return (
             <TouchableOpacity
               key={tab.name}
-              onPress={() => setReporte({...reporte, activeTab: tab.name})}
+              onPress={() => setReporte({ ...reporte, activeTab: tab.name })}
               style={[styles.tabButton, isActive && styles.tabButtonActive]}
             >
               <Icon
