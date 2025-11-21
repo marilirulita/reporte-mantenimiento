@@ -1,18 +1,18 @@
-import React from "react";
-import { Image, View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { useAuth } from "@/context/AuthContext";
+import { useReporte } from "@/context/ReporteContext";
+import shortenText from "@/utils/shortenText";
+import { Ionicons } from "@expo/vector-icons";
+import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
 import { ClipboardList, History } from "lucide-react-native";
-import { LinearGradient } from "expo-linear-gradient";
-import { useReporte } from "@/context/ReporteContext";
+import React from "react";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import { Ionicons } from "@expo/vector-icons";
-import { useAuth } from "@/context/AuthContext";
-import shortenText from "@/utils/shortenText";
 
 export default function PantallaInicio() {
   const router = useRouter();
   const { setReporte } = useReporte();
-  const { user, isAdmin, logout } = useAuth();
+  const { user, profile, isAdmin, logout } = useAuth();
 
   return (
     <LinearGradient
@@ -44,8 +44,8 @@ export default function PantallaInicio() {
         {/* Encabezado rol */}
         <View style={styles.roleContainer}>
           <Ionicons name="shield-checkmark-outline" size={20} color="#5A48FF" />
-          <Text style={styles.roleText}>{shortenText(user?.name, 13)}</Text>
-          <Text style={styles.roleBadge}>{user?.role === "Administrador" ? "Admin" : "Tecnico"}</Text>
+          <Text style={styles.roleText}>{shortenText(profile?.name || user?.email || "", 13)}</Text>
+          <Text style={styles.roleBadge}>{profile?.role === "Administrador" ? "Admin" : "Tecnico"}</Text>
         </View>
 
         {/* Botones */}
@@ -112,9 +112,8 @@ export default function PantallaInicio() {
           {/* --- BOTÓN NUEVO: Cerrar Sesión --- */}
           <TouchableOpacity
             style={styles.card}
-            onPress={() => {
-              logout();
-              router.replace("./LoginScreen");
+            onPress={async () => {
+              await logout();
             }}
           >
             <View style={[styles.iconBox, styles.iconContainerRed]}>

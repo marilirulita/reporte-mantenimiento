@@ -1,17 +1,17 @@
-import React, { useState } from "react";
-import { View, Text, StyleSheet, ScrollView, Alert } from "react-native";
-import CustomInput from "./ui/custom-input";
-import { Botton } from "./ui/button";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import { useNextSection } from "../hooks/useNextSection";
-import { useReporte } from "../context/ReporteContext";
 import { useAuth } from "@/context/AuthContext";
 import { Picker } from "@react-native-picker/picker";
+import React, { useState } from "react";
+import { Alert, ScrollView, StyleSheet, Text, View } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import uuid from "react-native-uuid";
+import { useReporte } from "../context/ReporteContext";
+import { useNextSection } from "../hooks/useNextSection";
+import { Botton } from "./ui/button";
+import CustomInput from "./ui/custom-input";
 
 export default function Equipo() {
   const { reporte, setReporte } = useReporte();
-  const { user } = useAuth();
+  const { user, profile } = useAuth();
   const dateToday = new Date().toLocaleDateString("es-MX", {
     day: "2-digit",
     month: "2-digit",
@@ -23,8 +23,8 @@ export default function Equipo() {
   const [infServicio, setInfServicio] = useState({
     reporte_numero: folio,
     fecha_ejecucion: dateToday,
-    tecnico_nombre: user?.name,
-    tecnico_id: user?.id,
+    tecnico_nombre: profile?.name || user?.email || "",
+    tecnico_id: user?.id || "",
   });
 
   const [compresores, setCompresores] = useState({

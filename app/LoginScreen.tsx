@@ -1,41 +1,41 @@
+import CustomInput from "@/components/ui/custom-input";
+import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
+import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import {
+  Alert,
   Image,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
-  Alert,
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import { Ionicons } from "@expo/vector-icons";
-import CustomInput from "@/components/ui/custom-input";
 import { useAuth } from "../context/AuthContext";
-import { getUserByUsernameAndPassword } from "@/db/databaseActions";
-import { useRouter } from "expo-router";
 
 export default function LoginScreen() {
   const { login } = useAuth();
-  const [usuario, setUsuario] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   const handleLogin = async () => {
-    if (!usuario || !password) {
+    if (!email || !password) {
       Alert.alert("Error", "Ingresa todos los campos.");
       return;
     }
 
-    const userFound = await getUserByUsernameAndPassword(usuario, password);
+    setLoading(true);
+    const error = await login({ email, password });
 
-    if (!userFound) {
-      Alert.alert("Error", "Credenciales incorrectas o usuario desactivado.");
+    if (error) {
+      Alert.alert("Error", error);
+      setLoading(false);
       return;
     }
-
-    login(userFound); // Guardar en contexto + AsyncStorage
 
     router.replace("/");
   };
@@ -66,11 +66,13 @@ export default function LoginScreen() {
 
         {/* CARD DEL FORMULARIO */}
         <View style={styles.card}>
-          <Text style={styles.label}>Usuario *</Text>
+          <Text style={styles.label}>Email *</Text>
           <CustomInput
-            placeholder="Ingresa tu usuario"
-            value={usuario}
-            setValue={setUsuario}
+            placeholder="Ingresa tu email"
+            value={email}
+            setValue={setEmail}
+            keyboardType="email-address"
+            autoCapitalize="none"
           />
 
           <Text style={styles.label}>Contraseña *</Text>
@@ -95,8 +97,14 @@ export default function LoginScreen() {
             </TouchableOpacity>
           </View>
 
-          <TouchableOpacity style={styles.button} onPress={handleLogin}>
-            <Text style={styles.buttonText}>Iniciar Sesión</Text>
+          <TouchableOpacity 
+            style={[styles.button, loading && styles.buttonDisabled]} 
+            onPress={handleLogin}
+            disabled={loading}
+          >
+            <Text style={styles.buttonText}>
+              {loading ? "Iniciando sesión..." : "Iniciar Sesión"}
+            </Text>
           </TouchableOpacity>
         </View>
         <Text style={styles.version}>
@@ -175,6 +183,9 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     borderRadius: 8,
     marginTop: 20,
+  },
+  buttonDisabled: {
+    opacity: 0.6,
   },
   buttonText: {
     color: "#FFF",

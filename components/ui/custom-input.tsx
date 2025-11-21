@@ -9,6 +9,7 @@ export default function CustomInput({
   keyboardType = "default",
   multiline = false,
   secureTextEntry = false,
+  autoCapitalize,
 }: {
   placeholder: string;
   value: string;
@@ -17,6 +18,7 @@ export default function CustomInput({
   style?: StyleProp<TextStyle>;
   multiline?: true | false;
   secureTextEntry?: true | false;
+  autoCapitalize?: "none" | "sentences" | "words" | "characters";
 }) {
   const [focused, setFocused] = useState(false);
   const animatedShadow = useState(new Animated.Value(0))[0];
@@ -65,6 +67,7 @@ export default function CustomInput({
         secureTextEntry={secureTextEntry}
         style={style ? [styles.textInput, style] : styles.textInput}
         placeholderTextColor="#9ca3af" // gris-400
+        autoCapitalize={autoCapitalize}
       />
     </Animated.View>
   );
