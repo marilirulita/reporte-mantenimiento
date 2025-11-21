@@ -15,6 +15,15 @@ export interface User {
   password_hash: string;
 }
 
+export interface Profile {
+  id: string;
+  email: string;
+  name: string;
+  username: string;
+  role: 'Administrador' | 'Tecnico';
+  is_active: boolean;
+}
+
 export interface Equipo {
   id?: number;
   cliente_id: number; // FK hacia Cliente

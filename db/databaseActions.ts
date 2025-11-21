@@ -1,6 +1,7 @@
 import bcrypt from "bcryptjs";
 import * as SQLite from "expo-sqlite";
-import { Cliente, Equipo, Reporte, User } from "../models/interfaces";
+import { supabase } from "../lib/supabase";
+import { Cliente, Equipo, Profile, Reporte, User } from "../models/interfaces";
 
 const db = SQLite.openDatabaseSync("servicios.db");
 
@@ -128,8 +129,8 @@ const isUniqueUsernameError = (error: unknown): boolean => {
   return message.includes("UNIQUE constraint failed: users.username");
 };
 
-// Actualizar usuario
-export const desactivarUser = async (user_id: number, is_active: number): Promise<void> => {
+// Actualizar usuario (SQLite - mantener para compatibilidad)
+export const desactivarUser = async (user_id: string, is_active: boolean): Promise<void> => {
   if (!user_id) {
     throw new Error("El usuario debe tener un ID para actualizar");
   }
@@ -391,4 +392,53 @@ export const updateReporte = async (
     WHERE id = ?`,
     [firma, id]
   );
+};
+
+//////////////////////////
+// SUPABASE - USUARIOS (PROFILES)
+//////////////////////////
+
+// Obtener todos los usuarios desde Supabase
+export const getUsersFromSupabase = async (): Promise<Profile[]> => {
+  try {
+    const { data, error } = await supabase
+      .from('profiles')
+      .select('*')
+      .order('is_active', { ascending: false })
+      .order('role', { ascending: true });
+
+    if (error) {
+      console.error('Error al obtener usuarios:', error);
+      throw error;
+    }
+
+    return data || [];
+  } catch (error) {
+    console.error('Error al obtener usuarios desde Supabase:', error);
+    throw error;
+  }
+};
+
+// Desactivar/Activar usuario en Supabase
+export const desactivarUserInSupabase = async (
+  user_id: string,
+  is_active: boolean
+): Promise<void> => {
+  if (!user_id) {
+    throw new Error("El usuario debe tener un ID para actualizar");
+  }
+  try {
+    const { error } = await supabase
+      .from('profiles')
+      .update({ is_active })
+      .eq('id', user_id);
+
+    if (error) {
+      console.error('Error al actualizar usuario en Supabase:', error);
+      throw error;
+    }
+  } catch (error) {
+    console.error('Error al desactivar/activar usuario:', error);
+    throw error;
+  }
 };

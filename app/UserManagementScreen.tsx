@@ -1,3 +1,6 @@
+import UserForm from "@/components/userForm";
+import { desactivarUserInSupabase, getUsersFromSupabase } from "@/db/databaseActions";
+import shortenText from "@/utils/shortenText";
 import { Feather, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useEffect, useState } from "react";
@@ -8,27 +11,26 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import UserForm from "@/components/userForm";
-import { User } from "../models/interfaces";
-import { getUsers, desactivarUser } from "@/db/databaseActions";
-import shortenText from "@/utils/shortenText";
+import { Profile } from "../models/interfaces";
 
 const UserManagementScreen = () => {
   const [modalVisible, setModalVisible] = useState(false);
-  const [users, setUsers] = useState<User[]>([]);
-  const [user, setUser] = useState<User>({
-    id: 0,
+  const [users, setUsers] = useState<Profile[]>([]);
+  const [user, setUser] = useState<Profile>({
+    id: "",
+    email: "",
     name: "",
     role: "Tecnico",
     username: "",
-    password_hash: "",
-    is_active: 1,
+    is_active: true,
   });
+  const [editingUserId, setEditingUserId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
   const loadUsers = async () => {
     try {
-      const result = await getUsers();
+      setLoading(true);
+      const result = await getUsersFromSupabase();
       setUsers(result);
     } catch (error) {
       console.log("Error al cargar usuarios:", error);
@@ -94,15 +96,16 @@ const UserManagementScreen = () => {
         style={styles.editButton}
         onPress={() => {
           setUser(item);
+          setEditingUserId(item.id);
           setModalVisible(true)}}
         >
           <Feather name="edit" size={20} color="#4B5563" />
         </TouchableOpacity>
 
-        {item.is_active === 1 ? (
+        {item.is_active === true ? (
         <TouchableOpacity style={[styles.deleteButton, {backgroundColor: "#0BDA30",}]}
         onPress={async () => {
-          await desactivarUser(item.id!, item.is_active === 1 ? 0 : 1 );
+          await desactivarUserInSupabase(item.id, false);
           loadUsers();
         }}
         >
@@ -111,7 +114,7 @@ const UserManagementScreen = () => {
         ) : (
           <TouchableOpacity style={[styles.deleteButton, {backgroundColor: "#D3D3D3",}]}
         onPress={async () => {
-          await desactivarUser(item.id!, item.is_active === 1 ? 0 : 1 );
+          await desactivarUserInSupabase(item.id, true);
           loadUsers();
         }}
         >                    
@@ -158,7 +161,7 @@ const UserManagementScreen = () => {
       <FlatList
         data={users}
         renderItem={renderUser}
-        keyExtractor={(item) => item?.id ? item.id.toString() : Math.random().toString()}
+        keyExtractor={(item) => item.id}
         contentContainerStyle={{ paddingBottom: 40 }}
         showsVerticalScrollIndicator={false}
       />
@@ -170,29 +173,36 @@ const UserManagementScreen = () => {
         onClose={() => {
           setModalVisible(false);
           setUser({
-            id: 0,
+            id: "",
+            email: "",
             name: "",
             role: "Tecnico",
             username: "",
-            password_hash: "",
-            is_active: 1,
+            is_active: true,
           });
+          setEditingUserId(null);
           loadUsers();
         }}
         onSubmit={(data) => {
           console.log("Usuario creado:", data);
           setModalVisible(false);
           setUser({
-            id: 0,
+            id: "",
+            email: "",
             name: "",
             role: "Tecnico",
             username: "",
-            password_hash: "",
-            is_active: 1,
+            is_active: true,
           });
+          setEditingUserId(null);
           loadUsers();
         }}
-        initialData={user}
+        initialData={editingUserId ? {
+          id: 1, // UserForm espera number, pero usaremos editingUserId (string) en las funciones
+          username: user.username,
+          name: user.name,
+          role: user.role,
+        } : undefined}
       />
     </LinearGradient>
   );

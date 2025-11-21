@@ -8,15 +8,7 @@ import React, {
   useState,
 } from "react";
 import { supabase } from '../lib/supabase';
-
-interface Profile {
-  id: string;
-  email: string;
-  name: string;
-  username: string;
-  role: 'Administrador' | 'Tecnico';
-  is_active: boolean;
-}
+import { Profile } from "@/models/interfaces";
 
 interface AuthContextValue {
   user: User | null;
