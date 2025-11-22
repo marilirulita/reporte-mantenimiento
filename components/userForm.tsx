@@ -1,11 +1,11 @@
-import { createUser, updateUser } from "@/db/databaseActions";
+import { createUserInSupabase, updateUserInSupabase } from "@/db/databaseActions";
 import { User } from "@/models/interfaces";
 import { Ionicons } from "@expo/vector-icons"; // Si usas Expo
 import React, { useEffect, useState } from "react";
 import { Modal, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import LoadingModal from "./LoadingModal";
 import CustomInput from "./ui/custom-input";
 import Dropdown from "./ui/dropdown";
-import LoadingModal from "./LoadingModal";
 
 type UserFormProps = {
   visible: boolean;
@@ -22,6 +22,7 @@ type UserFormProps = {
     name?: string;
     role?: User["role"];
   };
+  editingUserId?: string | null; // ID del usuario en Supabase (UUID) cuando se está editando
 };
 
 export default function UserForm({
@@ -29,10 +30,10 @@ export default function UserForm({
   onClose,
   onSubmit,
   initialData,
+  editingUserId,
 }: UserFormProps) {
-  const isEditing = initialData !== undefined && initialData.id !== 0;
+  const isEditing = editingUserId !== null && editingUserId !== undefined;
 
-  const [id, setId] = useState(initialData?.id || 0);
   const [username, setUsername] = useState(initialData?.username || "");
   const [name, setName] = useState(initialData?.name || "");
   const [role, setRole] = useState(initialData?.role || "Seleccionar rol");
@@ -47,18 +48,17 @@ export default function UserForm({
   useEffect(() => {
     if (visible) {
       if (isEditing && initialData) {
-        setId(initialData.id || 0);
         setUsername(initialData.username || "");
         setName(initialData.name || "");
         setRole(initialData.role || "");
       } else {
         // Resetear para modo creación
-        setId(0);
         setUsername("");
         setName("");
         setRole("Seleccionar rol");
       }
       setPassword("");
+      setEditingPassword(false);
     }
   }, [visible, initialData, isEditing]);
 
@@ -77,12 +77,11 @@ export default function UserForm({
     }
     try {
       setLoading(true);
-      await createUser({
+      await createUserInSupabase({
         name,
         username,
         role: role as User["role"],
-        password_hash: password,
-        is_active: 1,
+        password: password,
       });
       setLoading(false);
       return true;
@@ -90,6 +89,7 @@ export default function UserForm({
       const message =
         error instanceof Error ? error.message : "Error al crear usuario";
       alert(message);
+      setLoading(false);
       return false;
     }
   };
@@ -107,23 +107,26 @@ export default function UserForm({
       alert("Rol invalido");
       return false;
     }
-    const userData = {
-      id,
-      name,
-      username,
-      role: role as User["role"],
-      is_active: 1,
-      ...(password && password.trim() !== "" && { password_hash: password }),
-    };
+    if (!editingUserId) {
+      alert("Error: No se encontró el ID del usuario a editar");
+      return false;
+    }
     try {
       setLoading(true);
-      await updateUser(userData);
+      await updateUserInSupabase({
+        id: editingUserId,
+        name,
+        username,
+        role: role as User["role"],
+        ...(password && password.trim() !== "" && editingPassword && { password_hash: password }),
+      });
       setLoading(false);
       return true;
     } catch (error: unknown) {
       const message =
         error instanceof Error ? error.message : "Error al actualizar usuario";
       alert(message);
+      setLoading(false);
       return false;
     }
   };

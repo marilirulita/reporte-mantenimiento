@@ -203,6 +203,7 @@ const UserManagementScreen = () => {
           name: user.name,
           role: user.role,
         } : undefined}
+        editingUserId={editingUserId}
       />
     </LinearGradient>
   );

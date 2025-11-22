@@ -45,7 +45,9 @@ export const createUser = async (user: User): Promise<number> => {
 
 // Obtener todos los usuarios
 export const getUsers = (): User[] => {
-  const result = db.getAllSync<User>(`SELECT * FROM users ORDER BY is_active DESC, role ASC;`);
+  const result = db.getAllSync<User>(
+    `SELECT * FROM users ORDER BY is_active DESC, role ASC;`
+  );
   return result;
 };
 
@@ -73,7 +75,6 @@ export const getUserByUsernameAndPassword = async (
     // Devuelve el usuario sin la contraseña, pero asegura el tipo User (c/ password_hash como string vacío)
     const { password_hash, ...safeUser } = result;
     return { ...safeUser, password_hash: "" };
-
   } catch (error) {
     console.error("Error al verificar usuario:", error);
     throw error;
@@ -130,15 +131,18 @@ const isUniqueUsernameError = (error: unknown): boolean => {
 };
 
 // Actualizar usuario (SQLite - mantener para compatibilidad)
-export const desactivarUser = async (user_id: string, is_active: boolean): Promise<void> => {
+export const desactivarUser = async (
+  user_id: string,
+  is_active: boolean
+): Promise<void> => {
   if (!user_id) {
     throw new Error("El usuario debe tener un ID para actualizar");
   }
   try {
-      await db.runAsync(
-        `UPDATE users SET is_active=? WHERE id=?;`,
-        [is_active, user_id]
-      );
+    await db.runAsync(`UPDATE users SET is_active=? WHERE id=?;`, [
+      is_active,
+      user_id,
+    ]);
   } catch (error) {
     console.error("Error al actualizar usuario:", error);
     throw error;
@@ -402,19 +406,19 @@ export const updateReporte = async (
 export const getUsersFromSupabase = async (): Promise<Profile[]> => {
   try {
     const { data, error } = await supabase
-      .from('profiles')
-      .select('*')
-      .order('is_active', { ascending: false })
-      .order('role', { ascending: true });
+      .from("profiles")
+      .select("*")
+      .order("is_active", { ascending: false })
+      .order("role", { ascending: true });
 
     if (error) {
-      console.error('Error al obtener usuarios:', error);
+      console.error("Error al obtener usuarios:", error);
       throw error;
     }
 
     return data || [];
   } catch (error) {
-    console.error('Error al obtener usuarios desde Supabase:', error);
+    console.error("Error al obtener usuarios desde Supabase:", error);
     throw error;
   }
 };
@@ -429,16 +433,191 @@ export const desactivarUserInSupabase = async (
   }
   try {
     const { error } = await supabase
-      .from('profiles')
+      .from("profiles")
       .update({ is_active })
-      .eq('id', user_id);
+      .eq("id", user_id);
 
     if (error) {
-      console.error('Error al actualizar usuario en Supabase:', error);
+      console.error("Error al actualizar usuario en Supabase:", error);
       throw error;
     }
   } catch (error) {
-    console.error('Error al desactivar/activar usuario:', error);
+    console.error("Error al desactivar/activar usuario:", error);
     throw error;
+  }
+};
+
+// Crear usuario en Supabase
+export const createUserInSupabase = async (userData: {
+  name: string;
+  username: string;
+  role: "Administrador" | "Tecnico";
+  password: string;
+  email?: string;
+}): Promise<string> => {
+  // Guardar la sesión actual del Administrador antes de crear el usuario
+  const { data: currentSession } = await supabase.auth.getSession();
+  const adminAccessToken = currentSession?.session?.access_token;
+  const adminRefreshToken = currentSession?.session?.refresh_token;
+
+  try {
+    // Generar email si no se proporciona (usando username)
+    const email = `${userData.username}@conforttotal.com`;
+
+    // 1. Crear usuario en auth.users usando signUp
+    // NOTA: signUp automáticamente inicia sesión con el nuevo usuario
+    const { data: authData, error: authError } = await supabase.auth.signUp({
+      email,
+      password: userData.password,
+      options: {
+        data: {
+          name: userData.name,
+          username: userData.username,
+          role: userData.role,
+        },
+      },
+    });
+
+    if (authError) {
+      // Verificar si es error de email duplicado
+      if (
+        authError.message.includes("already registered") ||
+        authError.message.includes("User already registered")
+      ) {
+        throw new Error(
+          "El email o usuario ya está registrado. Elige otro distinto."
+        );
+      }
+      throw authError;
+    }
+
+    if (!authData.user) {
+      throw new Error("Error al crear el usuario en la autenticación");
+    }
+
+    // 2. Cerrar sesión del nuevo usuario creado
+    await supabase.auth.signOut();
+
+    // 3. Restaurar la sesión del Administrador si existía
+    if (adminAccessToken && adminRefreshToken) {
+      const { error: restoreError } = await supabase.auth.setSession({
+        access_token: adminAccessToken,
+        refresh_token: adminRefreshToken,
+      });
+
+      if (restoreError) {
+        console.error(
+          "Error al restaurar sesión del administrador:",
+          restoreError
+        );
+        // No lanzamos error aquí porque el usuario ya fue creado exitosamente
+        // Solo logueamos el error
+      }
+    }
+
+    return authData.user.id;
+  } catch (error) {
+    // Si hubo un error, intentar restaurar la sesión del administrador
+    if (adminAccessToken && adminRefreshToken) {
+      try {
+        await supabase.auth.setSession({
+          access_token: adminAccessToken,
+          refresh_token: adminRefreshToken,
+        });
+      } catch (restoreError) {
+        console.error(
+          "Error al restaurar sesión después de error:",
+          restoreError
+        );
+      }
+    }
+
+    console.error("Error al crear usuario en Supabase:", error);
+    if (error instanceof Error) {
+      throw error;
+    }
+    throw new Error("Error desconocido al crear usuario");
+  }
+};
+
+// Actualizar usuario en Supabase
+export const updateUserInSupabase = async (userData: {
+  id: string; // ID del usuario (UUID de Supabase)
+  name: string;
+  username: string;
+  role: "Administrador" | "Tecnico";
+  password_hash?: string;
+}): Promise<void> => {
+  if (!userData.id) {
+    throw new Error("El usuario debe tener un ID para actualizar");
+  }
+
+  try {
+    // 1. Actualizar el perfil en la tabla profiles
+    const updateData: {
+      name: string;
+      username: string;
+      role: "Administrador" | "Tecnico";
+    } = {
+      name: userData.name,
+      username: userData.username,
+      role: userData.role,
+    };
+
+    const { error: profileError } = await supabase
+      .from("profiles")
+      .update(updateData)
+      .eq("id", userData.id);
+
+    if (profileError) {
+      // Verificar si es error de username duplicado
+      if (
+        profileError.message.includes("duplicate") ||
+        profileError.code === "23505"
+      ) {
+        throw new Error("El nombre de usuario ya existe. Elige otro distinto.");
+      }
+      console.error("Error al actualizar perfil:", profileError);
+      throw profileError;
+    }
+
+    // 2. Si se proporciona una nueva contraseña, actualizarla en auth
+    // NOTA: updateUser solo actualiza la contraseña del usuario actualmente autenticado.
+    // Para actualizar la contraseña de otro usuario, necesitarías:
+    // - Una función Edge de Supabase con permisos de administrador
+    // - O usar el servicio de administración de Supabase (service role key)
+    // Por ahora, si el usuario que está editando es el mismo que está autenticado, se actualizará.
+    // Si es otro usuario, la contraseña no se actualizará y el usuario deberá usar "Olvidé mi contraseña"
+    if (userData.password_hash && userData.password_hash.trim() !== "") {
+      const {
+        data: { user: currentUser },
+      } = await supabase.auth.getUser();
+
+      if (currentUser && currentUser.id === userData.id) {
+        // Solo actualizar si es el mismo usuario
+        const { error: passwordError } = await supabase.auth.updateUser({
+          password: userData.password_hash,
+        });
+
+        if (passwordError) {
+          console.error("Error al actualizar contraseña:", passwordError);
+          throw new Error(
+            "No se pudo actualizar la contraseña. Intenta más tarde."
+          );
+        }
+      } else {
+        // Si es otro usuario, no podemos actualizar la contraseña desde el cliente
+        console.warn(
+          'No se puede actualizar la contraseña de otro usuario desde el cliente. El usuario deberá usar "Olvidé mi contraseña"'
+        );
+        // No lanzamos error, solo advertimos porque el perfil ya fue actualizado
+      }
+    }
+  } catch (error) {
+    console.error("Error al actualizar usuario en Supabase:", error);
+    if (error instanceof Error) {
+      throw error;
+    }
+    throw new Error("Error desconocido al actualizar usuario");
   }
 };
