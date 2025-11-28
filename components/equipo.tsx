@@ -287,7 +287,7 @@ const styles = StyleSheet.create({
     paddingBottom: 32, // pb-4
   },
   sectionTitle: {
-    color: "#1d4ed8", // text-blue-700
+    color: "#414650ff", // text-blue-700
     fontSize: 16, // text-base
     fontWeight: "600", // font-semibold
     marginBottom: 12, // mb-3

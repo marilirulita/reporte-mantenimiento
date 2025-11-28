@@ -29,7 +29,7 @@ export default function PantallaInicio() {
           onPress={() => router.push("./reporte")}
         >
           <View style={[styles.iconBox, styles.iconBoxBlue]}>
-            <ClipboardList color="#2563eb" size={28} />
+            <ClipboardList color="#414650ff" size={28} />
           </View>
           <View style={{flex: 1}}>
             <Text style={styles.cardTitle}>Nuevo Reporte</Text>
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
   },
   iconContainer: {
-    backgroundColor: "#2563eb",
+    backgroundColor: "#414650ff",
     padding: 20,
     borderRadius: 50,
     marginBottom: 16,
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 22,
     fontWeight: "600",
-    color: "#2563eb",
+    color: "#414650ff",
     textAlign: "center",
   },
   subtitle: {
@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
   },
   cardActive: {
     backgroundColor: "#f0f7ff",
-    borderColor: "#bfdbfe",
+    borderColor: "#d7e4f3ff",
   },
   iconBox: {
     width: 48,

@@ -32,10 +32,10 @@ export default function CustomInput({
 
   const containerStyle = {
     ...styles.inputContainer,
-    borderColor: focused ? "#60a5fa" : "#d1d5db", // azul-400 o gris-300
+    borderColor: focused ? "#6b737cff" : "#d1d5db", // azul-400 o gris-300
     borderWidth: focused ? 2 : 1,
     backgroundColor: focused ? "#f3f4f6" : "#f9fafb", // gris-100 / gris-50
-    shadowColor: focused ? "#93c5fd" : "#000", // sombra azul suave o estándar
+    shadowColor: focused ? "#78797aff" : "#000", // sombra azul suave o estándar
     shadowOpacity: focused ? 0.6 : 0.1,
     shadowRadius: focused ? 6 : 2,
     shadowOffset: { width: 0, height: focused ? 3 : 1 },

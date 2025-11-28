@@ -102,7 +102,7 @@ export default function Fotos() {
             style={styles.button}
             onPress={() => handleAgregarFoto("camara")}
           >
-            <Camera size={18} color="#2563EB" style={styles.icon} />
+            <Camera size={18} color="#414650ff" style={styles.icon} />
             <Text style={styles.buttonText}>Tomar Foto</Text>
           </TouchableOpacity>
 
@@ -110,7 +110,7 @@ export default function Fotos() {
             style={styles.button}
             onPress={() => handleAgregarFoto("galeria")}
           >
-            <Upload size={18} color="#2563EB" style={styles.icon} />
+            <Upload size={18} color="#414650ff" style={styles.icon} />
             <Text style={styles.buttonText}>Subir Imagen</Text>
           </TouchableOpacity>
         </View>
@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
     paddingBottom: 32, // pb-4
   },
   title: {
-    color: "#1D4ED8", // azul-700
+    color: "#414650ff", // azul-700
     fontWeight: "600",
     fontSize: 16,
     marginBottom: 12, // mb-3
@@ -202,7 +202,7 @@ const styles = StyleSheet.create({
     marginRight: 6,
   },
   buttonText: {
-    color: "#2563EB", // azul-600
+    color: "#414650ff", // azul-600
     fontWeight: "500",
     fontSize: 13,
   },

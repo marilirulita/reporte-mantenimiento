@@ -63,13 +63,12 @@ export const templaitPDF = (reporte: {
       margin: auto;
       background: white;
       box-shadow: 0 0 10px rgba(0,0,0,0.15);
-      border-radius: 8px;
       overflow: hidden;
     }
 
     /* Encabezado */
     .header {
-      background-color: #2563eb;
+      background-color: #414650ff;
       color: white;
       padding: 20px;
       text-align: center;

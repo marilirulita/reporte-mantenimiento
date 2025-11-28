@@ -43,7 +43,7 @@ export default function NuevoReporteScreen() {
             >
               <Icon
                 size={22}
-                color={isActive ? "#2563EB" : "#6B7280"} // azul o gris
+                color={isActive ? "#212429ff" : "#6B7280"} // azul o gris
                 strokeWidth={2}
               />
               <Text
@@ -75,7 +75,7 @@ export default function NuevoReporteScreen() {
 const styles = StyleSheet.create({
   // Header
   header: {
-    backgroundColor: "#2563eb", // bg-blue-600
+    backgroundColor: "#414650ff", // bg-blue-600
     padding: 24, // p-6
     borderBottomLeftRadius: 24, // rounded-b-3xl
     borderBottomRightRadius: 24,
@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
   headerSubtitle: {
     marginTop: 4,
     fontSize: 14,
-    color: "#bfdbfe", // text-blue-100
+    color: "#f1f5faff", // text-blue-100
   },
 
   // Tabs
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
     fontWeight: "500",
   },
   tabTextActive: {
-    color: "#2563eb", // text-blue-600
+    color: "#414650ff", // text-blue-600
   },
   tabTextInactive: {
     color: "#4b5563", // text-gray-600

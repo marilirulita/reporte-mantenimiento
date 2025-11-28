@@ -190,14 +190,14 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   headerIcon: {
-    backgroundColor: "#2563eb",
+    backgroundColor: "#414650ff",
     borderRadius: 12,
     padding: 10,
   },
   headerTitulo: {
     fontSize: 18,
     fontWeight: "600",
-    color: "#2563eb",
+    color: "#414650ff",
   },
   headerSubtitulo: {
     fontSize: 14,

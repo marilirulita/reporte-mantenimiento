@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
     marginBottom: 32, // mb-8
   },
   title: {
-    color: "#1D4ED8", // azul-700
+    color: "#414650ff", // azul-700
     fontWeight: "600",
     fontSize: 16,
     marginBottom: 12, // mb-3
@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   button: {
-    backgroundColor: "#2563eb",
+    backgroundColor: "#414650ff",
     paddingVertical: 10,
     paddingHorizontal: 24,
     borderRadius: 10,
