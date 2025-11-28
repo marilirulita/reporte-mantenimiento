@@ -1,50 +1,148 @@
-# Welcome to your Expo app 👋
+# 📱 App de Mantenimiento – Generador de Reportes PDF
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Aplicación móvil para generar y administrar reportes de mantenimiento mediante un formulario completo con datos de cliente, equipo, detalles técnicos, fotografías y firma de verificación.
+Incluye historial para consultar reportes previos y volver a generar los PDF.
 
-## Get started
+## 📝 Descripción
 
-1. Install dependencies
+Esta aplicación permite crear reportes de mantenimiento desde cualquier dispositivo móvil.
+Los usuarios pueden:
+
+- Registrar información del cliente y del equipo.
+
+- Agregar detalles técnicos.
+
+- Capturar fotografías del trabajo realizado.
+
+- Firmar digitalmente para validar el servicio.
+
+- Generar un **reporte PDF** listo para enviar o guardar.
+
+- Acceder a un historial donde todos los reportes quedan almacenados localmente.
+
+- Regenerar PDFs anteriores desde el historial.
+
+- Es ideal para técnicos, empresas de mantenimiento y servicios en campo.
+
+## 🛠️ Tecnologías utilizadas
+
+- **Expo** (React Native)
+
+- **expo-sqlite** (base de datos local)
+
+- **expo-file-system**
+
+- **expo-media-library**
+
+- **expo-sharing**
+
+- **react-native-svg** (firma digital)
+
+- **React Navigation**
+
+- **TypeScript**
+
+## 📦 Requisitos previos
+
+Antes de ejecutar el proyecto, asegúrate de tener instalado:
+
+- **Node.js**
+
+- **npm o yarn**
+
+- **Git** (opcional pero recomendado)
+
+## ▶️ Cómo ejecutar el proyecto localmente
+
+1. **Clonar el repositorio**
+
+   ```bash
+   git clone git@github.com:marilirulita/reporte-mantenimiento.git
+   ```
+
+2. **Entrar al directorio**
+
+   ```bash
+   cd reporte-mantenimiento
+   ```
+
+3. **Instalar dependencias**
 
    ```bash
    npm install
    ```
 
-2. Start the app
+4. **Iniciar el proyecto**
 
    ```bash
    npx expo start
    ```
 
-In the output, you'll find options to open the app in a
+5. **Abre la app en tu dispositivo con Expo Go o usa un emulador.**
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## 📜 Scripts importantes
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+| Script | Acción |
+| ------------- | ------ |
+|`npm start` / `expo start` | Inicia el proyecto en modo desarrollo |
+| `npm run android` | Abre en un emulador Android |
+| `npm run ios` | Abre en un simulador iOS (solo Mac) |
+| `eas build -p android` | Genera APK/AAB |
+| `eas update` | Publica actualizaciones OTA |
 
-## Get a fresh project
+## 📁 Estructura de carpetas
 
-When you're ready, run:
-
-```bash
-npm run reset-project
+```markdown
+/app
+  -_layout.tsx
+  - +not-found.tsx
+  - historial.tsx
+  - index.tsx
+  - PanelFirma.tsx
+  - reporte.tsx
+/assets
+  /images
+    - icon.png
+    - logo.png
+/components
+  /ui
+    - button.tsx
+    - custom-input.tsx
+  - BotonFinalizar.tsx
+  - cliente.tsx
+  - equipo.tsx
+  - firma.tsx
+  - fotos.tsx
+/context
+  - ReporteContext.tsx
+/db
+  - database.js
+  - databaseActions.ts
+/hooks
+  - useNextSection.tsx
+/models
+  - Reporte.ts
+/types
+  - navigation.ts
+/utils
+  - generarPDF.tsx
+  - getBase64Image.ts
+  - templaitePDF-download.ts
+  - templaitPDF.ts
+  - template.html
+app.json
+eas.json
+eslint.config.js
+package.json
+README.md
+tsconfig.json
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## 📲 Cómo descargar APK (Android)
 
-## Learn more
+[Link de descarga](https://onlinemarkdown.com)
 
-To learn more about developing your project with Expo, look at the following resources:
+## 👤 Créditos / Autor
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+Desarrollado por **Marysol Bautista**
+🚀 ***WebXpymE*** — Soluciones digitales para microempresarios.
