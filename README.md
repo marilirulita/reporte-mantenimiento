@@ -80,6 +80,10 @@ Antes de ejecutar el proyecto, asegúrate de tener instalado:
 
 5. **Abre la app en tu dispositivo con Expo Go o usa un emulador.**
 
+## 📘 Manual de Usuario
+
+[![Video Title](https://img.youtube.com/vi/rsO_pFN5H2M/0.jpg)](https://www.youtube.com/watch?v=rsO_pFN5H2M)
+
 ## 📜 Scripts importantes
 
 | Script | Acción |
