@@ -45,12 +45,11 @@ export default function HistorialScreen() {
   const handleEliminar = async (id: number) => {
     await deleteReporte(id);
     cargarReportes();
-    //setReportes((prev) => prev.filter((r) => r.id !== id));
     alert("Reporte Eliminado");
   };
 
   return (
-    <GradientLayout>
+    <GradientLayout style={styles.container}>
       {/* Encabezado */}
       <View style={styles.header}>
         <View style={styles.headerIcon}>
