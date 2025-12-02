@@ -150,22 +150,6 @@ export const templaitPDF = (reporte: {
     }
 
     /* Fotos */
-    .photos {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      padding: 10px;
-      justify-content: start;
-    }
-
-    .photos img {
-      width: 180px;
-      height: 120px;
-      object-fit: cover;
-      border: 1px solid #e5e7eb;
-      border-radius: 4px;
-    }
-
     .fotos {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -175,11 +159,13 @@ export const templaitPDF = (reporte: {
 
     .foto img {
       width: 100%;
-      height: 150px;
       object-fit: cover;
       border-radius: 8px;
-      border: 1px solid #ccc;
+      border: 1px solid #ccc;    
+      aspect-ratio: 1 / 1;  
+      display: block;
     }
+
     /* Firma */
     .signature {
       padding: 20px;
@@ -303,7 +289,7 @@ export const templaitPDF = (reporte: {
     <div class="section">
       <div class="section-title">TRABAJO REALIZADO</div>
       <div class="long-text">
-        ${reporte.tecnico.trabajoRealizado}
+        ${safe(reporte.tecnico.trabajoRealizado)}
       </div>
     </div>
 
@@ -311,7 +297,7 @@ export const templaitPDF = (reporte: {
     <div class="section">
       <div class="section-title">OBSERVACIONES</div>
       <div class="long-text">
-        ${reporte.tecnico.observaciones}
+        ${safe(reporte.tecnico.observaciones)}
       </div>
     </div>
 
@@ -319,14 +305,13 @@ export const templaitPDF = (reporte: {
     <div class="section">
       <div class="section-title">RECOMENDACIONES</div>
       <div class="long-text">
-        ${reporte.tecnico.observacionesAdicionales}
+        ${safe(reporte.tecnico.observacionesAdicionales)}
       </div>
     </div>
 
     <!-- Sección: Fotos -->
     <div class="section">
-      <div class="section-title">FOTOGRAFÍAS DEL EQUIPO</div>
-      <div class="photos">
+    <div class="section-title">FOTOGRAFÍAS DEL EQUIPO</div>
         <div class="fotos">
           ${reporte.fotos
             .map(
@@ -337,8 +322,8 @@ export const templaitPDF = (reporte: {
             )
             .join("")}
         </div>
-      </div>
     </div>
+
     <!-- Sección: Firma -->
     <div class="section">
       <div class="section-title">FIRMA DEL CLIENTE</div>
