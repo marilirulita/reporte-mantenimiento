@@ -78,7 +78,7 @@ describe("<PantallaInicio />", () => {
     fireEvent.press(botonReporte);
 
     // Verificamos que router.push haya sido llamado con la ruta correcta
-    expect(mockPush).toHaveBeenCalledWith("./reporte");
+    expect(mockPush).toHaveBeenCalledWith("/reporte");
   });
 
   it('navega al historial al presionar "Historial"', () => {
@@ -88,7 +88,7 @@ describe("<PantallaInicio />", () => {
 
     fireEvent.press(botonHistorial);
 
-    expect(mockPush).toHaveBeenCalledWith("./historial");
+    expect(mockPush).toHaveBeenCalledWith("/historial");
   });
 
   it("muestra la versión correcta de la app", () => {

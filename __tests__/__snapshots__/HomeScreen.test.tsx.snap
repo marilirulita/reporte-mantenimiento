@@ -8,7 +8,7 @@ exports[`<PantallaInicio /> coincide con el snapshot 1`] = `
       "alignItems": "center",
       "flex": 1,
       "justifyContent": "center",
-      "paddingHorizontal": 24,
+      "paddingHorizontal": 20,
     }
   }
 >

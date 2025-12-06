@@ -6,7 +6,7 @@ export const indexStyles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    paddingHorizontal: 24,
+    paddingHorizontal: 20,
   },
   iconContainer: {
     backgroundColor: COLORS.primary,

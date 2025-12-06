@@ -1,8 +1,10 @@
 // context/ReporteContext.tsx
 import { createContext, useContext, useState } from "react";
 
+type TabName = "cliente" | "tecnico" | "fotos" | "firma";
+
 interface ReporteData {
-  activeTab: string;
+  activeTab: TabName;
   cliente: any;
   tecnico: any;
   fotos: string[];
