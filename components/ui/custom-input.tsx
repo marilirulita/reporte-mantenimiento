@@ -1,5 +1,23 @@
-import React, { useState } from "react";
-import { TextInput, StyleSheet, Animated } from "react-native";
+import React, { useState, useMemo } from "react";
+import { TextInput, StyleSheet, Animated, ViewStyle } from "react-native";
+
+type KeyboardType =
+  | "default"
+  | "email-address"
+  | "numeric"
+  | "phone-pad";
+
+type CustomInputProps = {
+  placeholder: string;
+  value: string;
+  //onChange: (text: string) => void;
+  setValue: (text: string) => void;
+  keyboardType?: KeyboardType;
+  multiline?: boolean;
+  disabled?: boolean;
+  containerStyle?: ViewStyle;
+  testID?: string;
+};
 
 export default function CustomInput({
   placeholder,
@@ -7,69 +25,82 @@ export default function CustomInput({
   setValue,
   keyboardType = "default",
   multiline = false,
-}: {placeholder: string; value: string; setValue: (text: string) => void; keyboardType?: 'default' | 'email-address' | 'numeric' | 'phone-pad'; multiline?: true | false}) {
+  disabled = false,
+  containerStyle,
+  testID,
+}: CustomInputProps) {
   const [focused, setFocused] = useState(false);
-  const animatedShadow = useState(new Animated.Value(0))[0];
 
-  // Animación de foco (opcional)
-  const handleFocus = () => {
-    setFocused(true);
-    Animated.timing(animatedShadow, {
-      toValue: 1,
-      duration: 300,
+  const animatedBorder = useMemo(
+    () => new Animated.Value(0),
+    []
+  );
+
+  const animateFocus = (toValue: number) => {
+    Animated.timing(animatedBorder, {
+      toValue,
+      duration: 250,
       useNativeDriver: false,
     }).start();
+  };
+
+  const handleFocus = () => {
+    if (disabled) return;
+    setFocused(true);
+    animateFocus(1);
   };
 
   const handleBlur = () => {
     setFocused(false);
-    Animated.timing(animatedShadow, {
-      toValue: 0,
-      duration: 300,
-      useNativeDriver: false,
-    }).start();
+    animateFocus(0);
   };
 
-  const containerStyle = {
-    ...styles.inputContainer,
-    borderColor: focused ? "#6b737cff" : "#d1d5db", // azul-400 o gris-300
+  const containerAnimatedStyle = {
+    borderColor: animatedBorder.interpolate({
+      inputRange: [0, 1],
+      outputRange: ["#d1d5db", "#6b737cff"],
+    }),
     borderWidth: focused ? 2 : 1,
-    backgroundColor: focused ? "#f3f4f6" : "#f9fafb", // gris-100 / gris-50
-    shadowColor: focused ? "#78797aff" : "#000", // sombra azul suave o estándar
-    shadowOpacity: focused ? 0.6 : 0.1,
-    shadowRadius: focused ? 6 : 2,
-    shadowOffset: { width: 0, height: focused ? 3 : 1 },
-    elevation: focused ? 6 : 2,
+    backgroundColor: focused ? "#f3f4f6" : "#f9fafb",
   };
 
   return (
-    <Animated.View style={containerStyle}>
+    <Animated.View
+      style={[
+        styles.container,
+        containerAnimatedStyle,
+        disabled && styles.disabled,
+        containerStyle,
+      ]}
+    >
       <TextInput
+        testID={testID}
         placeholder={placeholder}
         value={value}
         onChangeText={setValue}
         onFocus={handleFocus}
         onBlur={handleBlur}
+        editable={!disabled}
         keyboardType={keyboardType}
         multiline={multiline}
-        style={styles.textInput}
-        placeholderTextColor="#9ca3af" // gris-400
+        style={styles.input}
+        placeholderTextColor="#9ca3af"
       />
     </Animated.View>
   );
 }
 
 const styles = StyleSheet.create({
-  inputContainer: {
-    padding: 8,
+  container: {
+    padding: 10,
     borderRadius: 12,
-    //transition: "all 0.3s", // sólo efecto visual en web, no afecta mobile
   },
-  textInput: {
-    color: "#374151", // text-gray-700
-    borderWidth: 0,
-    outlineWidth: 0,
+  input: {
+    color: "#374151",
     fontSize: 16,
     minHeight: 36,
+  },
+  disabled: {
+    opacity: 0.6,
   },
 });
