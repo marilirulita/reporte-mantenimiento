@@ -3,30 +3,14 @@ import { generarPDF } from "../utils/generarPDF";
 import { Text, StyleSheet, Alert } from "react-native";
 import { Botton } from "./ui/button";
 import { addReporte } from "@/db/databaseActions";
+import { validarReporte } from "@/utils/validarReporte";
 
 const BotonFinalizar = () => {
   const { reporte } = useReporte();
 
   const handleFinalizar = async () => {
-    if (reporte.firma === null) {
-      Alert.alert("Requisito Firma", "Nesesita agregar una firma");
-      return;
-    }
 
-    if (!reporte.cliente?.cliente?.id || !reporte.cliente?.equipo?.id ) {;
-      Alert.alert("Requisito Reporte", "Faltan datos del cliente y equipo");
-      return;
-    }
-
-    if (!reporte.tecnico?.fechaServicio) {;
-      Alert.alert("Requisito Reporte", "Faltan datos del area tecnica");
-      return;
-    }
-
-    if (reporte.fotos.length <= 0) {;
-      Alert.alert("Requisito Reporte", "Faltan fotos");
-      return;
-    }
+    if (!validarReporte(reporte)) return;
 
     const PDFuri = await generarPDF(reporte, false);
 
@@ -46,12 +30,12 @@ const BotonFinalizar = () => {
       observaciones: reporte.tecnico.observaciones,
       recomendaciones: reporte.tecnico.observacionesAdicionales,
       fotos: reporte.fotos,
-      firma: reporte.firma,
+      firma: reporte.firma ?? "",
       pdfUri: PDFuri,
     };
     await addReporte(reporteCompleto);
     
-    alert("Reporte guardado con éxito ✅");
+    Alert.alert("Reporte guardado con éxito ✅");
   };
 
   return (
