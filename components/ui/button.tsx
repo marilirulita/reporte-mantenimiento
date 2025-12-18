@@ -1,9 +1,14 @@
-import React, { useState } from "react";
-import { TouchableOpacity, Animated } from "react-native";
+import React, { useRef } from "react";
+import {
+  TouchableOpacity,
+  Animated,
+  StyleProp,
+  ViewStyle,
+  TouchableOpacityProps,
+} from "react-native";
 
-type BottonProps = {
-  onPress?: () => void;
-  classname: object;
+type BottonProps = TouchableOpacityProps & {
+  classname?: StyleProp<ViewStyle>;
   children: React.ReactNode;
 };
 
@@ -11,12 +16,15 @@ export const Botton: React.FC<BottonProps> = ({
   onPress,
   classname,
   children,
+  disabled,
+  ...props
 }) => {
-  const scale = useState(new Animated.Value(1))[0];
+  const scale = useRef(new Animated.Value(1)).current;
 
   const handlePressIn = () => {
+    if (disabled) return;
     Animated.spring(scale, {
-      toValue: 0.95, // active:scale-95
+      toValue: 0.95,
       useNativeDriver: true,
       speed: 50,
       bounciness: 0,
@@ -24,6 +32,7 @@ export const Botton: React.FC<BottonProps> = ({
   };
 
   const handlePressOut = () => {
+    if (disabled) return;
     Animated.spring(scale, {
       toValue: 1,
       useNativeDriver: true,
@@ -34,15 +43,20 @@ export const Botton: React.FC<BottonProps> = ({
 
   return (
     <Animated.View style={{ transform: [{ scale }] }}>
-      <TouchableOpacity 
-      activeOpacity={0.8} 
-      style={classname} 
-      onPress={onPress}
-      onPressIn={handlePressIn}
-      onPressOut={handlePressOut}
+      <TouchableOpacity
+        testID="botton-touchable"
+        activeOpacity={0.8}
+        style={classname}
+        onPress={onPress}
+        onPressIn={handlePressIn}
+        onPressOut={handlePressOut}
+        disabled={disabled}
+        {...props}
       >
         {children}
       </TouchableOpacity>
     </Animated.View>
   );
 };
+
+Botton.displayName = "Botton";
