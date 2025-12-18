@@ -1,13 +1,13 @@
-import { View, Text } from "react-native";
-import { ClipboardList, Wrench, Camera, PenLine } from "lucide-react-native";
-import Cliente from "../components/cliente";
-import Equipo from "../components/equipo";
-import Fotos from "../components/fotos";
-import Signature from "../components/firma";
-import { useReporte } from "@/context/ReporteContext";
 import { GradientLayout } from "@/components/GradientLayout";
-import { reporteStyles as styles } from "@/styles/reporteStyles";
 import TabButton from "@/components/ui/TabButton";
+import { useReporte } from "@/context/ReporteContext";
+import { reporteStyles as styles } from "@/styles/reporteStyles";
+import { Camera, ClipboardList, PenLine, Wrench } from "lucide-react-native";
+import { Text, View } from "react-native";
+import Cliente from "../components/ClienteScreen/cliente";
+import Equipo from "../components/equipo";
+import Signature from "../components/firma";
+import Fotos from "../components/fotos";
 
 export default function NuevoReporteScreen() {
   const { reporte, setReporte } = useReporte();
