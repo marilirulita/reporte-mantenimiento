@@ -10,7 +10,6 @@ type KeyboardType =
 type CustomInputProps = {
   placeholder: string;
   value: string;
-  //onChange: (text: string) => void;
   setValue: (text: string) => void;
   keyboardType?: KeyboardType;
   multiline?: boolean;
