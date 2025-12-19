@@ -5,9 +5,9 @@ import { reporteStyles as styles } from "@/styles/reporteStyles";
 import { Camera, ClipboardList, PenLine, Wrench } from "lucide-react-native";
 import { Text, View } from "react-native";
 import Cliente from "../components/ClienteScreen/cliente";
-import Equipo from "../components/equipo";
 import Signature from "../components/firma";
 import Fotos from "../components/fotos";
+import TecnicoScreen from "../components/TecnicoScreen/tecnico";
 
 export default function NuevoReporteScreen() {
   const { reporte, setReporte } = useReporte();
@@ -27,7 +27,7 @@ export default function NuevoReporteScreen() {
   // 🧩 Diccionario de pantallas
   const screens: Record<TabName, React.ComponentType<any>> = {
     cliente: Cliente,
-    tecnico: Equipo,
+    tecnico: TecnicoScreen,
     fotos: Fotos,
     firma: () => (
       <View style={{ flex: 1 }}>

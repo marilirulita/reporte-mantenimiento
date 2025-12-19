@@ -16,14 +16,14 @@ jest.mock("expo-linear-gradient", () => ({
   ),
 }));
 // Mocks de componentes hijos para no cargar lógica extra
-jest.mock("../components/cliente", () => {
+jest.mock("../components/ClienteScreen/cliente", () => {
   const { Text } = require("react-native");
   const MockCliente = () => <Text>ClienteScreen</Text>;
   MockCliente.displayName = "MockCliente";
   return MockCliente;
 });
 
-jest.mock("../components/equipo", () => {
+jest.mock("../components/tecnico", () => {
   const { Text } = require("react-native");
   const MockEquipo = () => <Text>EquipoScreen</Text>;
   MockEquipo.displayName = "MockEquipo";
