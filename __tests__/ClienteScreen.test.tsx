@@ -2,7 +2,7 @@ import {
   addCliente,
   addEquipo,
   buscarClientesPorNombre,
-} from "@/db/databaseActions";
+} from "@/db/reportes.repo";
 import { fireEvent, render, waitFor } from "@testing-library/react-native";
 import React from "react";
 import { Alert } from "react-native";

@@ -36,3 +36,17 @@ export interface Reporte {
   firma: string;
   pdfUri: string;           // ruta local del PDF generado
 } 
+
+export interface ReporteConCliente {
+  id: number;
+  nombre: string;
+  telefono: string;
+  direccion: string;
+  email: string;
+  marca: string;
+  modelo: string;
+  numeroSerie: string;
+  tipoEquipo: string;
+  ubicacionEquipo: string;
+  // + campos de reporte
+}

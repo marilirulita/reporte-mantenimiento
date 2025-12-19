@@ -1,9 +1,9 @@
+import { addReporte } from "@/db/reportes.repo";
+import { validarReporte } from "@/utils/validarReporte";
+import { Alert, StyleSheet, Text } from "react-native";
 import { useReporte } from "../context/ReporteContext";
 import { generarPDF } from "../utils/generarPDF";
-import { Text, StyleSheet, Alert } from "react-native";
 import { Botton } from "./ui/button";
-import { addReporte } from "@/db/databaseActions";
-import { validarReporte } from "@/utils/validarReporte";
 
 const BotonFinalizar = () => {
   const { reporte } = useReporte();

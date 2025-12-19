@@ -1,4 +1,9 @@
-import { deleteReporte, getReportesConCliente } from "@/db/databaseActions";
+import { EmptyState } from "@/components/EmptyState";
+import { GradientLayout } from "@/components/GradientLayout";
+import { ReporteCard } from "@/components/ReporteCard";
+import { deleteReporte, getReportesConCliente } from "@/db/reportes.repo";
+import { filtrarReportes } from "@/hooks/useHistorial";
+import { historialStyles as styles } from "@/styles/historialStyles";
 import { useRouter } from "expo-router";
 import { FileText, Search } from "lucide-react-native";
 import React, { useEffect, useState } from "react";
@@ -9,11 +14,6 @@ import {
   View,
 } from "react-native";
 import { generarPDF } from "../utils/generarPDF";
-import { filtrarReportes } from "@/hooks/useHistorial";
-import { ReporteCard } from "@/components/ReporteCard";
-import { EmptyState } from "@/components/EmptyState";
-import { historialStyles as styles } from "@/styles/historialStyles";
-import { GradientLayout } from "@/components/GradientLayout";
 
 export default function HistorialScreen() {
   const router = useRouter();

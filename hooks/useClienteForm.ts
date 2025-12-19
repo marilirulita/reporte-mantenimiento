@@ -1,12 +1,7 @@
-// hooks/useClienteForm.ts
-import { useState, useEffect } from "react";
-import {
-  addCliente,
-  addEquipo,
-  buscarClientesPorNombre,
-  getEquiposByClienteId,
-} from "@/db/databaseActions";
+import { addCliente, buscarClientesPorNombre } from "@/db/clientes.repo";
+import { addEquipo, getEquiposByClienteId } from "@/db/equipos.repo";
 import { Cliente, Equipo } from "@/models/Reporte";
+import { useEffect, useState } from "react";
 
 export function useClienteForm() {
   const [busqueda, setBusqueda] = useState("");
