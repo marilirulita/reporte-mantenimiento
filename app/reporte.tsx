@@ -39,7 +39,7 @@ export default function NuevoReporteScreen() {
   const ActiveScreen = screens[reporte.activeTab] ?? Cliente;
 
   return (
-    <GradientLayout style={{ flex: 1, padding: 10 }}>
+    <GradientLayout style={{ flex: 1, paddingHorizontal: 5 }}>
       {/* Header */}
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Reporte de Mantenimiento</Text>

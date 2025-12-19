@@ -5,7 +5,7 @@ export const reporteStyles = StyleSheet.create({
   // Header
   header: {
     backgroundColor: COLORS.primary, // bg-blue-600
-    padding: 24, // p-6
+    padding: 14, // p-6
     borderBottomLeftRadius: 24, // rounded-b-3xl
     borderBottomRightRadius: 24,
     shadowColor: "#000",
@@ -15,7 +15,7 @@ export const reporteStyles = StyleSheet.create({
     elevation: 3,
   },
   headerTitle: {
-    fontSize: 20, // text-xl
+    fontSize: 18, // text-xl
     fontWeight: "bold",
     color: "#fff",
   },

@@ -23,7 +23,7 @@ jest.mock("../components/ClienteScreen/cliente", () => {
   return MockCliente;
 });
 
-jest.mock("../components/tecnico", () => {
+jest.mock("../components/TecnicoScreen/tecnico", () => {
   const { Text } = require("react-native");
   const MockEquipo = () => <Text>EquipoScreen</Text>;
   MockEquipo.displayName = "MockEquipo";
