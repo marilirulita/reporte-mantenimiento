@@ -8,7 +8,7 @@ interface ReporteData {
   cliente: any;
   tecnico: any;
   fotos: string[];
-  firma: null;
+  firma: string;
 }
 
 interface ReporteContextType {
@@ -24,7 +24,7 @@ export const ReporteProvider = ({ children }: { children: React.ReactNode }) => 
     cliente: {},
     tecnico: {},
     fotos: [],
-    firma: null,
+    firma: "",
   });
   return (
     <ReporteContext.Provider value={{ reporte, setReporte }}>

@@ -1,6 +1,6 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
-import Fotos from "../components/fotos";
+import Fotos from "../components/FotosScreen/fotos";
 import { Alert, Text } from "react-native";
 
 /* ---------------- MOCKS ---------------- */

@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { View, Text, Image, StyleSheet, ScrollView } from "react-native";
+import { View, Text, Image, ScrollView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../types/navigation"; // importa tus tipos
@@ -7,6 +6,7 @@ import { Botton } from "./ui/button";
 import BotonFinalizar from "./BotonFinalizar";
 import { useNextSection } from "../hooks/useNextSection";
 import { useReporte } from "../context/ReporteContext";
+import { firmaStyles as styles } from "../styles/firmaStyles";
 
 type FirmaScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -15,16 +15,24 @@ type FirmaScreenNavigationProp = NativeStackNavigationProp<
 
 export default function Firma() {
   const navigation = useNavigation<FirmaScreenNavigationProp>();
-  const [signature, setSignature] = useState<string | null>(null);
+  const { reporte, setReporte } = useReporte();
+  const signature = reporte.firma;
 
   const handleSaveSignature = (uri: string) => {
-    setSignature(uri);
-    handleNext("firma", uri);
-  };
+  setReporte({ ...reporte, firma: uri });
+  handleNext("firma", uri);
+};
 
   const { handleNext } = useNextSection("firma");
-  const { reporte, setReporte } = useReporte();
 
+  const openSignaturePanel = () => {
+  navigation.navigate("PanelFirma", { onSave: handleSaveSignature });
+};
+
+const signatureStatusText = signature
+  ? "✓ Firma capturada"
+  : "No se ha capturado ninguna firma";
+  
   return (
     <ScrollView
       contentContainerStyle={{
@@ -58,15 +66,11 @@ export default function Firma() {
           )}
           {/* check / uncheck firma */}
           <Text style={styles.counterText}>
-            {signature
-              ? "✓ Firma capturada"
-              : "No se ha capturado ninguna firma"}
+            {signatureStatusText}
           </Text>
           <Botton
             classname={styles.button}
-            onPress={() =>
-              navigation.navigate("PanelFirma", { onSave: handleSaveSignature })
-            }
+            onPress={() => openSignaturePanel()}
           >
             <Text style={styles.buttonText}>
               {signature ? "Volver a firmar" : "Abrir panel de firma"}
@@ -86,88 +90,3 @@ export default function Firma() {
     </ScrollView>
   );
 }
-
-const styles = StyleSheet.create({
-  mainSection: {
-    borderBottomColor: "#9ca3af", // border-b-gray-400
-    borderBottomWidth: 1,
-    marginBottom: 32, // mb-8
-  },
-  title: {
-    color: "#414650ff", // azul-700
-    fontWeight: "600",
-    fontSize: 16,
-    marginBottom: 12, // mb-3
-  },
-  subtitle: {
-    color: "#374151", // text-gray-700
-    fontSize: 14, // text-sm
-  },
-  counterText: {
-    color: "#6B7280",
-    fontSize: 13,
-    fontWeight: "500",
-    marginBottom: 8,
-  },
-  signaturePreview: {
-    width: 250,
-    height: 150,
-    borderWidth: 1,
-    borderColor: "#cbd5e1",
-    marginBottom: 20,
-    alignSelf: "center",
-  },
-  button: {
-    backgroundColor: "#414650ff",
-    paddingVertical: 10,
-    paddingHorizontal: 24,
-    borderRadius: 10,
-  },
-  buttonText: {
-    color: "#fff",
-    fontWeight: "bold",
-    textAlign: "center",
-  },
-  // Contenedor de botones
-  buttonContainer: {
-    display: "flex",
-    flexDirection: "row",
-    width: "100%",
-    justifyContent: "space-between",
-    gap: 16, // space-y-4
-    marginVertical: 20, // my-5
-  },
-  buttonPrimary: {
-    backgroundColor: "#171717", // bg-neutral-900
-    paddingVertical: 12, // py-3
-    paddingHorizontal: 24, // px-6
-    borderRadius: 8, // rounded-md
-    shadowColor: "#737373", // shadow-neutral-500
-    shadowOpacity: 0.3,
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 4,
-    elevation: 3, // para Android
-  },
-  textPrimary: {
-    color: "#fff", // text-white
-    fontWeight: "600", // font-semibold
-    fontSize: 14, // text-sm
-  },
-  buttonSecundary: {
-    borderWidth: 1,
-    borderColor: "#D1D5DB", // border-gray-300
-    paddingVertical: 12, // py-3
-    paddingHorizontal: 24, // px-6
-    borderRadius: 8, // rounded-md
-    shadowColor: "#737373", // shadow-neutral-500
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.3,
-    shadowRadius: 2,
-    backgroundColor: "#FFF", // fondo blanco por defecto
-  },
-  textSecundary: {
-    color: "#000",
-    fontWeight: "600",
-    fontSize: 14, // text-sm
-  },
-});

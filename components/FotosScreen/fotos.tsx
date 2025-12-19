@@ -8,15 +8,15 @@ import {
   ScrollView,
 } from "react-native";
 import { Camera, Upload, Image as ImageIcon } from "lucide-react-native";
-import { Botton } from "./ui/button";
-import { useNextSection } from "../hooks/useNextSection";
-import { useReporte } from "../context/ReporteContext";
-import { fotosStyles as styles } from "../styles/fotosStyles";
-import { pickImage } from "./FotosScreen/pickImage";
+import { Botton } from "../ui/button";
+import { useNextSection } from "../../hooks/useNextSection";
+import { useReporte } from "../../context/ReporteContext";
+import { fotosStyles as styles } from "../../styles/fotosStyles";
+import { pickImage } from "./pickImage";
 
 export default function Fotos() {
   const [fotos, setFotos] = useState<string[]>([]);
- 
+
   const handleEliminarFoto = (uri: string) => {
     Alert.alert("Eliminar foto", "¿Deseas eliminar esta foto?", [
       { text: "Cancelar", style: "cancel" },
@@ -32,12 +32,12 @@ export default function Fotos() {
 
   const saveFotos = () => {
     if (!validarFotos(fotos)) {
-      Alert.alert("Requisito Fotos","Nesesita agregar al menos 2 fotos");
+      Alert.alert("Requisito Fotos", "Nesesita agregar al menos 2 fotos");
       return;
     }
-    handleNext("fotos", fotos)
+    handleNext("fotos", fotos);
   };
-  
+
   const validarFotos = (fotos: string[]) => fotos.length >= 2;
   return (
     <ScrollView
@@ -108,10 +108,7 @@ export default function Fotos() {
           >
             <Text style={styles.textSecundary}>Anterior</Text>
           </Botton>
-          <Botton
-            classname={styles.buttonPrimary}
-            onPress={() => saveFotos()}
-          >
+          <Botton classname={styles.buttonPrimary} onPress={() => saveFotos()}>
             <Text style={styles.textPrimary}>Siguiente</Text>
           </Botton>
         </View>

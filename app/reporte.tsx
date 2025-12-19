@@ -6,7 +6,7 @@ import { Camera, ClipboardList, PenLine, Wrench } from "lucide-react-native";
 import { Text, View } from "react-native";
 import Cliente from "../components/ClienteScreen/cliente";
 import Signature from "../components/firma";
-import Fotos from "../components/fotos";
+import Fotos from "../components/FotosScreen/fotos";
 import TecnicoScreen from "../components/TecnicoScreen/tecnico";
 
 export default function NuevoReporteScreen() {
