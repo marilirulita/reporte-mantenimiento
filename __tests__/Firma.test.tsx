@@ -1,6 +1,6 @@
+import { fireEvent, render } from "@testing-library/react-native";
 import React from "react";
-import { render, fireEvent } from "@testing-library/react-native";
-import Firma from "../components/firma";
+import Firma from "../components/FirmaScreen/firma";
 
 jest.mock("@react-navigation/native", () => ({
   useNavigation: () => ({

@@ -8,7 +8,7 @@ interface ReporteData {
   cliente: any;
   tecnico: any;
   fotos: string[];
-  firma: string;
+  firma: string | null;
 }
 
 interface ReporteContextType {
@@ -18,14 +18,16 @@ interface ReporteContextType {
 
 const ReporteContext = createContext<ReporteContextType | null>(null);
 
+export const initialReporte: ReporteData = {
+  activeTab: "cliente",
+  cliente: {},
+  tecnico: {},
+  fotos: [],
+  firma: null,
+};
+
 export const ReporteProvider = ({ children }: { children: React.ReactNode }) => {
-  const [reporte, setReporte] = useState<ReporteData>({
-    activeTab: "cliente",
-    cliente: {},
-    tecnico: {},
-    fotos: [],
-    firma: "",
-  });
+  const [reporte, setReporte] = useState<ReporteData>(initialReporte);
   return (
     <ReporteContext.Provider value={{ reporte, setReporte }}>
       {children}

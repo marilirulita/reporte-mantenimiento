@@ -5,7 +5,7 @@ import { reporteStyles as styles } from "@/styles/reporteStyles";
 import { Camera, ClipboardList, PenLine, Wrench } from "lucide-react-native";
 import { Text, View } from "react-native";
 import Cliente from "../components/ClienteScreen/cliente";
-import Signature from "../components/firma";
+import Signature from "../components/FirmaScreen/firma";
 import Fotos from "../components/FotosScreen/fotos";
 import TecnicoScreen from "../components/TecnicoScreen/tecnico";
 

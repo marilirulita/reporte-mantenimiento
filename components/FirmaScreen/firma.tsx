@@ -1,12 +1,12 @@
-import { View, Text, Image, ScrollView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { RootStackParamList } from "../types/navigation"; // importa tus tipos
-import { Botton } from "./ui/button";
-import BotonFinalizar from "./BotonFinalizar";
-import { useNextSection } from "../hooks/useNextSection";
-import { useReporte } from "../context/ReporteContext";
-import { firmaStyles as styles } from "../styles/firmaStyles";
+import { Image, ScrollView, Text, View } from "react-native";
+import { useReporte } from "../../context/ReporteContext";
+import { useNextSection } from "../../hooks/useNextSection";
+import { firmaStyles as styles } from "../../styles/firmaStyles";
+import { RootStackParamList } from "../../types/navigation"; // importa tus tipos
+import BotonFinalizar from "../BotonFinalizar";
+import { Botton } from "../ui/button";
 
 type FirmaScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
