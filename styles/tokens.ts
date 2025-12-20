@@ -1,11 +1,12 @@
 export const colors = {
   primary: "#171717",
   secondary: "#414650ff",
-  background: "#f5f5f5",
-  white: "#ffffff",
-  gray100: "#f1f5f9",
-  gray300: "#d1d5db",
-  gray500: "#6b7280",
+  gray100: "#F9FAFB",
+  gray300: "#D1D5DB",
+  gray400: "#9CA3AF",
+  gray500: "#6B7280",
+  white: "#FFFFFF",
+  black: "#000",
 };
 
 export const spacing = {
@@ -24,8 +25,9 @@ export const radius = {
 
 export const text = {
   title: {
-    fontSize: 18,
-    fontWeight: "700",
+    color: colors.secondary,
+    fontSize: 16,
+    fontWeight: "600",
   },
   subtitle: {
     fontSize: 14,
@@ -33,5 +35,33 @@ export const text = {
   },
   body: {
     fontSize: 14,
+  },
+  textButton: {
+    fontSize: 14,
+    fontWeight: "500",
+  },
+};
+
+export const buttonSizes = {
+  small: {
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    fontSize: 12,
+  },
+  medium: {
+    paddingVertical: 12,
+    paddingHorizontal: 24,    
+    fontSize: 14,
+    borderRadius: radius.md,
+    shadowColor: colors.gray400,
+    shadowOpacity: 0.3,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  large: {  
+    paddingVertical: 16,
+    paddingHorizontal: 32,
+    fontSize: 16,
   },
 };

@@ -1,19 +1,19 @@
 import React from "react";
-import { View, Text } from "react-native";
+import { Text, TextStyle, View } from "react-native";
+import { commonStyles } from "../../styles/common";
 import CustomInput from "../ui/custom-input";
-import { clienteStyles as styles } from "../../styles/clienteStyles";
 
 const MedTecnicasForm = ({
   medicionesTécnicas,
   setMedicionesTécnicas,
 }: any) => {
   return (
-    <View style={styles.section}>
-      <Text style={styles.sectionTitle}>Mediciones Técnicas</Text>
+    <View style={commonStyles.section}>
+      <Text style={commonStyles.sectionTitle as TextStyle}>Mediciones Técnicas</Text>
 
-      <View style={styles.row}>
-        <View style={styles.column}>
-          <Text style={styles.label}>Tipo de Refrigerante</Text>
+      <View style={commonStyles.row}>
+        <View style={commonStyles.column}>
+          <Text style={commonStyles.label}>Tipo de Refrigerante</Text>
           <CustomInput
             placeholder="R-22; R-134a; R-404A..."
             value={medicionesTécnicas.tipoRefrigerante}
@@ -26,8 +26,8 @@ const MedTecnicasForm = ({
           />
         </View>
 
-        <View style={styles.column}>
-          <Text style={styles.label}>Presión (PSI)</Text>
+        <View style={commonStyles.column}>
+          <Text style={commonStyles.label}>Presión (PSI)</Text>
           <CustomInput
             placeholder="65 PSI"
             value={medicionesTécnicas.presion}
@@ -42,9 +42,9 @@ const MedTecnicasForm = ({
         </View>
       </View>
 
-      <View style={styles.row}>
-        <View style={styles.column}>
-          <Text style={styles.label}>Temperatura Ambiente (°C)</Text>
+      <View style={commonStyles.row}>
+        <View style={commonStyles.column}>
+          <Text style={commonStyles.label}>Temperatura Ambiente (°C)</Text>
           <CustomInput
             placeholder="25°C"
             value={medicionesTécnicas.temperaturaAmbiente}
@@ -58,8 +58,8 @@ const MedTecnicasForm = ({
           />
         </View>
 
-        <View style={styles.column}>
-          <Text style={styles.label}>Temperatura del Equipo (°C)</Text>
+        <View style={commonStyles.column}>
+          <Text style={commonStyles.label}>Temperatura del Equipo (°C)</Text>
           <CustomInput
             placeholder="4°C"
             value={medicionesTécnicas.temperaturaEquipo}
@@ -74,9 +74,9 @@ const MedTecnicasForm = ({
         </View>
       </View>
 
-      <View style={styles.row}>
-        <View style={styles.column}>
-          <Text style={styles.label}>Voltaje (V)</Text>
+      <View style={commonStyles.row}>
+        <View style={commonStyles.column}>
+          <Text style={commonStyles.label}>Voltaje (V)</Text>
           <CustomInput
             placeholder="220V"
             value={medicionesTécnicas.voltaje}
@@ -90,8 +90,8 @@ const MedTecnicasForm = ({
           />
         </View>
 
-        <View style={styles.column}>
-          <Text style={styles.label}>Amperaje (A)</Text>
+        <View style={commonStyles.column}>
+          <Text style={commonStyles.label}>Amperaje (A)</Text>
           <CustomInput
             placeholder="5.2A"
             value={medicionesTécnicas.amperaje}

@@ -1,17 +1,19 @@
+import { Camera, Image as ImageIcon, Upload } from "lucide-react-native";
 import React, { useState } from "react";
 import {
-  View,
-  Text,
-  TouchableOpacity,
-  Image,
   Alert,
+  Image,
   ScrollView,
+  Text,
+  TextStyle,
+  TouchableOpacity,
+  View,
 } from "react-native";
-import { Camera, Upload, Image as ImageIcon } from "lucide-react-native";
-import { Botton } from "../ui/button";
-import { useNextSection } from "../../hooks/useNextSection";
 import { useReporte } from "../../context/ReporteContext";
-import { clienteStyles as styles } from "../../styles/clienteStyles";
+import { useNextSection } from "../../hooks/useNextSection";
+import { layoutStyles as styles } from "../../styles/layout";
+import { commonStyles } from "../../styles/common";
+import { Botton } from "../ui/button";
 import { pickImage } from "./pickImage";
 
 export default function Fotos() {
@@ -43,13 +45,13 @@ export default function Fotos() {
     <ScrollView
       contentContainerStyle={{ padding: 10, backgroundColor: "#f5f5f5" }}
     >
-      <View style={[styles.section, { marginBottom: 50 }]}>
+      <View style={[commonStyles.section, { marginBottom: 50 }]}>
         {/* Título */}
-        <Text style={styles.sectionTitle}>Fotografías del Equipo</Text>
-        <Text style={styles.subtitle}>
+        <Text style={commonStyles.sectionTitle as TextStyle}>Fotografías del Equipo</Text>
+        <Text style={commonStyles.sectionSubtitle}>
           Agregue fotos del equipo para incluirlas en el reporte
         </Text>
-        <Text style={[styles.subtitle, { fontStyle: "italic", marginTop: 4 }]}>
+        <Text style={[commonStyles.sectionSubtitle, { fontStyle: "italic", marginTop: 4 }]}>
           (máximo 4 fotos)
         </Text>
 
@@ -101,16 +103,16 @@ export default function Fotos() {
         <Text style={styles.counterText}>
           {fotos.length} de 4 fotos agregadas
         </Text>
-        <View style={styles.buttonContainer}>
+        <View style={commonStyles.buttonContainer}>
           <Botton
-            classname={styles.buttonSecundary}
+            classname={commonStyles.buttonSecondary}
             variant="secondary"
             onPress={() => setReporte({ ...reporte, activeTab: "tecnico" })}
           >
-            <Text style={styles.textSecundary}>Anterior</Text>
+            <Text style={commonStyles.textSecondary}>Anterior</Text>
           </Botton>
-          <Botton classname={styles.buttonPrimary} onPress={() => saveFotos()}>
-            <Text style={styles.textPrimary}>Siguiente</Text>
+          <Botton classname={commonStyles.buttonPrimary} onPress={() => saveFotos()}>
+            <Text style={commonStyles.textButtonPrimary}>Siguiente</Text>
           </Botton>
         </View>
       </View>

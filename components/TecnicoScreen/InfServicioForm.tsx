@@ -1,17 +1,18 @@
-import React from "react";
-import { View, Text } from "react-native";
-import CustomInput from "../ui/custom-input";
 import { Picker } from "@react-native-picker/picker";
-import { clienteStyles as styles } from "../../styles/clienteStyles";
+import React from "react";
+import { Text, TextStyle, View } from "react-native";
+import { layoutStyles as styles } from "../../styles/layout";
+import { commonStyles } from "../../styles/common";
+import CustomInput from "../ui/custom-input";
 
 const InfServicioForm = ({ infServicio, setInfServicio }: any) => {
   return (
-    <View style={styles.section}>
-      <Text style={styles.sectionTitle}>Información del Servicio</Text>
+    <View style={commonStyles.section}>
+      <Text style={commonStyles.sectionTitle as TextStyle}>Información del Servicio</Text>
 
-      <View style={styles.row}>
-        <View style={styles.column}>
-          <Text style={styles.label}>Fecha de Servicio *</Text>
+      <View style={commonStyles.row}>
+        <View style={commonStyles.column}>
+          <Text style={commonStyles.label}>Fecha de Servicio *</Text>
           <CustomInput
             placeholder="25/10/2025"
             value={infServicio.fechaServicio}
@@ -21,8 +22,8 @@ const InfServicioForm = ({ infServicio, setInfServicio }: any) => {
           />
         </View>
 
-        <View style={styles.column}>
-          <Text style={styles.label}>Nombre del Técnico *</Text>
+        <View style={commonStyles.column}>
+          <Text style={commonStyles.label}>Nombre del Técnico *</Text>
           <CustomInput
             placeholder="Carlos López"
             value={infServicio.nombreTecnico}
@@ -33,7 +34,7 @@ const InfServicioForm = ({ infServicio, setInfServicio }: any) => {
         </View>
       </View>
 
-      <Text style={styles.label}>Estado del Equipo *</Text>
+      <Text style={commonStyles.label}>Estado del Equipo *</Text>
       <View style={styles.containerPicker}>
         <Picker
           selectedValue={infServicio.estadoEquipo}

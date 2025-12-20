@@ -1,8 +1,8 @@
 import React from "react";
-import { View, Text } from "react-native";
-import CustomInput from "../ui/custom-input";
+import { Text, TextStyle, View } from "react-native";
+import { commonStyles } from "../../styles/common";
 import { Botton } from "../ui/button";
-import { clienteStyles as styles } from "../../styles/clienteStyles";
+import CustomInput from "../ui/custom-input";
 
 const DetServicioForm = ({
   detallesServicio,
@@ -12,10 +12,10 @@ const DetServicioForm = ({
   setReporte,
 }: any) => {
   return (
-    <View style={[styles.section, { marginBottom: 50 }]}>
-      <Text style={styles.sectionTitle}>Detalles del Servicio</Text>
+    <View style={[commonStyles.section, { marginBottom: 50 }]}>
+      <Text style={commonStyles.sectionTitle as TextStyle}>Detalles del Servicio</Text>
 
-      <Text style={styles.label}>Trabajo Realizado *</Text>
+      <Text style={commonStyles.label}>Trabajo Realizado *</Text>
       <CustomInput
         placeholder="Descripción detallada del trabajo realizado..."
         value={detallesServicio.trabajoRealizado}
@@ -28,7 +28,7 @@ const DetServicioForm = ({
         multiline={true}
       />
 
-      <Text style={styles.label}>Observaciones</Text>
+      <Text style={commonStyles.label}>Observaciones</Text>
       <CustomInput
         placeholder="Observaciones adicionales..."
         value={detallesServicio.observaciones}
@@ -38,7 +38,7 @@ const DetServicioForm = ({
         multiline={true}
       />
 
-      <Text style={styles.label}>Observaciones adicionales...</Text>
+      <Text style={commonStyles.label}>Observaciones adicionales...</Text>
       <CustomInput
         placeholder="Recomendaciones para el cliente..."
         value={detallesServicio.observacionesAdicionales}
@@ -51,16 +51,16 @@ const DetServicioForm = ({
         multiline={true}
       />
 
-      <View style={styles.buttonContainer}>
+      <View style={commonStyles.buttonContainer}>
         <Botton
-          classname={styles.buttonSecundary}
+          classname={commonStyles.buttonSecondary}
           variant="secondary"
           onPress={() => setReporte({ ...reporte, activeTab: "cliente" })}
         >
-          <Text style={styles.textSecundary}>Anterior</Text>
+          <Text style={commonStyles.textSecondary}>Anterior</Text>
         </Botton>
-        <Botton classname={styles.buttonPrimary} onPress={() => saveTecnico()}>
-          <Text style={styles.textPrimary}>Siguiente</Text>
+        <Botton classname={commonStyles.buttonPrimary} onPress={() => saveTecnico()}>
+          <Text style={commonStyles.textButtonPrimary}>Siguiente</Text>
         </Botton>
       </View>
     </View>

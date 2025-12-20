@@ -1,19 +1,19 @@
 import React from "react";
-import { Text, TouchableOpacity, View } from "react-native";
-import { clienteStyles as styles } from "../../styles/clienteStyles";
+import { Text, TextStyle, TouchableOpacity, View } from "react-native";
+import { commonStyles } from "../../styles/common";
 import CustomInput from "../ui/custom-input";
 
 const ClienteForm = ({ form }: { form: any }) => {
   return (
-    <View style={styles.section}>
-      <Text style={styles.sectionTitle}>Datos del Cliente</Text>
+    <View style={commonStyles.section}>
+      <Text style={commonStyles.sectionTitle as TextStyle}>Datos del Cliente</Text>
 
-      <Text style={styles.label}>
+      <Text style={commonStyles.label}>
         Busca por nombre de cliente o guarda uno nuevo
       </Text>
       {/* Nombre y Teléfono */}
       <View style={{ marginBottom: 12 }}>
-        <Text style={styles.label}>Nombre Completo *</Text>
+        <Text style={commonStyles.label}>Nombre Completo *</Text>
         <CustomInput
           placeholder="Juan Pérez"
           value={form.cliente.nombre}
@@ -55,7 +55,7 @@ const ClienteForm = ({ form }: { form: any }) => {
           </View>
         )}
       </View>
-      <Text style={styles.label}>Teléfono *</Text>
+      <Text style={commonStyles.label}>Teléfono *</Text>
       <CustomInput
         placeholder="555-123-4567"
         value={form.cliente.telefono ?? ""}
@@ -66,7 +66,7 @@ const ClienteForm = ({ form }: { form: any }) => {
       />
 
       {/* Dirección */}
-      <Text style={styles.label}>Dirección *</Text>
+      <Text style={commonStyles.label}>Dirección *</Text>
       <CustomInput
         placeholder="Calle Principal #123, Ciudad"
         value={form.cliente.direccion}
@@ -75,7 +75,7 @@ const ClienteForm = ({ form }: { form: any }) => {
         }
       />
 
-      <Text style={styles.label}>Email</Text>
+      <Text style={commonStyles.label}>Email</Text>
       <CustomInput
         placeholder="cliente@email.com"
         value={form.cliente.email ?? ""}

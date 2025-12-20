@@ -1,15 +1,15 @@
 import React from "react";
-import { Text, TouchableOpacity, View } from "react-native";
-import { clienteStyles as styles } from "../../styles/clienteStyles";
+import { Text, TextStyle, TouchableOpacity, View } from "react-native";
+import { commonStyles } from "../../styles/common";
 import { Botton } from "../ui/button";
 import CustomInput from "../ui/custom-input";
 
 const EquipoForm = ({ form, handleSave }: { form: any; handleSave: any }) => {
   return (
-    <View style={[styles.section, { marginBottom: 50 }]}>
-      <Text style={styles.sectionTitle}>Datos del Equipo</Text>
+    <View style={[commonStyles.section, { marginBottom: 50 }]}>
+      <Text style={commonStyles.sectionTitle as TextStyle}>Datos del Equipo</Text>
 
-      <Text style={styles.label}>Selecciona un equipo o guarda uno nuevo</Text>
+      <Text style={commonStyles.label}>Selecciona un equipo o guarda uno nuevo</Text>
       {form.equipos.length > 0 && (
         <View
           style={{
@@ -17,7 +17,7 @@ const EquipoForm = ({ form, handleSave }: { form: any; handleSave: any }) => {
             borderRadius: 8,
             marginTop: 4,
           }}
-        >
+        > 
           {form.equipos.map((item: any) => (
             <TouchableOpacity
               key={item.id}
@@ -40,9 +40,9 @@ const EquipoForm = ({ form, handleSave }: { form: any; handleSave: any }) => {
         </View>
       )}
 
-      <View style={styles.row}>
-        <View style={styles.column}>
-          <Text style={styles.label}>Marca *</Text>
+      <View style={commonStyles.row}>
+        <View style={commonStyles.column}>
+          <Text style={commonStyles.label}>Marca *</Text>
           <CustomInput
             placeholder="Samsung, LG, etc."
             value={form.equipo.marca}
@@ -50,8 +50,8 @@ const EquipoForm = ({ form, handleSave }: { form: any; handleSave: any }) => {
           />
         </View>
 
-        <View style={styles.column}>
-          <Text style={styles.label}>Modelo *</Text>
+        <View style={commonStyles.column}>
+          <Text style={commonStyles.label}>Modelo *</Text>
           <CustomInput
             placeholder="ABC-123"
             value={form.equipo.modelo}
@@ -62,9 +62,9 @@ const EquipoForm = ({ form, handleSave }: { form: any; handleSave: any }) => {
         </View>
       </View>
 
-      <View style={styles.row}>
-        <View style={styles.column}>
-          <Text style={styles.label}>Número de Serie</Text>
+      <View style={commonStyles.row}>
+        <View style={commonStyles.column}>
+          <Text style={commonStyles.label}>Número de Serie</Text>
           <CustomInput
             placeholder="SN123456789"
             value={form.equipo.numeroSerie ?? ""}
@@ -74,8 +74,8 @@ const EquipoForm = ({ form, handleSave }: { form: any; handleSave: any }) => {
           />
         </View>
 
-        <View style={styles.column}>
-          <Text style={styles.label}>Tipo de Equipo *</Text>
+        <View style={commonStyles.column}>
+          <Text style={commonStyles.label}>Tipo de Equipo *</Text>
           <CustomInput
             placeholder="Aire Acondicionado, Refrigerador, etc."
             value={form.equipo.tipoEquipo}
@@ -86,7 +86,7 @@ const EquipoForm = ({ form, handleSave }: { form: any; handleSave: any }) => {
         </View>
       </View>
 
-      <Text style={styles.label}>Ubicación del Equipo</Text>
+      <Text style={commonStyles.label}>Ubicación del Equipo</Text>
       <CustomInput
         placeholder="Cocina, Almacén, etc."
         value={form.equipo.ubicacionEquipo ?? ""}
@@ -95,9 +95,9 @@ const EquipoForm = ({ form, handleSave }: { form: any; handleSave: any }) => {
         }
       />
 
-    <View style={styles.buttonContainer}></View>
-      <Botton classname={styles.buttonPrimary} onPress={() => handleSave()} variant="primary">
-        <Text style={styles.textPrimary}>Siguiente</Text>
+    <View style={commonStyles.buttonContainer}></View>
+      <Botton classname={commonStyles.buttonPrimary} onPress={() => handleSave()} variant="primary">
+        <Text style={commonStyles.textButtonPrimary}>Siguiente</Text>
       </Botton>
     </View>
   );

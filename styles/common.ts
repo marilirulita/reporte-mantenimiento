@@ -1,27 +1,65 @@
-import { StyleSheet } from "react-native";
-import { colors, spacing, radius, text } from "./tokens";
+import { StyleSheet, TextStyle } from "react-native";
+import { buttonSizes, colors, spacing, text } from "./tokens";
 
 export const commonStyles = StyleSheet.create({
   section: {
-    backgroundColor: colors.white,
-    padding: spacing.md,
-    borderRadius: radius.md,
-    marginBottom: spacing.lg,
+    marginBottom: spacing.xl,
+    borderBottomColor: colors.gray400,
+    borderBottomWidth: 1,
+    paddingBottom: spacing.xl,
   },
 
-  title: {
+  sectionTitle: {
     ...text.title,
-    marginBottom: spacing.sm,
+    marginBottom: spacing.md,
   },
 
-  subtitle: {
+  sectionSubtitle: {
     ...text.subtitle,
-    marginBottom: spacing.sm,
+  },
+
+  row: {
+    flexDirection: "row",
+    gap: spacing.md,
+    alignItems: "flex-end",
+  },
+  column: {
+    flex: 1,
+  },
+
+  label: {
+    ...text.subtitle,
+    marginTop: spacing.md,
+    marginBottom: spacing.xs,
   },
 
   buttonContainer: {
+    display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
     marginTop: spacing.lg,
+  },
+
+  buttonPrimary: {
+    ...buttonSizes.medium,
+    backgroundColor: colors.primary,
+    alignSelf: "flex-end",
+  },
+
+  textButtonPrimary: {
+    color: colors.white,
+    ...text.textButton as TextStyle,
+  },
+
+  buttonSecondary: {
+    ...buttonSizes.medium,
+    borderWidth: 1,
+    borderColor: colors.gray300,
+    backgroundColor: colors.white,
+  },
+
+  textSecondary: {
+    color: colors.black,
+    ...text.textButton as TextStyle,
   },
 });

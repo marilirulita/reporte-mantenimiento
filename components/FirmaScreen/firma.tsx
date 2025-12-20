@@ -1,9 +1,10 @@
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { Image, ScrollView, Text, View } from "react-native";
+import { Image, ScrollView, Text, TextStyle, View } from "react-native";
 import { useReporte } from "../../context/ReporteContext";
 import { useNextSection } from "../../hooks/useNextSection";
-import { clienteStyles as styles } from "../../styles/clienteStyles";
+import { layoutStyles as styles } from "../../styles/layout";
+import { commonStyles } from "@/styles/common";
 import { RootStackParamList } from "../../types/navigation"; // importa tus tipos
 import BotonFinalizar from "../BotonFinalizar";
 import { Botton } from "../ui/button";
@@ -42,9 +43,9 @@ const signatureStatusText = signature
       }}
       showsVerticalScrollIndicator={false}
     >
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Firma del Cliente</Text>
-        <Text style={styles.subtitle}>
+      <View style={commonStyles.section}>
+        <Text style={commonStyles.sectionTitle as TextStyle}>Firma del Cliente</Text>
+        <Text style={commonStyles.sectionSubtitle as TextStyle}>
           Presione el boton para abrir el panel de firma
         </Text>
 
@@ -78,13 +79,13 @@ const signatureStatusText = signature
             </Text>
           </Botton>
         </View>
-        <View style={styles.buttonContainer}>
+        <View style={commonStyles.buttonContainer}>
           <Botton
-            classname={styles.buttonSecundary}
+            classname={commonStyles.buttonSecondary}
             variant="secondary"
             onPress={() => setReporte({ ...reporte, activeTab: "fotos" })}
           >
-            <Text style={styles.textSecundary}>Anterior</Text>
+            <Text style={commonStyles.textSecondary}>Anterior</Text>
           </Botton>
           <BotonFinalizar />
         </View>

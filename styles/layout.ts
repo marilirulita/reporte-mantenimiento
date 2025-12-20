@@ -1,24 +1,8 @@
 import { StyleSheet } from "react-native";
 
-export const clienteStyles = StyleSheet.create({
+export const layoutStyles = StyleSheet.create({
   container: {
     marginVertical: 10,
-  },
-  section: {
-    marginBottom: 32, // mb-8
-    borderBottomColor: "#9ca3af", // border-b-gray-400
-    borderBottomWidth: 1,
-    paddingBottom: 24, // pb-6
-  },
-  sectionTitle: {
-    color: "#414650ff", // text-blue-700
-    fontSize: 16, // text-base
-    fontWeight: "600", // font-semibold
-    marginBottom: 12, // mb-3
-  },
-  subtitle: {
-    color: "#374151", // text-gray-700
-    fontSize: 14, // text-sm
   },
   buttonRow: {
     flexDirection: "row",
@@ -46,14 +30,7 @@ export const clienteStyles = StyleSheet.create({
     fontWeight: "500",
     fontSize: 13,
   },
-  row: {
-    flexDirection: "row",
-    gap: 12, // gap-3
-    alignItems: "flex-end",
-  },
-  column: {
-    flex: 1, // flex-1
-  },
+ 
   containerPicker: {
     borderWidth: 1,
     borderColor: "#ccc",
@@ -63,12 +40,7 @@ export const clienteStyles = StyleSheet.create({
   picker: {
     color: "#333",
   },
-  label: {
-    marginTop: 12,
-    color: "#374151", // text-gray-700
-    marginBottom: 4, // mb-1
-    fontSize: 14, // text-sm
-  },
+  
   photoBox: {
     borderWidth: 1,
     borderColor: "#D1D5DB",
@@ -134,48 +106,5 @@ export const clienteStyles = StyleSheet.create({
     color: "#fff",
     fontWeight: "bold",
     textAlign: "center",
-  },
-   // Contenedor de botones
-  buttonContainer: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginTop: 20,
-  },
-  buttonPrimary: {
-    backgroundColor: "#171717", 
-    paddingVertical: 12, 
-    paddingHorizontal: 24, 
-    borderRadius: 8, 
-    alignSelf: "flex-end", 
-    shadowColor: "#737373", 
-    shadowOpacity: 0.3,
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 4,
-    elevation: 3, 
-  },
-  textPrimary: {
-    color: "#fff", // text-white
-    fontWeight: "600", // font-semibold
-    fontSize: 14, // text-sm
-  },
-
-  buttonSecundary: {
-    borderWidth: 1,
-    borderColor: "#D1D5DB", // border-gray-300
-    paddingVertical: 12, // py-3
-    paddingHorizontal: 24, // px-6
-    borderRadius: 8, // rounded-md
-    alignSelf: "flex-end", // self-end
-    shadowColor: "#737373", // shadow-neutral-500
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.3,
-    shadowRadius: 2,
-    backgroundColor: "#FFF", // fondo blanco por defecto
-  },
-  textSecundary: {
-    color: "#000",
-    fontWeight: "600",
-    fontSize: 14, // text-sm
   },
 });
