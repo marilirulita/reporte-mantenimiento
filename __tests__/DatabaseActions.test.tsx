@@ -1,5 +1,5 @@
 import { db } from "../db/database";
-import { addCliente } from "../db/reportes.repo";
+import { addCliente } from "../db/clientes.repo";
 
 jest.mock("expo-sqlite");
 jest.mock("../db/database", () => {

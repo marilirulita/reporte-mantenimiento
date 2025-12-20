@@ -8,14 +8,13 @@ import Cliente from "../components/ClienteScreen/cliente";
 import Signature from "../components/FirmaScreen/firma";
 import Fotos from "../components/FotosScreen/fotos";
 import TecnicoScreen from "../components/TecnicoScreen/tecnico";
+import { TabName } from "../types/navigation";
 
 export default function NuevoReporteScreen() {
   const { reporte, setReporte } = useReporte();
 
   const changeTab = (name: TabName) =>
     setReporte((prev) => ({ ...prev, activeTab: name }));
-
-  type TabName = "cliente" | "tecnico" | "fotos" | "firma";
 
   const tabs: { name: TabName; icon: any }[] = [
     { name: "cliente", icon: ClipboardList },

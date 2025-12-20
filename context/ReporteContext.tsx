@@ -1,7 +1,6 @@
 // context/ReporteContext.tsx
 import { createContext, useContext, useState } from "react";
-
-type TabName = "cliente" | "tecnico" | "fotos" | "firma";
+import { TabName } from "../types/navigation";
 
 interface ReporteData {
   activeTab: TabName;
