@@ -1,36 +1,7 @@
-export const templaitPDF = (reporte: {
-  cliente: {
-    cliente: {
-      nombre: string;
-      direccion: any;
-      telefono: any;
-      correo: string;
-    };
-    equipo: {
-      marca: any;
-      modelo: any;
-      numeroSerie: any;
-      tipoEquipo: any;
-      ubicacion: any;
-    };
-  };
-  tecnico: {
-    fechaServicio: any;
-    nombreTecnico: any;
-    estadoEquipo: any;
-    tipoRefrigerante: any;
-    presion: any;
-    temperaturaAmbiente: any;
-    temperaturaEquipo: any;
-    voltaje: any;
-    amperaje: any;
-    trabajoRealizado: any;
-    observaciones: any;
-    observacionesAdicionales: any;
-  };
-  fotos: any[];
-  firma: any;
-}) => {
+import { PdfReporte } from "../models/ReportePDF";
+
+export const templatePDF = (reporte: PdfReporte) => {
+  const safe = (v?: string) => v ?? "";
   const dateToday = new Date().toLocaleDateString("es-MX", {
     day: "2-digit",
     month: "long",
@@ -41,7 +12,18 @@ export const templaitPDF = (reporte: {
     minute: "2-digit",
   });
 
-  const safe = (value: any) => value ?? ""; // usa nullish coalescing
+  const field = (label: string, value: any) =>
+    `<div class="field"><label>${label}:</label><span>${safe(
+      value
+    )}</span></div>`;
+
+  const longField = (label: string, value: any) =>
+    `<div class="section-title">${label}</div><div class="long-text">${safe(
+      value
+    )}</div>`;
+
+  const withUnit = (value: any, unit: string) =>
+    value ? `${value} ${unit}` : "";
 
   return `<!DOCTYPE html>
 <html lang="es">
@@ -70,7 +52,7 @@ export const templaitPDF = (reporte: {
     .header {
       background-color: #414650ff;
       color: white;
-      padding: 20px;
+      padding: 50px;
       text-align: center;
     }
 
@@ -87,7 +69,7 @@ export const templaitPDF = (reporte: {
 
     /* Secciones */
     .section {
-      margin: 20px;
+      margin: 30px 20px;
       border-radius: 6px;
       overflow: hidden;
       background: #ffffff;
@@ -201,21 +183,12 @@ export const templaitPDF = (reporte: {
     
       <div class="section-title">DATOS DEL CLIENTE</div>
       <div class="row row-2">
-        <div class="field"><label>Nombre:</label><span>${safe(
-          reporte.cliente.cliente.nombre
-        )}</span></div>
-        <div class="field"><label>Email:</label><span>${safe(
-          reporte.cliente.cliente.correo
-        )}</span></div>
+      ${field("Nombre", reporte.cliente.nombre)}
+      ${field("Email", reporte.cliente.email)}
       </div>
       <div class="row row-2">
-        <div class="field"><label>Dirección:</label><span>${safe(
-          reporte.cliente.cliente.direccion
-        )}</span></div>
-        <div class="field"><label>Teléfono:</label><span>${safe(
-          reporte.cliente?.cliente?.telefono
-        )}
-      </span></div>
+      ${field("Dirección", reporte.cliente.direccion)}
+      ${field("Teléfono", reporte.cliente.telefono)}
       </div>
     </div> 
 
@@ -223,23 +196,13 @@ export const templaitPDF = (reporte: {
     <div class="section">
       <div class="section-title">DATOS DEL EQUIPO</div>
       <div class="row row-3">
-      <div class="field"><label>Marca:</label><span>${safe(
-        reporte.cliente.equipo.marca
-      )}</span></div>
-      <div class="field"><label>Modelo:</label><span>${safe(
-        reporte.cliente.equipo.modelo
-      )}</span></div>
-      <div class="field"><label>Serie:</label><span>${safe(
-        reporte.cliente.equipo.numeroSerie
-      )}</span></div>
+      ${field("Marca", reporte.equipo.marca)}
+      ${field("Modelo", reporte.equipo.modelo)}
+      ${field("Serie", reporte.equipo.numeroSerie)}
       </div>
       <div class="row row-3">
-      <div class="field"><label>Tipo:</label><span>${safe(
-        reporte.cliente.equipo.tipoEquipo
-      )}</span></div>
-      <div class="field"><label>Ubicación:</label><span>${safe(
-        reporte.cliente.equipo.ubicacion
-      )}</span></div>
+      ${field("Tipo", reporte.equipo.tipoEquipo)}
+      ${field("Ubicación", reporte.equipo.ubicacionEquipo)}
       <div class="field"><label></label><span></span></div>
       </div>
     </div>
@@ -248,13 +211,9 @@ export const templaitPDF = (reporte: {
     <div class="section">
       <div class="section-title">DATOS DEL SERVICIO</div>
       <div class="row row-3">
-        <div class="field"><label>Fecha:</label><span>${safe(
-          reporte.tecnico.fechaServicio
-        )}</span></div>
-        <div class="field"><label>Técnico:</label><span>${safe(reporte.tecnico.nombreTecnico)}</span></div>
-        <div class="field"><label>Estado del equipo:</label><span>${safe(
-          reporte.tecnico.estadoEquipo
-        )}</span></div>
+      ${field("Fecha", reporte.servicio.fecha)}
+      ${field("Técnico", reporte.servicio.tecnico)}
+      ${field("Estado del equipo", reporte.servicio.estadoEquipo)}
       </div>
     </div>
 
@@ -262,55 +221,46 @@ export const templaitPDF = (reporte: {
     <div class="section">
       <div class="section-title">MEDICIONES TÉCNICAS</div>
       <div class="row row-3">
-      <div class="field"><label>Tipo de Refrigerante:</label><span>${safe(
-        reporte.tecnico.tipoRefrigerante
-      )}</span></div>
-      <div class="field"><label>Presión:</label><span>${safe(
-        reporte.tecnico.presion
-      )+" psi"}</span></div>
-      <div class="field"><label>Temp. Ambiente:</label><span>${safe(
-        reporte.tecnico.temperaturaAmbiente
-      )+"°C"}</span></div>
+      ${field("Tipo de Refrigerante", reporte.mediciones.tipoRefrigerante)}
+      ${field(
+        "Presión",
+        withUnit(reporte.mediciones.presion, "psi")
+      )}
+      ${field(
+        "Temp. Ambiente",
+        withUnit(reporte.mediciones.temperaturaAmbiente, "°C")
+      )}
       </div>
       <div class="row row-3">
-      <div class="field"><label>Temp. Equipo:</label><span>${safe(
-        reporte.tecnico.temperaturaEquipo
-      )+"°C"}</span></div>
-      <div class="field"><label>Voltaje:</label><span>${safe(
-        reporte.tecnico.voltaje
-      )+"V"}</span></div>
-      <div class="field"><label>Amperaje:</label><span>${safe(
-        reporte.tecnico.amperaje
-      )+"A"}</span></div>
+      ${field(
+        "Temp. Equipo",
+        withUnit(reporte.mediciones.temperaturaEquipo, "°C")
+      )}
+      ${field("Voltaje", withUnit(reporte.mediciones.voltaje, "V"))}
+      ${field(
+        "Amperaje",
+        withUnit(reporte.mediciones.amperaje, "A")
+      )}
       </div>
     </div>
 
     <!-- Sección: Trabajo Realizado -->
     <div class="section">
-      <div class="section-title">TRABAJO REALIZADO</div>
-      <div class="long-text">
-        ${safe(reporte.tecnico.trabajoRealizado)}
-      </div>
+    ${longField("TRABAJO REALIZADO", reporte.trabajoRealizado)}
     </div>
 
     <!-- Sección: Observaciones -->
     <div class="section">
-      <div class="section-title">OBSERVACIONES</div>
-      <div class="long-text">
-        ${safe(reporte.tecnico.observaciones)}
-      </div>
+      ${longField("OBSERVACIONES", reporte.observaciones)}
     </div>
 
     <!-- Sección: Recomendaciones -->
     <div class="section">
-      <div class="section-title">RECOMENDACIONES</div>
-      <div class="long-text">
-        ${safe(reporte.tecnico.observacionesAdicionales)}
-      </div>
+      ${longField("RECOMENDACIONES", reporte.recomendaciones)}
     </div>
 
     <!-- Sección: Fotos -->
-    <div class="section">
+    <div class="section section-fotos">
     <div class="section-title">FOTOGRAFÍAS DEL EQUIPO</div>
         <div class="fotos">
           ${reporte.fotos
@@ -331,7 +281,7 @@ export const templaitPDF = (reporte: {
       ${
         reporte.firma
           ? `<img src="${reporte.firma}" style="width:200px; height:100px;" />
-          <p>${reporte.cliente.cliente.nombre}</p>`
+          <p>${reporte.cliente.nombre}</p>`
           : "<p>No se registró firma</p>"
       }
       </div>
