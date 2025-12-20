@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text } from "react-native";
 import CustomInput from "../ui/custom-input";
-import { TecnicoStyles as styles } from "../../styles/tecnicoStyles";
+import { clienteStyles as styles } from "../../styles/clienteStyles";
 
 const MedTecnicasForm = ({
   medicionesTécnicas,

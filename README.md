@@ -88,59 +88,11 @@ Antes de ejecutar el proyecto, asegúrate de tener instalado:
 
 | Script | Acción |
 | ------------- | ------ |
-|`npm start` / `expo start` | Inicia el proyecto en modo desarrollo |
+| `npm start` / `expo start` | Inicia el proyecto en modo desarrollo |
 | `npm run android` | Abre en un emulador Android |
 | `npm run ios` | Abre en un simulador iOS (solo Mac) |
 | `eas build -p android` | Genera APK/AAB |
 | `eas update` | Publica actualizaciones OTA |
-
-## 📁 Estructura de carpetas
-
-```markdown
-/app
-  -_layout.tsx
-  - +not-found.tsx
-  - historial.tsx
-  - index.tsx
-  - PanelFirma.tsx
-  - reporte.tsx
-/assets
-  /images
-    - icon.png
-    - logo.png
-/components
-  /ui
-    - button.tsx
-    - custom-input.tsx
-  - BotonFinalizar.tsx
-  - cliente.tsx
-  - equipo.tsx
-  - firma.tsx
-  - fotos.tsx
-/context
-  - ReporteContext.tsx
-/db
-  - database.js
-  - databaseActions.ts
-/hooks
-  - useNextSection.tsx
-/models
-  - Reporte.ts
-/types
-  - navigation.ts
-/utils
-  - generarPDF.tsx
-  - getBase64Image.ts
-  - templaitePDF-download.ts
-  - templaitPDF.ts
-  - template.html
-app.json
-eas.json
-eslint.config.js
-package.json
-README.md
-tsconfig.json
-```
 
 ## 📲 Cómo descargar APK (Android)
 

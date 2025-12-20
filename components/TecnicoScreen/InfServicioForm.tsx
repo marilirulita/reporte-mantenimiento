@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text } from "react-native";
 import CustomInput from "../ui/custom-input";
 import { Picker } from "@react-native-picker/picker";
-import { TecnicoStyles as styles } from "../../styles/tecnicoStyles";
+import { clienteStyles as styles } from "../../styles/clienteStyles";
 
 const InfServicioForm = ({ infServicio, setInfServicio }: any) => {
   return (

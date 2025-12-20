@@ -3,7 +3,7 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Image, ScrollView, Text, View } from "react-native";
 import { useReporte } from "../../context/ReporteContext";
 import { useNextSection } from "../../hooks/useNextSection";
-import { firmaStyles as styles } from "../../styles/firmaStyles";
+import { clienteStyles as styles } from "../../styles/clienteStyles";
 import { RootStackParamList } from "../../types/navigation"; // importa tus tipos
 import BotonFinalizar from "../BotonFinalizar";
 import { Botton } from "../ui/button";
@@ -42,8 +42,8 @@ const signatureStatusText = signature
       }}
       showsVerticalScrollIndicator={false}
     >
-      <View style={styles.mainSection}>
-        <Text style={styles.title}>Firma del Cliente</Text>
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>Firma del Cliente</Text>
         <Text style={styles.subtitle}>
           Presione el boton para abrir el panel de firma
         </Text>
@@ -69,10 +69,11 @@ const signatureStatusText = signature
             {signatureStatusText}
           </Text>
           <Botton
-            classname={styles.button}
+            classname={styles.buttonInfo}
+            variant="info"
             onPress={() => openSignaturePanel()}
           >
-            <Text style={styles.buttonText}>
+            <Text style={styles.buttonInfoText}>
               {signature ? "Volver a firmar" : "Abrir panel de firma"}
             </Text>
           </Botton>
@@ -80,6 +81,7 @@ const signatureStatusText = signature
         <View style={styles.buttonContainer}>
           <Botton
             classname={styles.buttonSecundary}
+            variant="secondary"
             onPress={() => setReporte({ ...reporte, activeTab: "fotos" })}
           >
             <Text style={styles.textSecundary}>Anterior</Text>

@@ -1,6 +1,7 @@
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text } from "react-native";
 import { FileText, ClipboardList } from "lucide-react-native";
 import { historialStyles as styles } from "@/styles/historialStyles";
+import { Botton } from "./ui/button";
 
 export function EmptyState({ onPress }: { onPress: () => void }) {
   return (
@@ -13,10 +14,10 @@ export function EmptyState({ onPress }: { onPress: () => void }) {
         Los reportes se guardarán automáticamente cuando los generes
       </Text>
 
-      <TouchableOpacity style={styles.primaryButton} onPress={onPress}>
+      <Botton classname={styles.primaryButton} variant="info" onPress={onPress}>
         <ClipboardList color="white" size={24} style={{ marginRight: 8 }} />
         <Text style={styles.primaryButtonText}>Crear Primer Reporte</Text>
-      </TouchableOpacity>
+      </Botton>
     </View>
   );
 }

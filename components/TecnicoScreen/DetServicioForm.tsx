@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text } from "react-native";
 import CustomInput from "../ui/custom-input";
 import { Botton } from "../ui/button";
-import { TecnicoStyles as styles } from "../../styles/tecnicoStyles";
+import { clienteStyles as styles } from "../../styles/clienteStyles";
 
 const DetServicioForm = ({
   detallesServicio,
@@ -54,6 +54,7 @@ const DetServicioForm = ({
       <View style={styles.buttonContainer}>
         <Botton
           classname={styles.buttonSecundary}
+          variant="secondary"
           onPress={() => setReporte({ ...reporte, activeTab: "cliente" })}
         >
           <Text style={styles.textSecundary}>Anterior</Text>

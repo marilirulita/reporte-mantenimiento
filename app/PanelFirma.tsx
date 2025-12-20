@@ -77,10 +77,10 @@ function SignatureButtons({
 }) {
   return (
     <View style={styles.buttons}>
-      <Botton classname={styles.buttonSecundary} onPress={onClear}>
+      <Botton classname={styles.buttonSecundary} variant="secondary" onPress={onClear}>
         <Text style={styles.textSecundary}>Limpiar</Text>
       </Botton>
-      <Botton classname={styles.buttonSecundary} onPress={onSave}>
+      <Botton classname={styles.buttonSecundary} variant="secondary" onPress={onSave}>
         <Text style={styles.textSecundary}>Guardar</Text>
       </Botton>
     </View>

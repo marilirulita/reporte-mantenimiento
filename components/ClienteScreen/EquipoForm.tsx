@@ -95,8 +95,9 @@ const EquipoForm = ({ form, handleSave }: { form: any; handleSave: any }) => {
         }
       />
 
-      <Botton classname={styles.button} onPress={() => handleSave()}>
-        <Text style={styles.text}>Siguiente</Text>
+    <View style={styles.buttonContainer}></View>
+      <Botton classname={styles.buttonPrimary} onPress={() => handleSave()} variant="primary">
+        <Text style={styles.textPrimary}>Siguiente</Text>
       </Botton>
     </View>
   );

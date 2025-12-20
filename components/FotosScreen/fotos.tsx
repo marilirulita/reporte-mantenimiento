@@ -11,7 +11,7 @@ import { Camera, Upload, Image as ImageIcon } from "lucide-react-native";
 import { Botton } from "../ui/button";
 import { useNextSection } from "../../hooks/useNextSection";
 import { useReporte } from "../../context/ReporteContext";
-import { fotosStyles as styles } from "../../styles/fotosStyles";
+import { clienteStyles as styles } from "../../styles/clienteStyles";
 import { pickImage } from "./pickImage";
 
 export default function Fotos() {
@@ -45,7 +45,7 @@ export default function Fotos() {
     >
       <View style={[styles.section, { marginBottom: 50 }]}>
         {/* Título */}
-        <Text style={styles.title}>Fotografías del Equipo</Text>
+        <Text style={styles.sectionTitle}>Fotografías del Equipo</Text>
         <Text style={styles.subtitle}>
           Agregue fotos del equipo para incluirlas en el reporte
         </Text>
@@ -56,19 +56,19 @@ export default function Fotos() {
         {/* Botones */}
         <View style={styles.buttonRow}>
           <TouchableOpacity
-            style={styles.button}
+            style={styles.buttonSubir}
             onPress={() => pickImage("camara", setFotos, fotos)}
           >
             <Camera size={18} color="#414650ff" style={styles.icon} />
-            <Text style={styles.buttonText}>Tomar Foto</Text>
+            <Text style={styles.buttonSubirText}>Tomar Foto</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
-            style={styles.button}
+            style={styles.buttonSubir}
             onPress={() => pickImage("galeria", setFotos, fotos)}
           >
             <Upload size={18} color="#414650ff" style={styles.icon} />
-            <Text style={styles.buttonText}>Subir Imagen</Text>
+            <Text style={styles.buttonSubirText}>Subir Imagen</Text>
           </TouchableOpacity>
         </View>
 
@@ -104,6 +104,7 @@ export default function Fotos() {
         <View style={styles.buttonContainer}>
           <Botton
             classname={styles.buttonSecundary}
+            variant="secondary"
             onPress={() => setReporte({ ...reporte, activeTab: "tecnico" })}
           >
             <Text style={styles.textSecundary}>Anterior</Text>

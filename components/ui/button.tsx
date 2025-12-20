@@ -1,3 +1,4 @@
+import { colors } from "@/styles/tokens";
 import React, { useRef } from "react";
 import {
   TouchableOpacity,
@@ -7,14 +8,31 @@ import {
   TouchableOpacityProps,
 } from "react-native";
 
+const variants = {
+  primary: {
+    backgroundColor: colors.primary,
+  },
+  info: {
+    backgroundColor: colors.secondary,
+  },
+  secondary: {
+    backgroundColor: "transparent",
+    borderWidth: 1,
+    borderColor: colors.primary,
+  },
+};
+
 type BottonProps = TouchableOpacityProps & {
   classname?: StyleProp<ViewStyle>;
+  variant?: "primary" | "secondary" | "info";
+  disabled?: boolean;
   children: React.ReactNode;
 };
 
 export const Botton: React.FC<BottonProps> = ({
   onPress,
   classname,
+  variant,
   children,
   disabled,
   ...props
@@ -46,7 +64,7 @@ export const Botton: React.FC<BottonProps> = ({
       <TouchableOpacity
         testID="botton-touchable"
         activeOpacity={0.8}
-        style={classname}
+        style={[classname, variants[variant || "primary"]]}
         onPress={onPress}
         onPressIn={handlePressIn}
         onPressOut={handlePressOut}
