@@ -3,6 +3,7 @@ import { Text, TextStyle, TouchableOpacity, View } from "react-native";
 import { commonStyles } from "../../styles/common";
 import { Botton } from "../ui/button";
 import CustomInput from "../ui/custom-input";
+import { colorsDark } from "@/styles/tokens";
 
 const EquipoForm = ({ form, handleSave }: { form: any; handleSave: any }) => {
   return (
@@ -13,7 +14,7 @@ const EquipoForm = ({ form, handleSave }: { form: any; handleSave: any }) => {
       {form.equipos.length > 0 && (
         <View
           style={{
-            backgroundColor: "#d3dffdff",
+            backgroundColor: colorsDark.accentHover,
             borderRadius: 8,
             marginTop: 4,
           }}
@@ -28,11 +29,11 @@ const EquipoForm = ({ form, handleSave }: { form: any; handleSave: any }) => {
               style={{
                 padding: 10,
                 borderBottomWidth: 1,
-                borderColor: "#eee",
+                borderColor: colorsDark.border,
               }}
             >
               <Text style={{ fontWeight: "500" }}>{item.numeroSerie}</Text>
-              <Text style={{ fontSize: 12, color: "#666" }}>
+              <Text style={{ fontSize: 12, color: colorsDark.textPrimary }}>
                 {item.tipoEquipo} - {item.marca} - {item.modelo}
               </Text>
             </TouchableOpacity>

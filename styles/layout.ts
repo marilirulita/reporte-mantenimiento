@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { colorsDark } from "./tokens";
 
 export const layoutStyles = StyleSheet.create({
   container: {
@@ -13,41 +14,42 @@ export const layoutStyles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     borderWidth: 1,
-    borderColor: "#D1D5DB", // gris-300
+    borderColor: colorsDark.border,
     borderRadius: 8,
     padding: 8,
-    backgroundColor: "#FFFFFF",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.05,
-    shadowRadius: 1,
+    backgroundColor: colorsDark.white,
+    shadowColor: colorsDark.white,
+    shadowOpacity: 0.2,
+    shadowOffset: { width: 2, height: 2 },
+    shadowRadius: 4,
+    elevation: 3,
   },
   icon: {
     marginRight: 6,
   },
   buttonSubirText: {
-    color: "#414650ff", // azul-600
+    color: colorsDark.border,
     fontWeight: "500",
     fontSize: 13,
   },
  
   containerPicker: {
     borderWidth: 1,
-    borderColor: "#ccc",
+    borderColor: colorsDark.border,
     borderRadius: 12,
-    color: "#333",
+    color: colorsDark.textPrimary,
   },
   picker: {
-    color: "#333",
+    color: colorsDark.textPrimary,
   },
   
   photoBox: {
     borderWidth: 1,
-    borderColor: "#D1D5DB",
+    borderColor: colorsDark.border,
     borderStyle: "dashed",
     borderRadius: 12,
     height: 180,
-    backgroundColor: "#F9FAFB",
+    backgroundColor: colorsDark.surfaceSoft,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -55,12 +57,12 @@ export const layoutStyles = StyleSheet.create({
     alignItems: "center",
   },
   emptyText: {
-    color: "#6B7280",
+    color: colorsDark.textSecondary,
     fontWeight: "500",
     marginTop: 6,
   },
   emptySubtext: {
-    color: "#9CA3AF",
+    color: colorsDark.textMuted,
     fontSize: 12,
     textAlign: "center",
   },
@@ -84,7 +86,7 @@ export const layoutStyles = StyleSheet.create({
   },
   counterText: {
     margin: 8,
-    color: "#6B7280",
+    color: colorsDark.textMuted,
     fontSize: 13,
     fontWeight: "500",
   },
@@ -92,18 +94,18 @@ export const layoutStyles = StyleSheet.create({
     width: 250,
     height: 150,
     borderWidth: 1,
-    borderColor: "#cbd5e1",
+    borderColor: colorsDark.border,
     marginBottom: 10,
     alignSelf: "center",
   },
   buttonInfo: {
-    backgroundColor: "#414650ff",
+    backgroundColor: colorsDark.textMuted,
     paddingVertical: 10,
     paddingHorizontal: 24,
     borderRadius: 10,
   },
   buttonInfoText: {
-    color: "#fff",
+    color: colorsDark.accentMuted,
     fontWeight: "bold",
     textAlign: "center",
   },

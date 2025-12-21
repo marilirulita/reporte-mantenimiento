@@ -6,6 +6,7 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../types/navigation";
 import { Botton } from "@/components/ui/button";
 import { PanelFirmaStyles as styles } from "@/styles/panelFirmaStyles";
+import { colorsDark } from "@/styles/tokens";
 
 type PanelFirmaNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -55,7 +56,7 @@ export default function PanelFirma() {
         onOK={handleOK}
         onEmpty={() => console.log("Firma vacía")}
         backgroundColor="#F9FAFB"
-        penColor="black"
+        penColor={colorsDark.background}
         descriptionText="Firme aquí"
         clearText="Limpiar"
         confirmText="Guardar"

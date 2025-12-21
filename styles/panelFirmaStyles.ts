@@ -1,26 +1,27 @@
 import { StyleSheet } from "react-native";
+import { colorsDark } from "../styles/tokens";
 
 export const PanelFirmaStyles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: colorsDark.textPrimary,
     padding: 15,
     borderRadius: 8,
     marginHorizontal: 12,
     marginTop: 12,
     marginBottom: 180,
-    borderColor: "#d1d5db",
+    borderColor: colorsDark.border,
     borderWidth: 1,
   },
   subtitle: {
-    color: "#374151", // text-gray-700
-    fontSize: 14, // text-sm
+    color: colorsDark.background,
+    fontSize: 14,
     marginVertical: 5,
     padding: 15,
   },
   signature: {
     borderWidth: 1,
-    borderColor: "#D1D5DB",
+    borderColor: colorsDark.border,
     borderStyle: "dashed",
     borderRadius: 12,
   },
@@ -33,20 +34,21 @@ export const PanelFirmaStyles = StyleSheet.create({
   },
   buttonSecundary: {
     borderWidth: 1,
-    borderColor: "#D1D5DB", // border-gray-300
-    paddingVertical: 12, // py-3
-    paddingHorizontal: 24, // px-6
-    borderRadius: 8, // rounded-md
-    alignSelf: "flex-end", // self-end
-    shadowColor: "#737373", // shadow-neutral-500
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.3,
-    shadowRadius: 2,
-    backgroundColor: "#FFF", // fondo blanco por defecto
+    borderColor: colorsDark.accent,
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 8,
+    alignSelf: "flex-end",
+    shadowColor: colorsDark.black,
+    shadowOpacity: 0.2,
+    shadowOffset: { width: 2, height: 2 },
+    shadowRadius: 4,
+    elevation: 3,
+    backgroundColor: colorsDark.white,
   },
   textSecundary: {
-    color: "#000",
+    color: colorsDark.accent,
     fontWeight: "600",
-    fontSize: 14, // text-sm
+    fontSize: 14,
   },
 });

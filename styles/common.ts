@@ -1,10 +1,10 @@
 import { StyleSheet, TextStyle } from "react-native";
-import { buttonSizes, colors, spacing, text } from "./tokens";
+import { buttonSizes, colorsDark, spacing, text } from "./tokens";
 
 export const commonStyles = StyleSheet.create({
   section: {
     marginBottom: spacing.xl,
-    borderBottomColor: colors.gray400,
+    borderBottomColor: colorsDark.border,
     borderBottomWidth: 1,
     paddingBottom: spacing.xl,
   },
@@ -42,24 +42,24 @@ export const commonStyles = StyleSheet.create({
 
   buttonPrimary: {
     ...buttonSizes.medium,
-    backgroundColor: colors.primary,
+    backgroundColor: colorsDark.accent,
     alignSelf: "flex-end",
   },
 
   textButtonPrimary: {
-    color: colors.white,
+    color: colorsDark.white,
     ...text.textButton as TextStyle,
   },
 
   buttonSecondary: {
     ...buttonSizes.medium,
     borderWidth: 1,
-    borderColor: colors.gray300,
-    backgroundColor: colors.white,
+    backgroundColor: colorsDark.white,
+    borderColor: colorsDark.accent,
   },
 
   textSecondary: {
-    color: colors.black,
+    color: colorsDark.accent,
     ...text.textButton as TextStyle,
   },
 });

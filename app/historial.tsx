@@ -53,7 +53,7 @@ export default function HistorialScreen() {
       {/* Encabezado */}
       <View style={styles.header}>
         <View style={styles.headerIcon}>
-          <FileText size={40} color="white" />
+          <FileText size={40} color={styles.headerIcon.color} />
         </View>
         <View>
           <Text style={styles.headerTitulo}>Historial de Reportes</Text>
@@ -65,12 +65,12 @@ export default function HistorialScreen() {
 
       {/* Barra de búsqueda */}
       <View style={styles.searchContainer}>
-        <Search size={24} color="#94a3b8" style={{ marginRight: 6 }} />
+        <Search size={24} color={styles.searchInput.color} style={{ marginRight: 6 }} />
         <TextInput
-          placeholder="Buscar por cliente, técnico, marca..."
+          placeholder="Buscar Reporte..."
           value={busqueda}
           onChangeText={setBusqueda}
-          placeholderTextColor="#94a3b8"
+          placeholderTextColor={styles.searchInput.color}
           style={styles.searchInput}
         />
       </View>

@@ -15,6 +15,7 @@ import { layoutStyles as styles } from "../../styles/layout";
 import { commonStyles } from "../../styles/common";
 import { Botton } from "../ui/button";
 import { pickImage } from "./pickImage";
+import { colorsDark } from "@/styles/tokens";
 
 export default function Fotos() {
   const [fotos, setFotos] = useState<string[]>([]);
@@ -43,7 +44,7 @@ export default function Fotos() {
   const validarFotos = (fotos: string[]) => fotos.length >= 2;
   return (
     <ScrollView
-      contentContainerStyle={{ padding: 10, backgroundColor: "#f5f5f5" }}
+      contentContainerStyle={{ padding: 10, backgroundColor: colorsDark.surface }}
     >
       <View style={[commonStyles.section, { marginBottom: 50 }]}>
         {/* Título */}
@@ -61,7 +62,7 @@ export default function Fotos() {
             style={styles.buttonSubir}
             onPress={() => pickImage("camara", setFotos, fotos)}
           >
-            <Camera size={18} color="#414650ff" style={styles.icon} />
+            <Camera size={18} color={colorsDark.background} style={styles.icon} />
             <Text style={styles.buttonSubirText}>Tomar Foto</Text>
           </TouchableOpacity>
 
@@ -69,7 +70,7 @@ export default function Fotos() {
             style={styles.buttonSubir}
             onPress={() => pickImage("galeria", setFotos, fotos)}
           >
-            <Upload size={18} color="#414650ff" style={styles.icon} />
+            <Upload size={18} color={colorsDark.background} style={styles.icon} />
             <Text style={styles.buttonSubirText}>Subir Imagen</Text>
           </TouchableOpacity>
         </View>
@@ -78,7 +79,7 @@ export default function Fotos() {
         <View style={styles.photoBox}>
           {fotos.length === 0 ? (
             <View style={styles.emptyState}>
-              <ImageIcon size={48} color="#9CA3AF" />
+              <ImageIcon size={48} color={colorsDark.textSecondary} />
               <Text style={styles.emptyText}>No hay fotos agregadas</Text>
               <Text style={styles.emptySubtext}>
                 Toque los botones de arriba para agregar fotos

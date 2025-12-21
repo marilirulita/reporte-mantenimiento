@@ -1,5 +1,5 @@
 import { TouchableOpacity, Text } from "react-native";
-import { COLORS } from "@/constants/colors";
+import { colorsDark } from "@/styles/tokens";
 import { reporteStyles as styles } from "@/styles/reporteStyles";
 
 /* ⭐ COMPONENTE REUTILIZABLE DE TABS */
@@ -20,8 +20,8 @@ export default function TabButton({
       style={[styles.tabButton, active && styles.tabButtonActive]}
     >
       <Icon
-        size={22}
-        color={active ? COLORS.primary : COLORS.gray}
+        size={20}
+        color={active ? colorsDark.white : colorsDark.textSecondary}
         strokeWidth={2}
       />
       <Text

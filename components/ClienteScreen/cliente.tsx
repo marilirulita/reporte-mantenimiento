@@ -6,6 +6,7 @@ import { useNextSection } from "../../hooks/useNextSection";
 import { validateCliente, validateEquipo } from "../../utils/validarCliente";
 import ClienteForm from "./ClienteForm";
 import EquipoForm from "./EquipoForm";
+import { colorsDark } from "@/styles/tokens";
 
 const ClienteScreen = () => {
   const { handleNext } = useNextSection("tecnico");
@@ -33,7 +34,7 @@ const ClienteScreen = () => {
 
   return (
     <KeyboardAwareScrollView
-      style={{ backgroundColor: "#f5f5f5" }}
+      style={{ backgroundColor: colorsDark.surface }}
       enableOnAndroid={true}
       extraScrollHeight={60} // sube un poco más el último input
     >

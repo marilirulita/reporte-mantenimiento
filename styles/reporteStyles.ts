@@ -1,28 +1,27 @@
 import { StyleSheet } from "react-native";
-import { COLORS } from "@/constants/colors";
+import { colorsDark } from "./tokens";
 
 export const reporteStyles = StyleSheet.create({
-  // Header
   header: {
-    backgroundColor: COLORS.primary, // bg-blue-600
-    padding: 14, // p-6
-    borderBottomLeftRadius: 24, // rounded-b-3xl
+    backgroundColor: colorsDark.surface,
+    padding: 14,
+    borderBottomLeftRadius: 24,
     borderBottomRightRadius: 24,
-    shadowColor: "#000",
+    shadowColor: colorsDark.white,
     shadowOpacity: 0.2,
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 4,
     elevation: 3,
   },
   headerTitle: {
-    fontSize: 18, // text-xl
+    fontSize: 18,
     fontWeight: "bold",
-    color: "#fff",
+    color: colorsDark.textPrimary,
   },
   headerSubtitle: {
     marginTop: 4,
     fontSize: 14,
-    color: "#f1f5faff", // text-blue-100
+    color: colorsDark.textSecondary,
   },
 
   // Tabs
@@ -30,9 +29,9 @@ export const reporteStyles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     marginVertical: 10,
-    backgroundColor: "#e5e7eb", // bg-gray-200
-    padding: 4, // p-1
-    borderRadius: 9999, // rounded-full
+    backgroundColor: colorsDark.surface,
+    padding: 4, 
+    borderRadius: 50,
   },
   tabButton: {
     flex: 1,
@@ -40,24 +39,24 @@ export const reporteStyles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     paddingVertical: 8,
-    borderRadius: 9999,
+    borderRadius: 50,
   },
   tabButtonActive: {
-    backgroundColor: "#fff",
-    shadowColor: "#000",
-    shadowOpacity: 0.1,
-    shadowOffset: { width: 0, height: 1 },
-    shadowRadius: 2,
-    elevation: 2,
+    backgroundColor: colorsDark.accent,
+    shadowColor: colorsDark.white,
+    shadowOpacity: 0.2,
+    shadowOffset: { width: 2, height: 2 },
+    shadowRadius: 4,
+    elevation: 3,
   },
   tabText: {
     fontSize: 13,
     fontWeight: "500",
   },
   tabTextActive: {
-    color: "#414650ff", // text-blue-600
+    color: colorsDark.white,
   },
   tabTextInactive: {
-    color: "#4b5563", // text-gray-600
+    color: colorsDark.textSecondary,
   },
 });

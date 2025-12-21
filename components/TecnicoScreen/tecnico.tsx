@@ -6,6 +6,7 @@ import { useNextSection } from "../../hooks/useNextSection";
 import DetServicioForm from "./DetServicioForm";
 import InfServicioForm from "./InfServicioForm";
 import MedTecnicasForm from "./MedTecnicasForm";
+import { colorsDark } from "@/styles/tokens";
 
 const TecnicoScreen = () => {
   const dateToday = new Date().toLocaleDateString("es-MX", {
@@ -57,7 +58,7 @@ const TecnicoScreen = () => {
 
   return (
     <KeyboardAwareScrollView
-      style={{ backgroundColor: "#f5f5f5" }}
+      style={{ backgroundColor: colorsDark.surface }}
       enableOnAndroid={true}
       extraScrollHeight={60} // sube un poco más el último input
     >

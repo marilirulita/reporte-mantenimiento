@@ -1,12 +1,43 @@
 export const colors = {
-  primary: "#171717",
-  secondary: "#414650ff",
-  gray100: "#F9FAFB",
-  gray300: "#D1D5DB",
-  gray400: "#9CA3AF",
-  gray500: "#6B7280",
+  accent: "#6DB4C5",
+  secondary: "#1E1F24",
+  primary: "#1F7A8C",
+  
+  gray100: "#EFF0F3",
+  gray300: "#CDCED7",
+  gray400: "#8B8D98",
+  gray500: "#62636C",
+
   white: "#FFFFFF",
-  black: "#000",
+  black: "#000000",
+};
+
+export const colorsDark = {
+  // Base
+  background: "#0F172A", // Fondo principal (muy oscuro, no negro puro)
+  surface: "#1E293B", // Cards, modales, inputs
+  surfaceSoft: "#273449", // Hover / secciones internas
+
+  // Accent (Radix-style)
+  accent: "#1F7A8C",
+  accentHover: "#2796AB",
+  accentMuted: "#163E46",
+
+  // Texto
+  textPrimary: "#F8FAFC",
+  textSecondary: "#CBD5E1",
+  textMuted: "#94A3B8",
+
+  // Bordes / divisores
+  border: "#334155",
+
+  // Estados
+  success: "#22C55E",
+  warning: "#F59E0B",
+  error: "#EF4444",
+
+  white: "#FFFFFF",
+  black: "#000000",
 };
 
 export const spacing = {
@@ -25,13 +56,13 @@ export const radius = {
 
 export const text = {
   title: {
-    color: colors.secondary,
+    color: colorsDark.textPrimary,
     fontSize: 16,
     fontWeight: "600",
   },
   subtitle: {
     fontSize: 14,
-    color: colors.gray500,
+    color: colorsDark.textSecondary,
   },
   body: {
     fontSize: 14,
@@ -53,9 +84,9 @@ export const buttonSizes = {
     paddingHorizontal: 24,    
     fontSize: 14,
     borderRadius: radius.md,
-    shadowColor: colors.gray400,
-    shadowOpacity: 0.3,
-    shadowOffset: { width: 0, height: 2 },
+    shadowColor: colorsDark.white,
+    shadowOpacity: 0.2,
+    shadowOffset: { width: 2, height: 2 },
     shadowRadius: 4,
     elevation: 3,
   },

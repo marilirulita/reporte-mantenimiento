@@ -9,11 +9,11 @@ import {
 } from "lucide-react-native";
 import { historialStyles as styles } from "@/styles/historialStyles";
 import React from "react";
-import { COLORS } from "../constants/colors";
+import { colorsDark } from "@/styles/tokens";
 
 const Icon = ({ children }: any) => React.cloneElement(children, {
   size: 16,
-  color: COLORS.slate,
+  color: colorsDark.textSecondary,
 });
 
 export function ReporteCard({ item, onDownload, onDelete }: { item: Reporte | any, onDownload: (id: number) => void; onDelete: (id: number) => void }) {
@@ -46,7 +46,7 @@ export function ReporteCard({ item, onDownload, onDelete }: { item: Reporte | an
           style={styles.btnDescargar}
           onPress={() => onDownload(item.id)}
         >
-          <Download size={18} color="#1e293b" />
+          <Download size={28} color={colorsDark.success} />
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -54,7 +54,7 @@ export function ReporteCard({ item, onDownload, onDelete }: { item: Reporte | an
           style={styles.btnEliminar}
           onPress={() => onDelete(item.id)}
         >
-          <Trash2 size={18} color="#ef4444" />
+          <Trash2 size={28} color={colorsDark.error} />
         </TouchableOpacity>
       </View>
     </View>

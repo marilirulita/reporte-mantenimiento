@@ -1,3 +1,4 @@
+import { colorsDark } from "@/styles/tokens";
 import React, { useState, useMemo } from "react";
 import { TextInput, StyleSheet, Animated, ViewStyle } from "react-native";
 
@@ -57,10 +58,10 @@ export default function CustomInput({
   const containerAnimatedStyle = {
     borderColor: animatedBorder.interpolate({
       inputRange: [0, 1],
-      outputRange: ["#d1d5db", "#6b737cff"],
+      outputRange: [colorsDark.accent, colorsDark.accentHover],
     }),
     borderWidth: focused ? 2 : 1,
-    backgroundColor: focused ? "#f3f4f6" : "#f9fafb",
+    backgroundColor: focused ? colorsDark.surface : colorsDark.surfaceSoft,
   };
 
   return (
@@ -83,7 +84,7 @@ export default function CustomInput({
         keyboardType={keyboardType}
         multiline={multiline}
         style={styles.input}
-        placeholderTextColor="#9ca3af"
+        placeholderTextColor={colorsDark.textMuted}
       />
     </Animated.View>
   );
@@ -95,7 +96,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
   },
   input: {
-    color: "#374151",
+    color: colorsDark.textPrimary,
     fontSize: 16,
     minHeight: 36,
   },

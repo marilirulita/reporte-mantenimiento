@@ -13,7 +13,7 @@ export default function PantallaInicio() {
     {
       title: "Nuevo Reporte",
       subtitle: "Crear un nuevo reporte de mantenimiento",
-      icon: <ClipboardList color="#414650ff" size={28} />,
+      icon: <ClipboardList color={styles.iconContainer.color} size={28} />,
       path: "/reporte",
       styleCard: [styles.card, styles.cardActive],
       styleIconBox: [styles.iconBox, styles.iconBoxBlue],
@@ -21,7 +21,8 @@ export default function PantallaInicio() {
     {
       title: "Historial",
       subtitle: "Ver reportes anteriores guardados",
-      icon: <History color="#334155" size={28} />,
+      icon: <History 
+      color={styles.iconContainer.color} size={28} />,
       path: "/historial",
       styleCard: styles.card,
       styleIconBox: [styles.iconBox, styles.iconBoxGray],
@@ -32,7 +33,7 @@ export default function PantallaInicio() {
     <GradientLayout style={styles.container}>
       {/* Ícono principal */}
       <View style={styles.iconContainer}>
-        <Snowflake color="white" size={50} />
+        <Snowflake color={styles.iconContainer.color} size={50} />
       </View>
 
       {/* Título */}

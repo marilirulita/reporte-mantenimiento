@@ -2,6 +2,7 @@ import React from "react";
 import { Text, TextStyle, TouchableOpacity, View } from "react-native";
 import { commonStyles } from "../../styles/common";
 import CustomInput from "../ui/custom-input";
+import { colorsDark } from "@/styles/tokens";
 
 const ClienteForm = ({ form }: { form: any }) => {
   return (
@@ -25,7 +26,7 @@ const ClienteForm = ({ form }: { form: any }) => {
         {form.resultados.length > 0 && (
           <View
             style={{
-              backgroundColor: "#d3dffdff",
+              backgroundColor: colorsDark.accentHover,
               borderRadius: 8,
               marginTop: 4,
             }}
@@ -41,13 +42,13 @@ const ClienteForm = ({ form }: { form: any }) => {
                 style={{
                   padding: 10,
                   borderBottomWidth: 1,
-                  borderColor: "#eee",
+                  borderColor: colorsDark.border,
                 }}
               >
-                <Text style={{ fontWeight: "500", color: "#333" }}>
+                <Text style={{ fontWeight: "500", color: colorsDark.textPrimary }}>
                   {item.nombre}
                 </Text>
-                <Text style={{ fontSize: 12, color: "#666" }}>
+                <Text style={{ fontSize: 12, color: colorsDark.textSecondary }}>
                   {item.direccion}
                 </Text>
               </TouchableOpacity>

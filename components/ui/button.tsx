@@ -1,4 +1,4 @@
-import { colors } from "@/styles/tokens";
+import { colorsDark } from "@/styles/tokens";
 import React, { useRef } from "react";
 import {
   TouchableOpacity,
@@ -10,15 +10,29 @@ import {
 
 const variants = {
   primary: {
-    backgroundColor: colors.primary,
+    backgroundColor: colorsDark.accent,
+    shadowColor: colorsDark.white,
+    shadowOpacity: 0.3,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 4,
+    elevation: 3, 
   },
   info: {
-    backgroundColor: colors.secondary,
+    backgroundColor: colorsDark.textPrimary,
+    shadowColor: colorsDark.white,
+    shadowOpacity: 0.3,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 4,
+    elevation: 3, 
   },
   secondary: {
-    backgroundColor: "transparent",
     borderWidth: 1,
-    borderColor: colors.primary,
+    borderColor: colorsDark.accent,
+    shadowColor: colorsDark.white,
+    shadowOpacity: 0.3,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 4,
+    elevation: 3,
   },
 };
 

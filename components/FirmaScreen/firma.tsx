@@ -8,6 +8,7 @@ import { commonStyles } from "@/styles/common";
 import { RootStackParamList } from "../../types/navigation"; // importa tus tipos
 import BotonFinalizar from "../BotonFinalizar";
 import { Botton } from "../ui/button";
+import { colorsDark } from "@/styles/tokens";
 
 type FirmaScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -38,7 +39,7 @@ const signatureStatusText = signature
     <ScrollView
       contentContainerStyle={{
         padding: 10,
-        backgroundColor: "#f5f5f5",
+        backgroundColor: colorsDark.surface,
         flexGrow: 1,
       }}
       showsVerticalScrollIndicator={false}
@@ -51,11 +52,11 @@ const signatureStatusText = signature
 
         <View
           style={{
-            backgroundColor: "#f1f5f9",
+            backgroundColor: colorsDark.surfaceSoft,
             padding: 15,
             borderRadius: 8,
             marginTop: 12,
-            borderColor: "#d1d5db",
+            borderColor: colorsDark.border,
             borderWidth: 1,
           }}
         >
