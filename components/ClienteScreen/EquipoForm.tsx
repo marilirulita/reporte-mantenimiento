@@ -32,9 +32,9 @@ const EquipoForm = ({ form, handleSave }: { form: any; handleSave: any }) => {
                 borderColor: colorsDark.border,
               }}
             >
-              <Text style={{ fontWeight: "500" }}>{item.numeroSerie}</Text>
-              <Text style={{ fontSize: 12, color: colorsDark.textPrimary }}>
-                {item.tipoEquipo} - {item.marca} - {item.modelo}
+              <Text style={{ fontWeight: "500", color: colorsDark.textPrimary }}>{item.tipoEquipo} - {item.marca} - {item.modelo}</Text>
+              <Text style={{ fontSize: 12, color: colorsDark.textPrimary }}>{item.numeroSerie}
+                
               </Text>
             </TouchableOpacity>
           ))}

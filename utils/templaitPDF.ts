@@ -34,8 +34,8 @@ export const templatePDF = (reporte: PdfReporte) => {
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #f8fafc;
-      color: #111827;
+      background-color: white;
+      color: #0F172A;
       margin: 0;
       padding: 0;
     }
@@ -50,7 +50,7 @@ export const templatePDF = (reporte: PdfReporte) => {
 
     /* Encabezado */
     .header {
-      background-color: #414650ff;
+      background-color: #1F7A8C;
       color: white;
       padding: 50px;
       text-align: center;
@@ -64,7 +64,7 @@ export const templatePDF = (reporte: PdfReporte) => {
     .header p {
       margin: 5px 0 0;
       font-size: 14px;
-      color: #dbeafe;
+      color: #CBD5E1;
     }
 
     /* Secciones */
@@ -77,7 +77,9 @@ export const templatePDF = (reporte: PdfReporte) => {
 
     .row {
         display: grid;
-        gap: 10px 20px; /* espacio entre campos */
+        padding: 0px 10px;
+        gap: 10px 20px;
+        border-bottom: 1px solid #94A3B8;
       }
 
       .row-2 {
@@ -89,39 +91,34 @@ export const templatePDF = (reporte: PdfReporte) => {
       }
 
     .section-title {
-      background-color: #e2e8f0;
+      background-color: #CBD5E1;
       padding: 10px;
       font-size: 16px;
       font-weight: bold;
-      color: #111827;
+      color: #0F172A;
     }
 
     .field {
       display: flex;
       padding: 6px 10px;
       font-size: 14px;
-      border-bottom: 1px solid #f1f5f9;
-    }
-
-    .field:last-child {
-      border-bottom: none;
     }
 
     .field label {
       margin-right: 10px;
       font-weight: 600;
-      color: #374151;
+      color: #1E293B;
     }
 
     .field-tecnico label {
       flex: 0 0 220px;
       font-weight: 600;
-      color: #374151;
+      color: #1E293B;
     }
 
     .field span {
       flex: 1;
-      color: #111827;
+      color: #273449;
     }
 
     /* Texto largo */
@@ -143,7 +140,7 @@ export const templatePDF = (reporte: PdfReporte) => {
       width: 100%;
       object-fit: cover;
       border-radius: 8px;
-      border: 1px solid #ccc;    
+      border: 1px solid #334155;    
       aspect-ratio: 1 / 1;  
       display: block;
     }
@@ -157,16 +154,16 @@ export const templatePDF = (reporte: PdfReporte) => {
     .signature img {
       width: 200px;
       height: auto;
-      border-bottom: 1px solid #000;
+      border-bottom: 1px solid #334155;
       margin-bottom: 5px;
     }
 
     .footer {
       text-align: center;
       font-size: 12px;
-      color: #6b7280;
+      color: #94A3B8;
       padding: 10px;
-      border-top: 1px solid #e5e7eb;
+      border-top: 1px solid #CBD5E1;
     }
   </style>
 </head>
@@ -203,7 +200,6 @@ export const templatePDF = (reporte: PdfReporte) => {
       <div class="row row-3">
       ${field("Tipo", reporte.equipo.tipoEquipo)}
       ${field("Ubicación", reporte.equipo.ubicacionEquipo)}
-      <div class="field"><label></label><span></span></div>
       </div>
     </div>
 

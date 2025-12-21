@@ -5,12 +5,13 @@ import { useReporte } from "../context/ReporteContext";
 import { generarPDF } from "../utils/generarPDF";
 import { Botton } from "./ui/button";
 import { colorsDark } from "@/styles/tokens";
+import { useRouter } from "expo-router";
 
 const BotonFinalizar = () => {
-  const { reporte } = useReporte();
+  const { reporte, setReporte } = useReporte();
+  const router = useRouter();
 
   const handleFinalizar = async () => {
-
     if (!validarReporte(reporte)) return;
 
     const PDFuri = await generarPDF(reporte, false);
@@ -35,8 +36,17 @@ const BotonFinalizar = () => {
       pdfUri: PDFuri,
     };
     await addReporte(reporteCompleto);
-    
+
+    setReporte({
+      activeTab: "cliente",
+      cliente: {},
+      tecnico: {},
+      fotos: [],
+      firma: null,
+    });
+
     Alert.alert("Reporte guardado con éxito ✅");
+    router.push("/");
   };
 
   return (
@@ -49,7 +59,7 @@ const BotonFinalizar = () => {
 const styles = StyleSheet.create({
   buttonPrimary: {
     paddingVertical: 12,
-    paddingHorizontal: 24, 
+    paddingHorizontal: 24,
     borderRadius: 8,
   },
   textPrimary: {

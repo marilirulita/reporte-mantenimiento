@@ -77,7 +77,7 @@ export default function HistorialScreen() {
 
       {/* Lista o vacío */}
       {reportes.length === 0 ? (
-        <EmptyState onPress={() => router.push("./reporte")} />
+        <EmptyState onPress={() => router.replace("./reporte")} />
       ) : (
         <FlatList
           data={resultados}
