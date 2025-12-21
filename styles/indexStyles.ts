@@ -11,8 +11,8 @@ export const indexStyles = StyleSheet.create({
   iconContainer: {
     backgroundColor: colorsDark.white,
     color: colorsDark.accent,
-    padding: 20,
-    borderRadius: 50,
+    padding: 0,
+    borderRadius: 30,
     marginBottom: 16,
     elevation: 5,
   },

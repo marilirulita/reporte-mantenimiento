@@ -1,10 +1,12 @@
 import React from "react";
+import { Image } from "expo-image";
 import { View, Text } from "react-native";
 import { useRouter } from "expo-router";
-import { ClipboardList, History, Snowflake } from "lucide-react-native";
+import { ClipboardList, History, } from "lucide-react-native";
 import { GradientLayout } from "@/components/GradientLayout";
 import { indexStyles as styles } from "@/styles/indexStyles";
 import { MenuCard } from "@/components/MenuCard";
+import { Images } from "@/constants/assets";
 
 type RutaValida = "/reporte" | "/historial" | "/";
 
@@ -33,7 +35,10 @@ export default function PantallaInicio() {
     <GradientLayout style={styles.container}>
       {/* Ícono principal */}
       <View style={styles.iconContainer}>
-        <Snowflake color={styles.iconContainer.color} size={50} />
+        <Image
+            source={Images.logo}
+            style={{ width: 90, height: 90, borderRadius: 30 }}
+          />
       </View>
 
       {/* Título */}

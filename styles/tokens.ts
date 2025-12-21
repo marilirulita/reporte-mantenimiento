@@ -40,6 +40,35 @@ export const colorsDark = {
   black: "#000000",
 };
 
+export const lightColors = {
+  // Base
+  background: "#F8FAFC",        // Fondo general (no blanco puro)
+  surface: "#FFFFFF",           // Cards, inputs, modales
+  surfaceSoft: "#F1F5F9",       // Secciones secundarias / hover
+
+  // Accent
+  accent: "#1F7A8C",
+  accentHover: "#186775",
+  accentMuted: "#D6EDF1",
+
+  // Texto
+  textPrimary: "#0F172A",
+  textSecondary: "#334155",
+  textMuted: "#64748B",
+
+  // Bordes / divisores
+  border: "#E2E8F0",
+
+  // Estados
+  success: "#16A34A",
+  warning: "#D97706",
+  error: "#DC2626",
+
+  white: "#FFFFFF",
+  black: "#000000",
+};
+
+
 export const spacing = {
   xs: 4,
   sm: 8,
