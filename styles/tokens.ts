@@ -30,6 +30,7 @@ export const colorsDark = {
 
   // Bordes / divisores
   border: "#334155",
+  icon: "#FFFFFF",
 
   // Estados
   success: "#22C55E",
@@ -58,6 +59,7 @@ export const lightColors = {
 
   // Bordes / divisores
   border: "#E2E8F0",
+  icon: "#000000",
 
   // Estados
   success: "#16A34A",

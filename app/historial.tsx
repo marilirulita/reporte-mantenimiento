@@ -14,8 +14,10 @@ import {
   View,
 } from "react-native";
 import { generarPDF } from "../utils/generarPDF";
+import { useTheme } from "@/theme";
 
 export default function HistorialScreen() {
+  const { colors } = useTheme();
   const router = useRouter();
   const [reportes, setReportes] = useState<any[]>([]);
   const [resultados, setResultados] = useState<any[]>([]);
@@ -53,25 +55,25 @@ export default function HistorialScreen() {
       {/* Encabezado */}
       <View style={styles.header}>
         <View style={styles.headerIcon}>
-          <FileText size={40} color={styles.headerIcon.color} />
+          <FileText size={40} color={colors.icon} />
         </View>
         <View>
-          <Text style={styles.headerTitulo}>Historial de Reportes</Text>
-          <Text style={styles.headerSubtitulo}>
+          <Text style={[styles.headerTitulo, {color: colors.textPrimary}]}>Historial de Reportes</Text>
+          <Text style={[styles.headerSubtitulo, {color: colors.textSecondary}]}>
             {reportes.length} {reportes.length === 1 ? "reporte" : "reportes"}
           </Text>
         </View>
       </View>
 
       {/* Barra de búsqueda */}
-      <View style={styles.searchContainer}>
-        <Search size={24} color={styles.searchInput.color} style={{ marginRight: 6 }} />
+      <View style={[styles.searchContainer, { backgroundColor: colors.surface, borderColor: colors.accent}]}>
+        <Search size={24} color={colors.textSecondary} style={{ marginRight: 6 }} />
         <TextInput
           placeholder="Buscar Reporte..."
           value={busqueda}
           onChangeText={setBusqueda}
-          placeholderTextColor={styles.searchInput.color}
-          style={styles.searchInput}
+          placeholderTextColor={colors.textSecondary}
+          style={[styles.searchInput, {color: colors.textSecondary}]}
         />
       </View>
 

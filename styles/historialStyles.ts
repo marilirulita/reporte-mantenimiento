@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { radius, colorsDark } from "./tokens";
+import { radius } from "./tokens";
 
 export const historialStyles = StyleSheet.create({
   container: {
@@ -13,26 +13,21 @@ export const historialStyles = StyleSheet.create({
     marginBottom: 20,
   },
   headerIcon: {
-    color: colorsDark.white,
     borderRadius: radius.lg,
     padding: 10,
   },
   headerTitulo: {
     fontSize: 18,
     fontWeight: "600",
-    color: colorsDark.textPrimary,
   },
   headerSubtitulo: {
     fontSize: 14,
-    color: colorsDark.textSecondary,
   },
   searchContainer: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: colorsDark.surface,
     borderRadius: radius.lg,
     borderWidth: 1,
-    borderColor: colorsDark.accent,
     paddingHorizontal: 12,
     paddingVertical: 8,
     marginBottom: 20,
@@ -40,12 +35,9 @@ export const historialStyles = StyleSheet.create({
   searchInput: {
     flex: 1,
     fontSize: 14,
-    color: colorsDark.textSecondary,
   },
   emptyContainer: {
-    backgroundColor: colorsDark.surface,
     borderWidth: 1,
-    borderColor: colorsDark.border,
     borderRadius: radius.lg,
     alignItems: "center",
     justifyContent: "center",
@@ -53,8 +45,6 @@ export const historialStyles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   emptyIconBox: {
-    backgroundColor: colorsDark.accent,
-    color: colorsDark.white,
     padding: 18,
     borderRadius: 50,
     marginBottom: 12,
@@ -63,12 +53,10 @@ export const historialStyles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "600",
     textAlign: "center",
-    color: colorsDark.textPrimary,
     marginBottom: 6,
   },
   emptySubtitle: {
     fontSize: 13,
-    color: colorsDark.textSecondary,
     textAlign: "center",
     marginBottom: 20,
   },
@@ -84,15 +72,12 @@ export const historialStyles = StyleSheet.create({
     fontSize: 14,
   },
   reporteCard: {
-    backgroundColor: colorsDark.surfaceSoft,
     borderRadius: radius.lg,
     borderWidth: 1,
-    borderColor: colorsDark.border,
     padding: 16,
     flexDirection: "row",
     justifyContent: "space-between",
     marginBottom: 12,
-    shadowColor: colorsDark.white,
     shadowOpacity: 0.2,
     shadowOffset: { width: 2, height: 2 },
     shadowRadius: 4,
@@ -106,7 +91,6 @@ export const historialStyles = StyleSheet.create({
     fontSize: 16,
     textTransform: "capitalize",
     marginBottom: 6,
-    color: colorsDark.textPrimary,
   },
   reporteDetalle: {
     flexDirection: "row",
@@ -115,7 +99,6 @@ export const historialStyles = StyleSheet.create({
     marginBottom: 4,
   },
   reporteTexto: {
-    color: colorsDark.textSecondary,
     fontSize: 13,
   },
   reporteBotones: {
@@ -123,7 +106,6 @@ export const historialStyles = StyleSheet.create({
     gap: 12,
   },
   btnDescargar: {
-    borderColor: colorsDark.success,
     borderWidth: 1,
     padding: 4,
     borderRadius: radius.md,
@@ -131,7 +113,6 @@ export const historialStyles = StyleSheet.create({
     alignItems: "center",
   },
   btnEliminar: {
-    borderColor: colorsDark.error,
     borderWidth: 1,
     padding: 4,
     borderRadius: radius.md,
@@ -146,11 +127,9 @@ export const historialStyles = StyleSheet.create({
   sinReportesTexto: {
     fontSize: 16,
     fontWeight: "500",
-    color: colorsDark.textPrimary,
     marginTop: 10,
   },
   sinReportesSub: {
-    color: colorsDark.textSecondary,
     fontSize: 13,
     textAlign: "center",
     marginVertical: 10,
@@ -159,7 +138,6 @@ export const historialStyles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: colorsDark.white,
     paddingVertical: 10,
     paddingHorizontal: 18,
     borderRadius: radius.md,
@@ -167,7 +145,6 @@ export const historialStyles = StyleSheet.create({
     gap: 6,
   },
   btnCrearTexto: {
-    color: colorsDark.accent,
     fontWeight: "500",
   },
 });

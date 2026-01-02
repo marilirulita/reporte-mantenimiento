@@ -1,10 +1,12 @@
 import { LinearGradient } from "expo-linear-gradient";
-import { colorsDark } from "@/styles/tokens";
+import { useTheme } from "@/theme";
 
 export function GradientLayout({ children, style }: { children: React.ReactNode, style?: object }) {
+  const { colors } = useTheme();
+
   return (
     <LinearGradient
-      colors={[colorsDark.border, colorsDark.background]}
+      colors={[colors.border, colors.background]}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
       style={style}

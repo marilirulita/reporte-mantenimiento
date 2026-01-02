@@ -1,5 +1,6 @@
 import React from "react";
 import { TouchableOpacity, View, Text } from "react-native";
+import { useTheme } from "@/theme";
 
 interface MenuCardProps {
   onPress: () => void;
@@ -20,6 +21,7 @@ export function MenuCard({
   styleCard,
   styleIconBox,
 }: MenuCardProps) {
+  const { colors } = useTheme();
   return (
     <TouchableOpacity
       style={styleCard}
@@ -28,8 +30,8 @@ export function MenuCard({
       <View style={styleIconBox}>{icon}</View>
 
       <View style={{ flex: 1 }}>
-        <Text style={styles.cardTitle}>{title}</Text>
-        <Text style={styles.cardSubtitle}>{subtitle}</Text>
+        <Text style={[styles.cardTitle, {color: colors.textPrimary}]}>{title}</Text>
+        <Text style={[styles.cardSubtitle, { color: colors.textSecondary}]}>{subtitle}</Text>
       </View>
     </TouchableOpacity>
   );

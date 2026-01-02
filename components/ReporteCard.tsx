@@ -9,32 +9,64 @@ import {
 } from "lucide-react-native";
 import { historialStyles as styles } from "@/styles/historialStyles";
 import React from "react";
-import { colorsDark } from "@/styles/tokens";
+import { useTheme } from "@/theme";
 
-const Icon = ({ children }: any) => React.cloneElement(children, {
-  size: 16,
-  color: colorsDark.textSecondary,
-});
+export function ReporteCard({
+  item,
+  onDownload,
+  onDelete,
+}: {
+  item: Reporte | any;
+  onDownload: (id: number) => void;
+  onDelete: (id: number) => void;
+}) {
+  const { colors } = useTheme();
 
-export function ReporteCard({ item, onDownload, onDelete }: { item: Reporte | any, onDownload: (id: number) => void; onDelete: (id: number) => void }) {
+  const Icon = ({ children }: any) =>
+    React.cloneElement(children, {
+      size: 16,
+      color: colors.textSecondary,
+    });
+
   return (
-    <View style={styles.reporteCard}>
+    <View
+      style={[
+        styles.reporteCard,
+        {
+          backgroundColor: colors.surfaceSoft,
+          borderColor: colors.accent,
+          shadowColor: colors.icon,
+        },
+      ]}
+    >
       <View style={styles.reporteInfo}>
-        <Text style={styles.reporteCliente}>{item.nombre}</Text>
+        <Text style={[styles.reporteCliente, { color: colors.textPrimary }]}>
+          {item.nombre}
+        </Text>
 
         <View style={styles.reporteDetalle}>
-          <Icon><Calendar /></Icon>
-          <Text style={styles.reporteTexto}>{item.fecha}</Text>
+          <Icon>
+            <Calendar />
+          </Icon>
+          <Text style={[styles.reporteTexto, { color: colors.textSecondary }]}>
+            {item.fecha}
+          </Text>
         </View>
 
         <View style={styles.reporteDetalle}>
-          <Icon><User /></Icon>
-          <Text style={styles.reporteTexto}>Técnico: {item.tecnico}</Text>
+          <Icon>
+            <User />
+          </Icon>
+          <Text style={[styles.reporteTexto, { color: colors.textSecondary }]}>
+            Técnico: {item.tecnico}
+          </Text>
         </View>
 
         <View style={styles.reporteDetalle}>
-          <Icon><FileText /></Icon>
-          <Text style={styles.reporteTexto}>
+          <Icon>
+            <FileText />
+          </Icon>
+          <Text style={[styles.reporteTexto, { color: colors.textSecondary }]}>
             {item.tipoEquipo}- {item.marca} - {item.modelo}
           </Text>
         </View>
@@ -43,18 +75,18 @@ export function ReporteCard({ item, onDownload, onDelete }: { item: Reporte | an
       <View style={styles.reporteBotones}>
         <TouchableOpacity
           testID={`btn-descargar-${item.id}`}
-          style={styles.btnDescargar}
+          style={[styles.btnDescargar, {borderColor: colors.success}]}
           onPress={() => onDownload(item.id)}
         >
-          <Download size={28} color={colorsDark.success} />
+          <Download size={28} color={colors.success} />
         </TouchableOpacity>
 
         <TouchableOpacity
           testID={`btn-eliminar-${item.id}`}
-          style={styles.btnEliminar}
+          style={[styles.btnEliminar, {borderColor: colors.error}]}
           onPress={() => onDelete(item.id)}
         >
-          <Trash2 size={28} color={colorsDark.error} />
+          <Trash2 size={28} color={colors.error} />
         </TouchableOpacity>
       </View>
     </View>
