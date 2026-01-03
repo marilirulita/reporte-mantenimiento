@@ -2,19 +2,20 @@ import React from "react";
 import { Text, TextStyle, TouchableOpacity, View } from "react-native";
 import { commonStyles } from "../../styles/common";
 import CustomInput from "../ui/custom-input";
-import { colorsDark } from "@/styles/tokens";
+import { useTheme } from "@/theme";
 
 const ClienteForm = ({ form }: { form: any }) => {
+  const { colors } = useTheme();
   return (
     <View style={commonStyles.section}>
-      <Text style={commonStyles.sectionTitle as TextStyle}>Datos del Cliente</Text>
+      <Text style={[commonStyles.sectionTitle as TextStyle, {color: colors.textPrimary}]}>Datos del Cliente</Text>
 
-      <Text style={commonStyles.label}>
+      <Text style={[commonStyles.label, {color: colors.textSecondary}]}>
         Busca por nombre de cliente o guarda uno nuevo
       </Text>
       {/* Nombre y Teléfono */}
       <View style={{ marginBottom: 12 }}>
-        <Text style={commonStyles.label}>Nombre Completo *</Text>
+        <Text style={[commonStyles.label, {color: colors.textSecondary}]}>Nombre Completo *</Text>
         <CustomInput
           placeholder="Juan Pérez"
           value={form.cliente.nombre}
@@ -26,7 +27,7 @@ const ClienteForm = ({ form }: { form: any }) => {
         {form.resultados.length > 0 && (
           <View
             style={{
-              backgroundColor: colorsDark.accentHover,
+              backgroundColor: colors.accentHover,
               borderRadius: 8,
               marginTop: 4,
             }}
@@ -42,13 +43,13 @@ const ClienteForm = ({ form }: { form: any }) => {
                 style={{
                   padding: 10,
                   borderBottomWidth: 1,
-                  borderColor: colorsDark.border,
+                  borderColor: colors.border,
                 }}
               >
-                <Text style={{ fontWeight: "500", color: colorsDark.textPrimary }}>
+                <Text style={{ fontWeight: "500", color: colors.white }}>
                   {item.nombre}
                 </Text>
-                <Text style={{ fontSize: 12, color: colorsDark.textSecondary }}>
+                <Text style={{ fontSize: 12, color: colors.white }}>
                   {item.direccion}
                 </Text>
               </TouchableOpacity>
@@ -56,7 +57,7 @@ const ClienteForm = ({ form }: { form: any }) => {
           </View>
         )}
       </View>
-      <Text style={commonStyles.label}>Teléfono *</Text>
+      <Text style={[commonStyles.label, {color: colors.textSecondary}]}>Teléfono *</Text>
       <CustomInput
         placeholder="555-123-4567"
         value={form.cliente.telefono ?? ""}
@@ -67,7 +68,7 @@ const ClienteForm = ({ form }: { form: any }) => {
       />
 
       {/* Dirección */}
-      <Text style={commonStyles.label}>Dirección *</Text>
+      <Text style={[commonStyles.label, {color: colors.textSecondary}]}>Dirección *</Text>
       <CustomInput
         placeholder="Calle Principal #123, Ciudad"
         value={form.cliente.direccion}
@@ -76,7 +77,7 @@ const ClienteForm = ({ form }: { form: any }) => {
         }
       />
 
-      <Text style={commonStyles.label}>Email</Text>
+      <Text style={[commonStyles.label, {color: colors.textSecondary}]}>Email</Text>
       <CustomInput
         placeholder="cliente@email.com"
         value={form.cliente.email ?? ""}

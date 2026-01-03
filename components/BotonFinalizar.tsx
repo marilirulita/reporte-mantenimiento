@@ -4,10 +4,11 @@ import { Alert, StyleSheet, Text } from "react-native";
 import { useReporte } from "../context/ReporteContext";
 import { generarPDF } from "../utils/generarPDF";
 import { Botton } from "./ui/button";
-import { colorsDark } from "@/styles/tokens";
 import { useRouter } from "expo-router";
+import { useTheme } from "@/theme";
 
 const BotonFinalizar = () => {
+  const { colors } = useTheme();
   const { reporte, setReporte } = useReporte();
   const router = useRouter();
 
@@ -50,8 +51,8 @@ const BotonFinalizar = () => {
   };
 
   return (
-    <Botton onPress={handleFinalizar} classname={styles.buttonPrimary}>
-      <Text style={styles.textPrimary}>Finalizar</Text>
+    <Botton onPress={handleFinalizar} classname={styles.buttonPrimary} variant='primary'>
+      <Text style={[styles.textPrimary, {color: colors.white}]}>Finalizar</Text>
     </Botton>
   );
 };
@@ -63,7 +64,6 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   textPrimary: {
-    color: colorsDark.white, // text-white
     fontWeight: "600", // font-semibold
     fontSize: 14, // text-sm
   },

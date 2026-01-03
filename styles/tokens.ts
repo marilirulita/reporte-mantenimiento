@@ -87,13 +87,11 @@ export const radius = {
 
 export const text = {
   title: {
-    color: colorsDark.textPrimary,
     fontSize: 16,
     fontWeight: "600",
   },
   subtitle: {
     fontSize: 14,
-    color: colorsDark.textSecondary,
   },
   body: {
     fontSize: 14,

@@ -4,7 +4,6 @@ import { buttonSizes, colorsDark, spacing, text } from "./tokens";
 export const commonStyles = StyleSheet.create({
   section: {
     marginBottom: spacing.xl,
-    borderBottomColor: colorsDark.border,
     borderBottomWidth: 1,
     paddingBottom: spacing.xl,
   },
@@ -42,7 +41,6 @@ export const commonStyles = StyleSheet.create({
 
   buttonPrimary: {
     ...buttonSizes.medium,
-    backgroundColor: colorsDark.accent,
     alignSelf: "flex-end",
   },
 
@@ -54,8 +52,6 @@ export const commonStyles = StyleSheet.create({
   buttonSecondary: {
     ...buttonSizes.medium,
     borderWidth: 1,
-    backgroundColor: colorsDark.white,
-    borderColor: colorsDark.accent,
   },
 
   textSecondary: {

@@ -9,8 +9,10 @@ import Signature from "../components/FirmaScreen/firma";
 import Fotos from "../components/FotosScreen/fotos";
 import TecnicoScreen from "../components/TecnicoScreen/tecnico";
 import { TabName } from "../types/navigation";
+import { useTheme } from "@/theme";
 
 export default function NuevoReporteScreen() {
+  const { colors } = useTheme();
   const { reporte, setReporte } = useReporte();
 
   const changeTab = (name: TabName) =>
@@ -40,13 +42,13 @@ export default function NuevoReporteScreen() {
   return (
     <GradientLayout style={{ flex: 1, paddingHorizontal: 5 }}>
       {/* Header */}
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>Reporte de Mantenimiento</Text>
-        <Text style={styles.headerSubtitle}>Servicio de Refrigeración</Text>
+      <View style={[styles.header, {backgroundColor: colors.surface, shadowColor: colors.icon}]}>
+        <Text style={[styles.headerTitle, {color: colors.textPrimary}]}>Reporte de Mantenimiento</Text>
+        <Text style={[styles.headerSubtitle, {color: colors.textSecondary}]}>Servicio de Refrigeración</Text>
       </View>
 
       {/* Tabs */}
-      <View style={styles.tabContainer}>
+      <View style={[styles.tabContainer, {backgroundColor: colors.surface}]}>
         {tabs.map((tab) => (
           <TabButton
             key={tab.name}

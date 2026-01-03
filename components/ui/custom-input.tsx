@@ -1,6 +1,6 @@
-import { colorsDark } from "@/styles/tokens";
 import React, { useState, useMemo } from "react";
 import { TextInput, StyleSheet, Animated, ViewStyle } from "react-native";
+import { useTheme } from "@/theme";
 
 type KeyboardType =
   | "default"
@@ -29,6 +29,7 @@ export default function CustomInput({
   containerStyle,
   testID,
 }: CustomInputProps) {
+  const { colors } = useTheme();
   const [focused, setFocused] = useState(false);
 
   const animatedBorder = useMemo(
@@ -58,10 +59,10 @@ export default function CustomInput({
   const containerAnimatedStyle = {
     borderColor: animatedBorder.interpolate({
       inputRange: [0, 1],
-      outputRange: [colorsDark.accent, colorsDark.accentHover],
+      outputRange: [colors.accent, colors.accentHover],
     }),
     borderWidth: focused ? 2 : 1,
-    backgroundColor: focused ? colorsDark.surface : colorsDark.surfaceSoft,
+    backgroundColor: focused ? colors.surface : colors.surfaceSoft,
   };
 
   return (
@@ -83,8 +84,8 @@ export default function CustomInput({
         editable={!disabled}
         keyboardType={keyboardType}
         multiline={multiline}
-        style={styles.input}
-        placeholderTextColor={colorsDark.textMuted}
+        style={[styles.input, {color: colors.textPrimary,}]}
+        placeholderTextColor={colors.textMuted}
       />
     </Animated.View>
   );
@@ -96,7 +97,6 @@ const styles = StyleSheet.create({
     borderRadius: 12,
   },
   input: {
-    color: colorsDark.textPrimary,
     fontSize: 16,
     minHeight: 36,
   },

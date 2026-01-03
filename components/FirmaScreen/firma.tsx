@@ -8,7 +8,7 @@ import { commonStyles } from "@/styles/common";
 import { RootStackParamList } from "../../types/navigation"; // importa tus tipos
 import BotonFinalizar from "../BotonFinalizar";
 import { Botton } from "../ui/button";
-import { colorsDark } from "@/styles/tokens";
+import { useTheme } from "@/theme";
 
 type FirmaScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -16,6 +16,7 @@ type FirmaScreenNavigationProp = NativeStackNavigationProp<
 >;
 
 export default function Firma() {
+  const { colors } = useTheme();
   const navigation = useNavigation<FirmaScreenNavigationProp>();
   const { reporte, setReporte } = useReporte();
   const signature = reporte.firma;
@@ -39,35 +40,35 @@ const signatureStatusText = signature
     <ScrollView
       contentContainerStyle={{
         padding: 10,
-        backgroundColor: colorsDark.surface,
+        backgroundColor: colors.surface,
         flexGrow: 1,
       }}
       showsVerticalScrollIndicator={false}
     >
-      <View style={commonStyles.section}>
-        <Text style={commonStyles.sectionTitle as TextStyle}>Firma del Cliente</Text>
-        <Text style={commonStyles.sectionSubtitle as TextStyle}>
+      <View style={[commonStyles.section, {borderBottomColor: colors.border,}]}>
+        <Text style={[commonStyles.sectionTitle as TextStyle, {color: colors.textPrimary}]}>Firma del Cliente</Text>
+        <Text style={[commonStyles.sectionSubtitle as TextStyle, {color: colors.textSecondary}]}>
           Presione el boton para abrir el panel de firma
         </Text>
 
         <View
           style={{
-            backgroundColor: colorsDark.surfaceSoft,
+            backgroundColor: colors.surfaceSoft,
             padding: 15,
             borderRadius: 8,
             marginTop: 12,
-            borderColor: colorsDark.border,
+            borderColor: colors.border,
             borderWidth: 1,
           }}
         >
           {signature && (
             <Image
               source={{ uri: signature }}
-              style={styles.signaturePreview}
+              style={[styles.signaturePreview, {borderColor: colors.border,}]}
             />
           )}
           {/* check / uncheck firma */}
-          <Text style={styles.counterText}>
+          <Text style={[styles.counterText, {color: colors.textMuted,}]}>
             {signatureStatusText}
           </Text>
           <Botton
@@ -75,7 +76,7 @@ const signatureStatusText = signature
             variant="info"
             onPress={() => openSignaturePanel()}
           >
-            <Text style={styles.buttonInfoText}>
+            <Text style={[styles.buttonInfoText, {color: colors.background}]}>
               {signature ? "Volver a firmar" : "Abrir panel de firma"}
             </Text>
           </Botton>
@@ -86,7 +87,7 @@ const signatureStatusText = signature
             variant="secondary"
             onPress={() => setReporte({ ...reporte, activeTab: "fotos" })}
           >
-            <Text style={commonStyles.textSecondary}>Anterior</Text>
+            <Text style={[commonStyles.textSecondary, {color: colors.accent}]}>Anterior</Text>
           </Botton>
           <BotonFinalizar />
         </View>

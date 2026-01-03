@@ -7,6 +7,7 @@ import { RootStackParamList } from "../types/navigation";
 import { Botton } from "@/components/ui/button";
 import { PanelFirmaStyles as styles } from "@/styles/panelFirmaStyles";
 import { colorsDark } from "@/styles/tokens";
+import { useTheme } from "@/theme";
 
 type PanelFirmaNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -15,6 +16,7 @@ type PanelFirmaNavigationProp = NativeStackNavigationProp<
 type PanelFirmaRouteProp = RouteProp<RootStackParamList, "PanelFirma">;
 
 export default function PanelFirma() {
+  const { colors } = useTheme();
   const navigation = useNavigation<PanelFirmaNavigationProp>();
   const route = useRoute<PanelFirmaRouteProp>();
   const signatureRef = useRef<any>(null);
@@ -47,21 +49,21 @@ export default function PanelFirma() {
 `;
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.subtitle}>
+    <View style={[styles.container, {backgroundColor: colors.surfaceSoft, borderColor: colors.accent,}]}>
+      <Text style={[styles.subtitle, {color: colors.textSecondary}]}>
         Solicite al cliente que firme en el recuadro con su dedo o stylus
       </Text>
       <Signature
         ref={signatureRef}
         onOK={handleOK}
         onEmpty={() => console.log("Firma vacía")}
-        backgroundColor="#F9FAFB"
-        penColor={colorsDark.background}
+        backgroundColor={colors.white}
+        penColor={colors.black}
         descriptionText="Firme aquí"
         clearText="Limpiar"
         confirmText="Guardar"
         androidLayerType="software"
-        style={styles.signature}
+        style={[styles.signature, {borderColor: colors.border}]}
         webStyle={webStyle}
       />
       <SignatureButtons onClear={handleClear} onSave={handleSave} />
@@ -76,13 +78,14 @@ function SignatureButtons({
   onClear: () => void;
   onSave: () => void;
 }) {
+  const { colors } = useTheme();
   return (
     <View style={styles.buttons}>
-      <Botton classname={styles.buttonSecundary} variant="secondary" onPress={onClear}>
-        <Text style={styles.textSecundary}>Limpiar</Text>
+      <Botton classname={[styles.buttonSecundary, {borderColor: colors.accent, shadowColor: colors.icon, backgroundColor: colors.white}]} variant="secondary" onPress={onClear}>
+        <Text style={[styles.textSecundary, {color: colorsDark.accent}]}>Limpiar</Text>
       </Botton>
-      <Botton classname={styles.buttonSecundary} variant="secondary" onPress={onSave}>
-        <Text style={styles.textSecundary}>Guardar</Text>
+      <Botton classname={[styles.buttonSecundary, {borderColor: colors.accent, shadowColor: colors.icon, backgroundColor: colors.white}]} variant="secondary" onPress={onSave}>
+        <Text style={[styles.textSecundary, {color: colorsDark.accent}]}>Guardar</Text>
       </Botton>
     </View>
   );

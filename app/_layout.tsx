@@ -2,12 +2,10 @@ import { Stack } from "expo-router";
 import { ReporteProvider } from "@/context/ReporteContext";
 import React, { useEffect } from "react";
 import { createTables } from "../db/database";
-import { useColorScheme } from "react-native";
-import { lightColors, colorsDark } from "../styles/tokens";
+import { useTheme } from "@/theme";
 
 export default function RootLayout() {
-  const scheme = useColorScheme();
-  const colors = scheme === "dark" ? colorsDark : lightColors;
+  const { colors } = useTheme();
   
   useEffect(() => {
     createTables();

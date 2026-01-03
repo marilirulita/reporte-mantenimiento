@@ -3,18 +3,19 @@ import { Text, TextStyle, TouchableOpacity, View } from "react-native";
 import { commonStyles } from "../../styles/common";
 import { Botton } from "../ui/button";
 import CustomInput from "../ui/custom-input";
-import { colorsDark } from "@/styles/tokens";
+import { useTheme } from "@/theme";
 
 const EquipoForm = ({ form, handleSave }: { form: any; handleSave: any }) => {
+  const { colors } = useTheme();
   return (
     <View style={[commonStyles.section, { marginBottom: 50 }]}>
-      <Text style={commonStyles.sectionTitle as TextStyle}>Datos del Equipo</Text>
+      <Text style={[commonStyles.sectionTitle as TextStyle, {color: colors.textPrimary}]}>Datos del Equipo</Text>
 
-      <Text style={commonStyles.label}>Selecciona un equipo o guarda uno nuevo</Text>
+      <Text style={[commonStyles.label, {color: colors.textSecondary}]}>Selecciona un equipo o guarda uno nuevo</Text>
       {form.equipos.length > 0 && (
         <View
           style={{
-            backgroundColor: colorsDark.accentHover,
+            backgroundColor: colors.accentHover,
             borderRadius: 8,
             marginTop: 4,
           }}
@@ -29,11 +30,11 @@ const EquipoForm = ({ form, handleSave }: { form: any; handleSave: any }) => {
               style={{
                 padding: 10,
                 borderBottomWidth: 1,
-                borderColor: colorsDark.border,
+                borderColor: colors.border,
               }}
             >
-              <Text style={{ fontWeight: "500", color: colorsDark.textPrimary }}>{item.tipoEquipo} - {item.marca} - {item.modelo}</Text>
-              <Text style={{ fontSize: 12, color: colorsDark.textPrimary }}>{item.numeroSerie}
+              <Text style={{ fontWeight: "500", color: colors.white }}>{item.tipoEquipo} - {item.marca} - {item.modelo}</Text>
+              <Text style={{ fontSize: 12, color: colors.white }}>{item.numeroSerie}
                 
               </Text>
             </TouchableOpacity>
@@ -43,7 +44,7 @@ const EquipoForm = ({ form, handleSave }: { form: any; handleSave: any }) => {
 
       <View style={commonStyles.row}>
         <View style={commonStyles.column}>
-          <Text style={commonStyles.label}>Marca *</Text>
+          <Text style={[commonStyles.label, {color: colors.textSecondary}]}>Marca *</Text>
           <CustomInput
             placeholder="Samsung, LG, etc."
             value={form.equipo.marca}
@@ -52,7 +53,7 @@ const EquipoForm = ({ form, handleSave }: { form: any; handleSave: any }) => {
         </View>
 
         <View style={commonStyles.column}>
-          <Text style={commonStyles.label}>Modelo *</Text>
+          <Text style={[commonStyles.label, {color: colors.textSecondary}]}>Modelo *</Text>
           <CustomInput
             placeholder="ABC-123"
             value={form.equipo.modelo}
@@ -65,7 +66,7 @@ const EquipoForm = ({ form, handleSave }: { form: any; handleSave: any }) => {
 
       <View style={commonStyles.row}>
         <View style={commonStyles.column}>
-          <Text style={commonStyles.label}>Número de Serie</Text>
+          <Text style={[commonStyles.label, {color: colors.textSecondary}]}>Número de Serie</Text>
           <CustomInput
             placeholder="SN123456789"
             value={form.equipo.numeroSerie ?? ""}
@@ -76,7 +77,7 @@ const EquipoForm = ({ form, handleSave }: { form: any; handleSave: any }) => {
         </View>
 
         <View style={commonStyles.column}>
-          <Text style={commonStyles.label}>Tipo de Equipo *</Text>
+          <Text style={[commonStyles.label, {color: colors.textSecondary}]}>Tipo de Equipo *</Text>
           <CustomInput
             placeholder="Aire Acondicionado, Refrigerador, etc."
             value={form.equipo.tipoEquipo}
@@ -87,7 +88,7 @@ const EquipoForm = ({ form, handleSave }: { form: any; handleSave: any }) => {
         </View>
       </View>
 
-      <Text style={commonStyles.label}>Ubicación del Equipo</Text>
+      <Text style={[commonStyles.label, {color: colors.textSecondary}]}>Ubicación del Equipo</Text>
       <CustomInput
         placeholder="Cocina, Almacén, etc."
         value={form.equipo.ubicacionEquipo ?? ""}
@@ -98,7 +99,7 @@ const EquipoForm = ({ form, handleSave }: { form: any; handleSave: any }) => {
 
     <View style={commonStyles.buttonContainer}></View>
       <Botton classname={commonStyles.buttonPrimary} onPress={() => handleSave()} variant="primary">
-        <Text style={commonStyles.textButtonPrimary}>Siguiente</Text>
+        <Text style={[commonStyles.textButtonPrimary, {color: colors.white}]}>Siguiente</Text>
       </Botton>
     </View>
   );
