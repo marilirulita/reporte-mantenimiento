@@ -14,11 +14,9 @@ export const layoutStyles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     borderWidth: 1,
-    borderColor: colorsDark.border,
     borderRadius: 8,
     padding: 8,
     backgroundColor: colorsDark.white,
-    shadowColor: colorsDark.white,
     shadowOpacity: 0.2,
     shadowOffset: { width: 2, height: 2 },
     shadowRadius: 4,
@@ -28,28 +26,19 @@ export const layoutStyles = StyleSheet.create({
     marginRight: 6,
   },
   buttonSubirText: {
-    color: colorsDark.border,
     fontWeight: "500",
     fontSize: 13,
   },
- 
   containerPicker: {
     borderWidth: 1,
-    borderColor: colorsDark.border,
     borderRadius: 12,
-    color: colorsDark.textPrimary,
-  },
-  picker: {
-    color: colorsDark.textPrimary,
   },
   
   photoBox: {
     borderWidth: 1,
-    borderColor: colorsDark.border,
     borderStyle: "dashed",
     borderRadius: 12,
     height: 180,
-    backgroundColor: colorsDark.surfaceSoft,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -57,12 +46,10 @@ export const layoutStyles = StyleSheet.create({
     alignItems: "center",
   },
   emptyText: {
-    color: colorsDark.textSecondary,
     fontWeight: "500",
     marginTop: 6,
   },
   emptySubtext: {
-    color: colorsDark.textMuted,
     fontSize: 12,
     textAlign: "center",
   },
@@ -86,7 +73,6 @@ export const layoutStyles = StyleSheet.create({
   },
   counterText: {
     margin: 8,
-    color: colorsDark.textMuted,
     fontSize: 13,
     fontWeight: "500",
   },
@@ -94,18 +80,15 @@ export const layoutStyles = StyleSheet.create({
     width: 250,
     height: 150,
     borderWidth: 1,
-    borderColor: colorsDark.border,
     marginBottom: 10,
     alignSelf: "center",
   },
   buttonInfo: {
-    backgroundColor: colorsDark.textMuted,
     paddingVertical: 10,
     paddingHorizontal: 24,
     borderRadius: 10,
   },
   buttonInfoText: {
-    color: colorsDark.accentMuted,
     fontWeight: "bold",
     textAlign: "center",
   },

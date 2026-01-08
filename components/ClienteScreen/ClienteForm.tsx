@@ -7,7 +7,7 @@ import { useTheme } from "@/theme";
 const ClienteForm = ({ form }: { form: any }) => {
   const { colors } = useTheme();
   return (
-    <View style={commonStyles.section}>
+    <View style={[commonStyles.section, {borderColor: colors.border}]}>
       <Text style={[commonStyles.sectionTitle as TextStyle, {color: colors.textPrimary}]}>Datos del Cliente</Text>
 
       <Text style={[commonStyles.label, {color: colors.textSecondary}]}>

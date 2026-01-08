@@ -3,6 +3,7 @@ import { Text, TextStyle, View } from "react-native";
 import { commonStyles } from "../../styles/common";
 import { Botton } from "../ui/button";
 import CustomInput from "../ui/custom-input";
+import { useTheme } from "@/theme";
 
 const DetServicioForm = ({
   detallesServicio,
@@ -11,11 +12,12 @@ const DetServicioForm = ({
   reporte,
   setReporte,
 }: any) => {
+  const { colors } = useTheme();
   return (
-    <View style={[commonStyles.section, { marginBottom: 50 }]}>
-      <Text style={commonStyles.sectionTitle as TextStyle}>Detalles del Servicio</Text>
+    <View style={[commonStyles.section, { marginBottom: 50, borderColor: colors.border }]}>
+      <Text style={[commonStyles.sectionTitle as TextStyle, {color: colors.textPrimary}]}>Detalles del Servicio</Text>
 
-      <Text style={commonStyles.label}>Trabajo Realizado *</Text>
+      <Text style={[commonStyles.label, {color: colors.textSecondary}]}>Trabajo Realizado *</Text>
       <CustomInput
         placeholder="Descripción detallada del trabajo realizado..."
         value={detallesServicio.trabajoRealizado}
@@ -28,7 +30,7 @@ const DetServicioForm = ({
         multiline={true}
       />
 
-      <Text style={commonStyles.label}>Observaciones</Text>
+      <Text style={[commonStyles.label, {color: colors.textSecondary}]}>Observaciones</Text>
       <CustomInput
         placeholder="Observaciones adicionales..."
         value={detallesServicio.observaciones}
@@ -38,7 +40,7 @@ const DetServicioForm = ({
         multiline={true}
       />
 
-      <Text style={commonStyles.label}>Observaciones adicionales...</Text>
+      <Text style={[commonStyles.label, {color: colors.textSecondary}]}>Observaciones adicionales...</Text>
       <CustomInput
         placeholder="Recomendaciones para el cliente..."
         value={detallesServicio.observacionesAdicionales}

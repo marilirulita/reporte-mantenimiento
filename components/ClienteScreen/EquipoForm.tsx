@@ -8,7 +8,7 @@ import { useTheme } from "@/theme";
 const EquipoForm = ({ form, handleSave }: { form: any; handleSave: any }) => {
   const { colors } = useTheme();
   return (
-    <View style={[commonStyles.section, { marginBottom: 50 }]}>
+    <View style={[commonStyles.section, { marginBottom: 50, borderColor: colors.border }]}>
       <Text style={[commonStyles.sectionTitle as TextStyle, {color: colors.textPrimary}]}>Datos del Equipo</Text>
 
       <Text style={[commonStyles.label, {color: colors.textSecondary}]}>Selecciona un equipo o guarda uno nuevo</Text>

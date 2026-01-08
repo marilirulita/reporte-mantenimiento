@@ -15,10 +15,11 @@ import { layoutStyles as styles } from "../../styles/layout";
 import { commonStyles } from "../../styles/common";
 import { Botton } from "../ui/button";
 import { pickImage } from "./pickImage";
-import { colorsDark } from "@/styles/tokens";
+import { useTheme } from "@/theme";
 
 export default function Fotos() {
   const [fotos, setFotos] = useState<string[]>([]);
+  const { colors } = useTheme();
 
   const handleEliminarFoto = (uri: string) => {
     Alert.alert("Eliminar foto", "¿Deseas eliminar esta foto?", [
@@ -44,44 +45,44 @@ export default function Fotos() {
   const validarFotos = (fotos: string[]) => fotos.length >= 2;
   return (
     <ScrollView
-      contentContainerStyle={{ padding: 10, backgroundColor: colorsDark.surface }}
+      contentContainerStyle={{ padding: 10, backgroundColor: colors.surface }}
     >
-      <View style={[commonStyles.section, { marginBottom: 50 }]}>
+      <View style={[commonStyles.section, { marginBottom: 50, borderColor: colors.border }]}>
         {/* Título */}
-        <Text style={commonStyles.sectionTitle as TextStyle}>Fotografías del Equipo</Text>
-        <Text style={commonStyles.sectionSubtitle}>
+        <Text style={[commonStyles.sectionTitle as TextStyle, {color: colors.textPrimary}]}>Fotografías del Equipo</Text>
+        <Text style={[commonStyles.sectionSubtitle, {color: colors.textSecondary}]}>
           Agregue fotos del equipo para incluirlas en el reporte
         </Text>
-        <Text style={[commonStyles.sectionSubtitle, { fontStyle: "italic", marginTop: 4 }]}>
+        <Text style={[commonStyles.sectionSubtitle, { fontStyle: "italic", marginTop: 4, color: colors.textSecondary }]}>
           (máximo 4 fotos)
         </Text>
 
         {/* Botones */}
         <View style={styles.buttonRow}>
           <TouchableOpacity
-            style={styles.buttonSubir}
+            style={[styles.buttonSubir, {borderColor: colors.border, shadowColor: colors.icon,}]}
             onPress={() => pickImage("camara", setFotos, fotos)}
           >
-            <Camera size={18} color={colorsDark.background} style={styles.icon} />
-            <Text style={styles.buttonSubirText}>Tomar Foto</Text>
+            <Camera size={18} color={colors.black} style={styles.icon} />
+            <Text style={[styles.buttonSubirText, {color: colors.black}]}>Tomar Foto</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
-            style={styles.buttonSubir}
+            style={[styles.buttonSubir, {borderColor: colors.border, shadowColor: colors.icon,}]}
             onPress={() => pickImage("galeria", setFotos, fotos)}
           >
-            <Upload size={18} color={colorsDark.background} style={styles.icon} />
-            <Text style={styles.buttonSubirText}>Subir Imagen</Text>
+            <Upload size={18} color={colors.black} style={styles.icon} />
+            <Text style={[styles.buttonSubirText, {color: colors.black}]}>Subir Imagen</Text>
           </TouchableOpacity>
         </View>
 
         {/* Cuadro de fotos */}
-        <View style={styles.photoBox}>
+        <View style={[styles.photoBox, {borderColor: colors.border, backgroundColor: colors.surfaceSoft}]}>
           {fotos.length === 0 ? (
             <View style={styles.emptyState}>
-              <ImageIcon size={48} color={colorsDark.textSecondary} />
-              <Text style={styles.emptyText}>No hay fotos agregadas</Text>
-              <Text style={styles.emptySubtext}>
+              <ImageIcon size={48} color={colors.textSecondary} />
+              <Text style={[styles.emptyText, {color: colors.textSecondary,}]}>No hay fotos agregadas</Text>
+              <Text style={[styles.emptySubtext, {color: colors.textMuted}]}>
                 Toque los botones de arriba para agregar fotos
               </Text>
             </View>
@@ -101,7 +102,7 @@ export default function Fotos() {
         </View>
 
         {/* Conteo */}
-        <Text style={styles.counterText}>
+        <Text style={[styles.counterText, {color: colors.textMuted}]}>
           {fotos.length} de 4 fotos agregadas
         </Text>
         <View style={commonStyles.buttonContainer}>

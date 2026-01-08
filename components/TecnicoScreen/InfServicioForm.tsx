@@ -4,15 +4,17 @@ import { Text, TextStyle, View } from "react-native";
 import { layoutStyles as styles } from "../../styles/layout";
 import { commonStyles } from "../../styles/common";
 import CustomInput from "../ui/custom-input";
+import { useTheme } from "@/theme";
 
 const InfServicioForm = ({ infServicio, setInfServicio }: any) => {
+  const { colors } = useTheme();
   return (
-    <View style={commonStyles.section}>
-      <Text style={commonStyles.sectionTitle as TextStyle}>Información del Servicio</Text>
+    <View style={[commonStyles.section, {borderColor: colors.border}]}>
+      <Text style={[commonStyles.sectionTitle as TextStyle, {color: colors.textPrimary}]}>Información del Servicio</Text>
 
       <View style={commonStyles.row}>
         <View style={commonStyles.column}>
-          <Text style={commonStyles.label}>Fecha de Servicio *</Text>
+          <Text style={[commonStyles.label, {color: colors.textSecondary}]}>Fecha de Servicio *</Text>
           <CustomInput
             placeholder="25/10/2025"
             value={infServicio.fechaServicio}
@@ -23,7 +25,7 @@ const InfServicioForm = ({ infServicio, setInfServicio }: any) => {
         </View>
 
         <View style={commonStyles.column}>
-          <Text style={commonStyles.label}>Nombre del Técnico *</Text>
+          <Text style={[commonStyles.label, {color: colors.textSecondary}]}>Nombre del Técnico *</Text>
           <CustomInput
             placeholder="Carlos López"
             value={infServicio.nombreTecnico}
@@ -34,14 +36,14 @@ const InfServicioForm = ({ infServicio, setInfServicio }: any) => {
         </View>
       </View>
 
-      <Text style={commonStyles.label}>Estado del Equipo *</Text>
-      <View style={styles.containerPicker}>
+      <Text style={[commonStyles.label, {color: colors.textSecondary}]}>Estado del Equipo *</Text>
+      <View style={[styles.containerPicker, {borderColor: colors.accent}]}>
         <Picker
           selectedValue={infServicio.estadoEquipo}
           onValueChange={(text) =>
             setInfServicio({ ...infServicio, estadoEquipo: text })
           }
-          style={styles.picker}
+          style={{color: colors.textPrimary}}
         >
           <Picker.Item label="Seleccione una opción" value="" />
           <Picker.Item label="Excelente" value="Excelente" />
