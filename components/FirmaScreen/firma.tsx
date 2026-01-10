@@ -8,7 +8,7 @@ import { commonStyles } from "@/styles/common";
 import { RootStackParamList } from "../../types/navigation"; // importa tus tipos
 import BotonFinalizar from "../BotonFinalizar";
 import { Botton } from "../ui/button";
-import { useTheme } from "@/theme";
+import { useTheme } from "@/theme/ThemeContext";
 
 type FirmaScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,

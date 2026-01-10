@@ -5,7 +5,7 @@ import { useReporte } from "../context/ReporteContext";
 import { generarPDF } from "../utils/generarPDF";
 import { Botton } from "./ui/button";
 import { useRouter } from "expo-router";
-import { useTheme } from "@/theme";
+import { useTheme } from "@/theme/ThemeContext";
 
 const BotonFinalizar = () => {
   const { colors } = useTheme();

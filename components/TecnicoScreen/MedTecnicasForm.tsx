@@ -2,7 +2,7 @@ import React from "react";
 import { Text, TextStyle, View } from "react-native";
 import { commonStyles } from "../../styles/common";
 import CustomInput from "../ui/custom-input";
-import { useTheme } from "@/theme";
+import { useTheme } from "@/theme/ThemeContext";
 
 const MedTecnicasForm = ({
   medicionesTécnicas,

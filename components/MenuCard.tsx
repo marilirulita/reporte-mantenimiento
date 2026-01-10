@@ -1,6 +1,6 @@
 import React from "react";
 import { TouchableOpacity, View, Text } from "react-native";
-import { useTheme } from "@/theme";
+import { useTheme } from "@/theme/ThemeContext";
 
 interface MenuCardProps {
   onPress: () => void;

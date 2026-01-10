@@ -6,7 +6,7 @@ import { useNextSection } from "../../hooks/useNextSection";
 import { validateCliente, validateEquipo } from "../../utils/validarCliente";
 import ClienteForm from "./ClienteForm";
 import EquipoForm from "./EquipoForm";
-import { useTheme } from "@/theme";
+import { useTheme } from "@/theme/ThemeContext";
 
 const ClienteScreen = () => {
   const { colors } = useTheme();

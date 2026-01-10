@@ -3,7 +3,7 @@ import { Text, TextStyle, TouchableOpacity, View } from "react-native";
 import { commonStyles } from "../../styles/common";
 import { Botton } from "../ui/button";
 import CustomInput from "../ui/custom-input";
-import { useTheme } from "@/theme";
+import { useTheme } from "@/theme/ThemeContext";
 
 const EquipoForm = ({ form, handleSave }: { form: any; handleSave: any }) => {
   const { colors } = useTheme();

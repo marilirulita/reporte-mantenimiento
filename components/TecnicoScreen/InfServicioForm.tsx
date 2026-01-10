@@ -4,7 +4,7 @@ import { Text, TextStyle, View } from "react-native";
 import { layoutStyles as styles } from "../../styles/layout";
 import { commonStyles } from "../../styles/common";
 import CustomInput from "../ui/custom-input";
-import { useTheme } from "@/theme";
+import { useTheme } from "@/theme/ThemeContext";
 
 const InfServicioForm = ({ infServicio, setInfServicio }: any) => {
   const { colors } = useTheme();

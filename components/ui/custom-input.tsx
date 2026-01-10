@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from "react";
 import { TextInput, StyleSheet, Animated, ViewStyle } from "react-native";
-import { useTheme } from "@/theme";
+import { useTheme } from "@/theme/ThemeContext";
 
 type KeyboardType =
   | "default"

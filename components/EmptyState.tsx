@@ -2,7 +2,7 @@ import { View, Text } from "react-native";
 import { FileText, ClipboardList } from "lucide-react-native";
 import { historialStyles as styles } from "@/styles/historialStyles";
 import { Botton } from "./ui/button";
-import { useTheme } from "@/theme";
+import { useTheme } from "@/theme/ThemeContext";
 
 export function EmptyState({ onPress }: { onPress: () => void }) {
   const { colors } = useTheme();

@@ -9,7 +9,7 @@ import {
 } from "lucide-react-native";
 import { historialStyles as styles } from "@/styles/historialStyles";
 import React from "react";
-import { useTheme } from "@/theme";
+import { useTheme } from "@/theme/ThemeContext";
 
 export function ReporteCard({
   item,

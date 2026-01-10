@@ -15,7 +15,7 @@ import { layoutStyles as styles } from "../../styles/layout";
 import { commonStyles } from "../../styles/common";
 import { Botton } from "../ui/button";
 import { pickImage } from "./pickImage";
-import { useTheme } from "@/theme";
+import { useTheme } from "@/theme/ThemeContext";
 
 export default function Fotos() {
   const [fotos, setFotos] = useState<string[]>([]);

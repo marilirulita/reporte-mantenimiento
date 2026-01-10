@@ -6,7 +6,7 @@ import {
   ViewStyle,
   TouchableOpacityProps,
 } from "react-native";
-import { useTheme } from "@/theme";
+import { useTheme } from "@/theme/ThemeContext";
 
 const Variant = () => {
   const { colors } = useTheme();

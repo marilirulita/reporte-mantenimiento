@@ -2,7 +2,7 @@ import React from "react";
 import { Text, TextStyle, TouchableOpacity, View } from "react-native";
 import { commonStyles } from "../../styles/common";
 import CustomInput from "../ui/custom-input";
-import { useTheme } from "@/theme";
+import { useTheme } from "@/theme/ThemeContext";
 
 const ClienteForm = ({ form }: { form: any }) => {
   const { colors } = useTheme();

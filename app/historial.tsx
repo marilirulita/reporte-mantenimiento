@@ -14,7 +14,7 @@ import {
   View,
 } from "react-native";
 import { generarPDF } from "../utils/generarPDF";
-import { useTheme } from "@/theme";
+import { useTheme } from "@/theme/ThemeContext";
 
 export default function HistorialScreen() {
   const { colors } = useTheme();

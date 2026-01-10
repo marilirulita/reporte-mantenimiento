@@ -6,7 +6,7 @@ import { useNextSection } from "../../hooks/useNextSection";
 import DetServicioForm from "./DetServicioForm";
 import InfServicioForm from "./InfServicioForm";
 import MedTecnicasForm from "./MedTecnicasForm";
-import { useTheme } from "@/theme";
+import { useTheme } from "@/theme/ThemeContext";
 
 const TecnicoScreen = () => {
   const { colors } = useTheme();

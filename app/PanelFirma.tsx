@@ -7,7 +7,7 @@ import { RootStackParamList } from "../types/navigation";
 import { Botton } from "@/components/ui/button";
 import { PanelFirmaStyles as styles } from "@/styles/panelFirmaStyles";
 import { colorsDark } from "@/styles/tokens";
-import { useTheme } from "@/theme";
+import { useTheme } from "@/theme/ThemeContext";
 
 type PanelFirmaNavigationProp = NativeStackNavigationProp<
   RootStackParamList,

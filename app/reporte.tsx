@@ -9,7 +9,7 @@ import Signature from "../components/FirmaScreen/firma";
 import Fotos from "../components/FotosScreen/fotos";
 import TecnicoScreen from "../components/TecnicoScreen/tecnico";
 import { TabName } from "../types/navigation";
-import { useTheme } from "@/theme";
+import { useTheme } from "@/theme/ThemeContext";
 
 export default function NuevoReporteScreen() {
   const { colors } = useTheme();

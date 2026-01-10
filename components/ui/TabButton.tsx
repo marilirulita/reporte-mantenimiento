@@ -1,7 +1,7 @@
 import { TouchableOpacity, Text } from "react-native";
 import { colorsDark } from "@/styles/tokens";
 import { reporteStyles as styles } from "@/styles/reporteStyles";
-import { useTheme } from "@/theme";
+import { useTheme } from "@/theme/ThemeContext";
 
 /* ⭐ COMPONENTE REUTILIZABLE DE TABS */
 export default function TabButton({

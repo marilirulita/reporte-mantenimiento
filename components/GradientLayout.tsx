@@ -1,5 +1,5 @@
 import { LinearGradient } from "expo-linear-gradient";
-import { useTheme } from "@/theme";
+import { useTheme } from "@/theme/ThemeContext";
 
 export function GradientLayout({ children, style }: { children: React.ReactNode, style?: object }) {
   const { colors } = useTheme();

@@ -1,18 +1,18 @@
 import { Stack } from "expo-router";
 import { ReporteProvider } from "@/context/ReporteContext";
+import { ThemeProvider, useTheme } from "@/theme/ThemeContext";
 import React, { useEffect } from "react";
 import { createTables } from "../db/database";
-import { useTheme } from "@/theme";
 
-export default function RootLayout() {
+function RootStack() {
   const { colors } = useTheme();
-  
+
   useEffect(() => {
     createTables();
   }, []);
 
   return (
-    <ReporteProvider>
+    <>
       <Stack screenOptions={{
         headerStyle: {
           backgroundColor: colors.background,
@@ -50,6 +50,16 @@ export default function RootLayout() {
           }}
         />
       </Stack>
+    </>
+  );
+}
+
+export default function RootLayout() {
+  return (
+    <ReporteProvider>
+      <ThemeProvider>
+        <RootStack />
+      </ThemeProvider>
     </ReporteProvider>
   );
 }
