@@ -13,6 +13,8 @@ interface ReporteData {
 interface ReporteContextType {
   reporte: ReporteData;
   setReporte: React.Dispatch<React.SetStateAction<ReporteData>>;
+  loadingPdf: boolean; 
+  setLoadingPdf: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const ReporteContext = createContext<ReporteContextType | null>(null);
@@ -27,8 +29,9 @@ export const initialReporte: ReporteData = {
 
 export const ReporteProvider = ({ children }: { children: React.ReactNode }) => {
   const [reporte, setReporte] = useState<ReporteData>(initialReporte);
+  const [loadingPdf, setLoadingPdf] = useState(false); 
   return (
-    <ReporteContext.Provider value={{ reporte, setReporte }}>
+    <ReporteContext.Provider value={{ reporte, setReporte, loadingPdf, setLoadingPdf }}>
       {children}
     </ReporteContext.Provider>
   );

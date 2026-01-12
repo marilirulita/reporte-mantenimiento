@@ -9,11 +9,15 @@ import { useTheme } from "@/theme/ThemeContext";
 
 const BotonFinalizar = () => {
   const { colors } = useTheme();
-  const { reporte, setReporte } = useReporte();
+  const { reporte, setReporte, setLoadingPdf } = useReporte();
   const router = useRouter();
 
   const handleFinalizar = async () => {
-    if (!validarReporte(reporte)) return;
+    setLoadingPdf(true);
+    if (!validarReporte(reporte)) {
+      setLoadingPdf(false);
+      return
+    };
 
     const PDFuri = await generarPDF(reporte, false);
 
@@ -46,6 +50,7 @@ const BotonFinalizar = () => {
       firma: null,
     });
 
+    setLoadingPdf(false);
     Alert.alert("Reporte guardado con éxito ✅");
     router.push("/");
   };
