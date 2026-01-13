@@ -1,23 +1,33 @@
-import { Switch } from "react-native";
-import { useState } from "react";
+import { View, Text, Pressable } from "react-native";
 import { useTheme } from "@/theme/ThemeContext";
 
 export function ThemeSwitcher() {
   const { mode, setMode, colors } = useTheme();
-  const [isSwitchOn, setIsSwitchOn] = useState(mode === "light" ? false : true);
 
-  const onToggleSwitch = () => {
-    setIsSwitchOn(!isSwitchOn);
-    if (isSwitchOn === true) {
-      setMode("dark");
-    } else {
-      setMode("light");
-    }
-  };
+  return (
+    <View style={{ flexDirection: "row", gap: 1 }}>
 
-  return <Switch 
-  value={isSwitchOn} 
-  onValueChange={onToggleSwitch}
-  thumbColor={colors.textSecondary}
-  trackColor={{ false: colors.textSecondary, true: colors.textSecondary }} />;
+      {(["system", "light", "dark"] as const).map((value) => (
+        <Pressable
+          key={value}
+          onPress={() => setMode(value)}
+          style={{
+            padding: 4,
+            borderRadius: 10,
+            backgroundColor:
+              mode === value ? colors.accent : colors.black,
+            borderWidth: 1,
+            borderColor:
+              mode === value ? colors.accent : colors.border,
+          }}
+        >
+          <Text>
+            {value === "system" && "⚙️"}
+            {value === "light" && "🌞"}
+            {value === "dark" && "🌙"}
+          </Text>
+        </Pressable>
+      ))}
+    </View>
+  );
 }

@@ -51,8 +51,9 @@ export default function PantallaInicio() {
     <GradientLayout style={styles.container}>
       <View
         style={{
-          alignSelf: "flex-end",
-        }}
+        alignSelf: "flex-end",
+        marginBottom: 10
+      }}
       >
         <ThemeSwitcher />
       </View>

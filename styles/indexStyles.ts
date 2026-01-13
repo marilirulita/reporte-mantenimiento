@@ -4,8 +4,7 @@ export const indexStyles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "center",
-    paddingHorizontal: 20,
+    padding: 15,
   },
   iconContainer: {
     padding: 0,

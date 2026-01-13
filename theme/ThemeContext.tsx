@@ -3,7 +3,7 @@ import { useColorScheme } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { lightColors, colorsDark } from "../styles/tokens";
 
-type ThemeMode = "light" | "dark" | "null";
+type ThemeMode = "light" | "dark" | "system";
 
 interface ThemeContextType {
   mode: ThemeMode;
@@ -15,11 +15,11 @@ const ThemeContext = createContext<ThemeContextType | null>(null);
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const systemScheme = useColorScheme();
-  const [mode, setModeState] = useState<ThemeMode>("null");
+  const [mode, setModeState] = useState<ThemeMode>("system");
 
   useEffect(() => {
     AsyncStorage.getItem("theme-mode").then((saved) => {
-      if (saved === "light" || saved === "dark") {
+      if (saved === "light" || saved === "dark" || saved === "system") {
         setModeState(saved);
       }
     });
@@ -31,7 +31,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   };
 
   const activeScheme =
-    mode === "null" ? systemScheme : mode;
+    mode === "system" ? systemScheme : mode;
 
   const colors =
     activeScheme === "dark" ? colorsDark : lightColors;
