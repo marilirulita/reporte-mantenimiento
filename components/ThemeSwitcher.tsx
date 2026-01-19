@@ -3,22 +3,20 @@ import { useTheme } from "@/theme/ThemeContext";
 
 export function ThemeSwitcher() {
   const { mode, setMode, colors } = useTheme();
+  const value = mode;
+  const nextMode =
+    value === "system" ? "light" : value === "light" ? "dark" : "system";
 
   return (
     <View style={{ flexDirection: "row", gap: 1 }}>
-
-      {(["system", "light", "dark"] as const).map((value) => (
-        <Pressable
-          key={value}
-          onPress={() => setMode(value)}
+      <Pressable
+          onPress={() => setMode(nextMode)}
           style={{
             padding: 4,
             borderRadius: 10,
-            backgroundColor:
-              mode === value ? colors.accent : colors.black,
+            backgroundColor: colors.accent,
             borderWidth: 1,
-            borderColor:
-              mode === value ? colors.accent : colors.border,
+            borderColor: colors.accent,
           }}
         >
           <Text>
@@ -27,7 +25,6 @@ export function ThemeSwitcher() {
             {value === "dark" && "🌙"}
           </Text>
         </Pressable>
-      ))}
     </View>
   );
 }
