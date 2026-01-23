@@ -3,6 +3,16 @@
 Aplicación móvil para generar y administrar reportes de mantenimiento mediante un formulario completo con datos de cliente, equipo, detalles técnicos, fotografías y firma de verificación.
 Incluye historial para consultar reportes previos y volver a generar los PDF.
 
+![Mockup App Reporte](assets\images\reportes-tecnicos-pdf.png)
+
+<img src="assets\images\app-mant-home-phone.jpeg" alt="Home page dark" width="200px" />
+
+<img src="assets\images\app-mant-home-light-phone.jpeg" alt="Home page light" width="200px" />
+
+<img src="assets\images\app-mant-fotos-phone.jpeg" alt="Fotos page dark" width="200px" />
+
+<img src="assets\images\app-mant-hist-phone.jpeg" alt="Historial page light" width="200px" />
+
 ## 📝 Descripción
 
 Esta aplicación permite crear reportes de mantenimiento desde cualquier dispositivo móvil.
@@ -94,9 +104,9 @@ Antes de ejecutar el proyecto, asegúrate de tener instalado:
 | `eas build -p android` | Genera APK/AAB |
 | `eas update` | Publica actualizaciones OTA |
 
-## 📲 Cómo descargar APK (Android)
+## 📲 Cómo descargar App (Android)
 
-[Link de descarga](https://onlinemarkdown.com)
+[Link de descarga](https://play.google.com/store/apps/details?id=com.marilirulita.reportemantenimiento&pcampaignid=web_share)
 
 ## 👤 Créditos / Autor
 
