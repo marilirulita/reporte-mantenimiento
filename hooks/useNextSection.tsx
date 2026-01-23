@@ -1,9 +1,10 @@
-import { useReporte } from "../context/ReporteContext"
+import { useReporte } from "../context/ReporteContext";
+import { TabName } from "../types/navigation";
 
-export const useNextSection = (nextScreenName: string) => {
+export const useNextSection = (nextScreenName: TabName) => {
   const { setReporte } = useReporte();
 
-  const handleNext = (sectionKey: string, sectionData: any) => {
+  const handleNext = (sectionKey: TabName, sectionData: any) => {
     // Guardar datos de la sección actual
     setReporte((prev) => ({
       ...prev,

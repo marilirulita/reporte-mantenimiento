@@ -7,8 +7,8 @@
     <style>
       body {
         font-family: Arial, sans-serif;
-        background-color: #f8fafc;
-        color: #111827;
+        background: white;
+        color: #0F172A;
         margin: 0;
         padding: 0;
       }
@@ -17,14 +17,13 @@
         width: 100%;
         margin: auto;
         background: white;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
-        border-radius: 8px;
+        box-shadow: 0 10px 10px rgba(0, 0, 0, 0.15);
         overflow: hidden;
       }
 
       /* Encabezado */
       .header {
-        background-color: #2563eb;
+        background-color: #1F7A8C;
         color: white;
         padding: 20px;
         text-align: center;
@@ -38,12 +37,12 @@
       .header p {
         margin: 5px 0 0;
         font-size: 14px;
-        color: #dbeafe;
+        color: #CBD5E1;
       }
 
       /* Secciones */
       .section {
-        margin: 20px;
+        margin: 10px;
         border-radius: 6px;
         overflow: hidden;
         background: #ffffff;
@@ -51,7 +50,9 @@
 
       .row {
         display: grid;
+        padding: 0px 10px;
         gap: 10px 20px; /* espacio entre campos */
+        border-bottom: 1px solid #94A3B8;
       }
 
       .row-2 {
@@ -63,33 +64,29 @@
       }
 
       .section-title {
-        background-color: #e2e8f0;
+        background-color: #CBD5E1;
         padding: 10px;
         font-size: 16px;
         font-weight: bold;
-        color: #111827;
+        color: #0F172A;
       }
 
       .field {
         display: flex;
-        padding: 6px 10px;
+        padding: 6px 0px;
         font-size: 14px;
-        border-bottom: 1px solid #f1f5f9;
-      }
-
-      .field:last-child {
-        border-bottom: none;
+        
       }
 
       .field label {
         margin-right: 10px;
         font-weight: 600;
-        color: #374151;
+        color: #1E293B;
       }
 
       .field span {
         flex: 1;
-        color: #111827;
+        color: #273449;
       }
 
       /* Texto largo */
@@ -112,7 +109,7 @@
         width: 180px;
         height: 120px;
         object-fit: cover;
-        border: 1px solid #e5e7eb;
+        border: 1px solid #334155;
         border-radius: 4px;
       }
 
@@ -125,16 +122,16 @@
       .signature img {
         width: 200px;
         height: auto;
-        border-bottom: 1px solid #000;
+        border-bottom: 1px solid #334155;
         margin-bottom: 5px;
       }
 
       .footer {
         text-align: center;
         font-size: 12px;
-        color: #6b7280;
+        color: #94A3B8;
         padding: 10px;
-        border-top: 1px solid #e5e7eb;
+        border-top: 1px solid #CBD5E1;
       }
     </style>
   </head>
@@ -180,7 +177,6 @@
           <div class="field">
             <label>Ubicación:</label><span>Oficina principal</span>
           </div>
-          <div class="field"><label></label><span></span></div>
         </div>
       </div>
 

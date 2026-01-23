@@ -1,3 +1,4 @@
+import { EstadoEquipo } from "../types/reporte";
 export interface Cliente {
   id?: number;                // clave primaria
   nombre: string;            // obligatorio
@@ -22,7 +23,7 @@ export interface Reporte {
   idEquipo: number;          // relación con Equipo
   fecha: string;             // fecha del reporte
   tecnico: string;           // nombre tecnico
-  estadoEquipo: string;
+  estadoEquipo: EstadoEquipo;
   tipoRefrigerante?: string;
   presion?: string;
   temperaturaAmbiente?: string;
@@ -36,3 +37,19 @@ export interface Reporte {
   firma: string;
   pdfUri: string;           // ruta local del PDF generado
 } 
+
+export interface ReporteConCliente extends Reporte {
+  nombre: string;
+  telefono: string;
+  direccion: string;
+  email: string;
+  marca: string;
+  modelo: string;
+  numeroSerie: string;
+  tipoEquipo: string;
+  ubicacionEquipo: string;
+}
+
+export interface ReporteDB extends Omit<Reporte, "fotos"> {
+  fotos: string; // JSON
+}

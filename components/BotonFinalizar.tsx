@@ -1,32 +1,23 @@
+import { addReporte } from "@/db/reportes.repo";
+import { validarReporte } from "@/utils/validarReporte";
+import { Alert, StyleSheet, Text } from "react-native";
 import { useReporte } from "../context/ReporteContext";
 import { generarPDF } from "../utils/generarPDF";
-import { Text, StyleSheet, Alert } from "react-native";
 import { Botton } from "./ui/button";
-import { addReporte } from "@/db/databaseActions";
+import { useRouter } from "expo-router";
+import { useTheme } from "@/theme/ThemeContext";
 
 const BotonFinalizar = () => {
-  const { reporte } = useReporte();
+  const { colors } = useTheme();
+  const { reporte, setReporte, setLoadingPdf } = useReporte();
+  const router = useRouter();
 
   const handleFinalizar = async () => {
-    if (reporte.firma === null) {
-      Alert.alert("Requisito Firma", "Nesesita agregar una firma");
-      return;
-    }
-
-    if (!reporte.cliente?.cliente?.id || !reporte.cliente?.equipo?.id ) {;
-      Alert.alert("Requisito Reporte", "Faltan datos del cliente y equipo");
-      return;
-    }
-
-    if (!reporte.tecnico?.fechaServicio) {;
-      Alert.alert("Requisito Reporte", "Faltan datos del area tecnica");
-      return;
-    }
-
-    if (reporte.fotos.length <= 0) {;
-      Alert.alert("Requisito Reporte", "Faltan fotos");
-      return;
-    }
+    setLoadingPdf(true);
+    if (!validarReporte(reporte)) {
+      setLoadingPdf(false);
+      return
+    };
 
     const PDFuri = await generarPDF(reporte, false);
 
@@ -46,35 +37,38 @@ const BotonFinalizar = () => {
       observaciones: reporte.tecnico.observaciones,
       recomendaciones: reporte.tecnico.observacionesAdicionales,
       fotos: reporte.fotos,
-      firma: reporte.firma,
+      firma: reporte.firma ?? "",
       pdfUri: PDFuri,
     };
     await addReporte(reporteCompleto);
-    
-    alert("Reporte guardado con éxito ✅");
+
+    setReporte({
+      activeTab: "cliente",
+      cliente: {},
+      tecnico: {},
+      fotos: [],
+      firma: null,
+    });
+
+    setLoadingPdf(false);
+    Alert.alert("Reporte guardado con éxito ✅");
+    router.push("/");
   };
 
   return (
-    <Botton onPress={handleFinalizar} classname={styles.buttonPrimary}>
-      <Text style={styles.textPrimary}>Finalizar</Text>
+    <Botton onPress={handleFinalizar} classname={styles.buttonPrimary} variant='primary'>
+      <Text style={[styles.textPrimary, {color: colors.white}]}>Finalizar</Text>
     </Botton>
   );
 };
 
 const styles = StyleSheet.create({
   buttonPrimary: {
-    backgroundColor: "#171717", // bg-neutral-900
-    paddingVertical: 12, // py-3
-    paddingHorizontal: 24, // px-6
-    borderRadius: 8, // rounded-md
-    shadowColor: "#737373", // shadow-neutral-500
-    shadowOpacity: 0.3,
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 4,
-    elevation: 3, // para Android
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 8,
   },
   textPrimary: {
-    color: "#fff", // text-white
     fontWeight: "600", // font-semibold
     fontSize: 14, // text-sm
   },

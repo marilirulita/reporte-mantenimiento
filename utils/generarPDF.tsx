@@ -1,24 +1,13 @@
 import * as Print from "expo-print";
 import * as Sharing from "expo-sharing";
-import { templaitPDF } from "./templaitPDF";
-import { templaitPDFDowload } from "./templaitePDF-download";
+import { templatePDF } from "./templaitPDF";
+import { mapDbReporteToPdf } from "./mapDbReporteToPdf";
+import { mapReporteToPdf } from "./mapReporteToPdf";
 import getBase64Image from "./getBase64Image";
 
 export const generarPDF = async (reporte: any, download: boolean) => {
   // Aseguramos que fotos siempre sea un array
-  let fotosArray: string[] = [];
-
-  if (Array.isArray(reporte.fotos)) {
-    fotosArray = reporte.fotos;
-  } else if (typeof reporte.fotos === "string") {
-    try {
-      fotosArray = JSON.parse(reporte.fotos);
-    } catch {
-      fotosArray = [];
-    }
-  } else {
-    fotosArray = [];
-  }
+  const fotosArray = normalizeFotos(reporte.fotos);
 
   // Convierte todas las fotos del reporte a Base64
   const fotosBase64 = await Promise.all(
@@ -30,15 +19,28 @@ export const generarPDF = async (reporte: any, download: boolean) => {
     fotos: fotosBase64,
   };
 
-  const html = download ? templaitPDFDowload(reporteConFotos) : templaitPDF(reporteConFotos);
+  const html = download ? templatePDF(mapDbReporteToPdf(reporteConFotos)) : templatePDF(mapReporteToPdf(reporteConFotos));
 
   const { uri } = await Print.printToFileAsync({ html });
 
   if (await Sharing.isAvailableAsync()) {
     await Sharing.shareAsync(uri);
-  } else {
-    alert("PDF guardado en: " + uri);
   }
 
   return uri;
+};
+
+export const normalizeFotos = (fotos: unknown): string[] => {
+  if (Array.isArray(fotos)) return fotos;
+
+  if (typeof fotos === "string") {
+    try {
+      const parsed = JSON.parse(fotos);
+      return Array.isArray(parsed) ? parsed : [];
+    } catch {
+      return [];
+    }
+  }
+
+  return [];
 };

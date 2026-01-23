@@ -3,6 +3,16 @@
 Aplicación móvil para generar y administrar reportes de mantenimiento mediante un formulario completo con datos de cliente, equipo, detalles técnicos, fotografías y firma de verificación.
 Incluye historial para consultar reportes previos y volver a generar los PDF.
 
+<img src="assets\images\reportes-tecnicos-pdf.png" alt="Mockup App Reporte" />
+
+<img src="assets\images\app-mant-home-phone.jpeg" alt="Home page dark" width="200px" />
+
+<img src="assets\images\app-mant-home-light-phone.jpeg" alt="Home page light" width="200px" />
+
+<img src="assets\images\app-mant-fotos-phone.jpeg" alt="Fotos page dark" width="200px" />
+
+<img src="assets\images\app-mant-hist-phone.jpeg" alt="Historial page light" width="200px" />
+
 ## 📝 Descripción
 
 Esta aplicación permite crear reportes de mantenimiento desde cualquier dispositivo móvil.
@@ -88,63 +98,15 @@ Antes de ejecutar el proyecto, asegúrate de tener instalado:
 
 | Script | Acción |
 | ------------- | ------ |
-|`npm start` / `expo start` | Inicia el proyecto en modo desarrollo |
+| `npm start` / `expo start` | Inicia el proyecto en modo desarrollo |
 | `npm run android` | Abre en un emulador Android |
 | `npm run ios` | Abre en un simulador iOS (solo Mac) |
 | `eas build -p android` | Genera APK/AAB |
 | `eas update` | Publica actualizaciones OTA |
 
-## 📁 Estructura de carpetas
+## 📲 Cómo descargar App (Android)
 
-```markdown
-/app
-  -_layout.tsx
-  - +not-found.tsx
-  - historial.tsx
-  - index.tsx
-  - PanelFirma.tsx
-  - reporte.tsx
-/assets
-  /images
-    - icon.png
-    - logo.png
-/components
-  /ui
-    - button.tsx
-    - custom-input.tsx
-  - BotonFinalizar.tsx
-  - cliente.tsx
-  - equipo.tsx
-  - firma.tsx
-  - fotos.tsx
-/context
-  - ReporteContext.tsx
-/db
-  - database.js
-  - databaseActions.ts
-/hooks
-  - useNextSection.tsx
-/models
-  - Reporte.ts
-/types
-  - navigation.ts
-/utils
-  - generarPDF.tsx
-  - getBase64Image.ts
-  - templaitePDF-download.ts
-  - templaitPDF.ts
-  - template.html
-app.json
-eas.json
-eslint.config.js
-package.json
-README.md
-tsconfig.json
-```
-
-## 📲 Cómo descargar APK (Android)
-
-[Link de descarga](https://onlinemarkdown.com)
+[Link de descarga](https://play.google.com/store/apps/details?id=com.marilirulita.reportemantenimiento&pcampaignid=web_share)
 
 ## 👤 Créditos / Autor
 
