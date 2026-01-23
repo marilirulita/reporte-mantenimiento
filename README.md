@@ -3,7 +3,7 @@
 Aplicación móvil para generar y administrar reportes de mantenimiento mediante un formulario completo con datos de cliente, equipo, detalles técnicos, fotografías y firma de verificación.
 Incluye historial para consultar reportes previos y volver a generar los PDF.
 
-![Mockup App Reporte](assets\images\reportes-tecnicos-pdf.png)
+<img src="assets\images\reportes-tecnicos-pdf.png" alt="Mockup App Reporte" />
 
 <img src="assets\images\app-mant-home-phone.jpeg" alt="Home page dark" width="200px" />
 
